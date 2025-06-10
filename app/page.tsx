@@ -19,6 +19,7 @@ import {
   CoinAnimation,
   ItemEntranceEffect,
 } from "@/components/enhanced-animations"
+import { PremiumStoreButton } from "@/components/premium-store-button"
 
 export interface GachaItem {
   id: string
@@ -863,32 +864,33 @@ function GachaMachineContent() {
     setUnrevealedItems((prev) => [...prev, result])
     setCurrentBlindBox(result)
 
+    // Remove this entire section that spoils the blind box:
     // Show notifications for special items
-    if (result.collection === "space") {
-      addNotification({
-        type: "legendary",
-        title: "SPACE ITEM!",
-        message: `You pulled ${result.name}! ${result.emoji}`,
-        icon: result.emoji,
-        duration: 8000,
-      })
-    } else if (result.version === "hidden") {
-      addNotification({
-        type: "collection",
-        title: "Hidden Variant!",
-        message: `Found hidden ${result.name}! ${result.emoji}`,
-        icon: "🌟",
-        duration: 6000,
-      })
-    } else if (!existingItem) {
-      addNotification({
-        type: "success",
-        title: "New Item!",
-        message: `Added ${result.name} to collection`,
-        icon: result.emoji,
-        duration: 4000,
-      })
-    }
+    // if (result.collection === "space") {
+    //   addNotification({
+    //     type: "legendary",
+    //     title: "SPACE ITEM!",
+    //     message: `You pulled ${result.name}! ${result.emoji}`,
+    //     icon: result.emoji,
+    //     duration: 8000,
+    //   })
+    // } else if (result.version === "hidden") {
+    //   addNotification({
+    //     type: "collection",
+    //     title: "Hidden Variant!",
+    //     message: `Found hidden ${result.name}! ${result.emoji}`,
+    //     icon: "🌟",
+    //     duration: 6000,
+    //   })
+    // } else if (!existingItem) {
+    //   addNotification({
+    //     type: "success",
+    //     title: "New Item!",
+    //     message: `Added ${result.name} to collection`,
+    //     icon: result.emoji,
+    //     duration: 4000,
+    //   })
+    // }
 
     // Show collection-specific particles
     setCollectionParticleType(result.collection)
@@ -924,12 +926,66 @@ function GachaMachineContent() {
     setIsItemRevealed(true)
     setBoxesOpened((prev) => prev + 1)
 
+    // Remove the item from unrevealed items when actually revealed
+    if (currentBlindBox) {
+      setUnrevealedItems((prev) => {
+        const indexToRemove = prev.findIndex(
+          (item) =>
+            item.id === currentBlindBox.id &&
+            item.name === currentBlindBox.name &&
+            item.collection === currentBlindBox.collection &&
+            item.version === currentBlindBox.version,
+        )
+        if (indexToRemove > -1) {
+          const newUnrevealed = [...prev]
+          newUnrevealed.splice(indexToRemove, 1)
+          return newUnrevealed
+        }
+        return prev
+      })
+    }
+
     // Play the appropriate reveal sound with music after a short delay
     setTimeout(() => {
       if (currentBlindBox) {
         soundManager.playItemReveal(currentBlindBox.collection)
       }
     }, 500)
+
+    // Add notifications AFTER the reveal
+    if (currentBlindBox) {
+      const existingItem = inventory.find(
+        (item) => item.id === currentBlindBox.id && item.version === currentBlindBox.version,
+      )
+
+      setTimeout(() => {
+        if (currentBlindBox.collection === "space") {
+          addNotification({
+            type: "legendary",
+            title: "SPACE ITEM!",
+            message: `You revealed ${currentBlindBox.name}! ${currentBlindBox.emoji}`,
+            icon: currentBlindBox.emoji,
+            duration: 8000,
+          })
+        } else if (currentBlindBox.version === "hidden") {
+          addNotification({
+            type: "collection",
+            title: "Hidden Variant!",
+            message: `Found hidden ${currentBlindBox.name}! ${currentBlindBox.emoji}`,
+            icon: "🌟",
+            duration: 6000,
+          })
+        } else if (!existingItem) {
+          addNotification({
+            type: "success",
+            title: "New Item!",
+            message: `Added ${currentBlindBox.name} to collection`,
+            icon: currentBlindBox.emoji,
+            duration: 4000,
+          })
+        }
+      }, 1000) // Delay to let the reveal animation play first
+    }
   }
 
   const handleShare = () => {
@@ -952,24 +1008,8 @@ function GachaMachineContent() {
     // Play button click sound
     soundManager.play("buttonClick")
 
-    // Remove the item from unrevealed items (it stays in inventory)
-    if (currentBlindBox) {
-      setUnrevealedItems((prev) => {
-        const indexToRemove = prev.findIndex(
-          (item) =>
-            item.id === currentBlindBox.id &&
-            item.name === currentBlindBox.name &&
-            item.collection === currentBlindBox.collection &&
-            item.version === currentBlindBox.version,
-        )
-        if (indexToRemove > -1) {
-          const newUnrevealed = [...prev]
-          newUnrevealed.splice(indexToRemove, 1)
-          return newUnrevealed
-        }
-        return prev
-      })
-    }
+    // DON'T remove the item from unrevealed items when just continuing
+    // The item should only be removed when explicitly revealed via revealBlindBox()
 
     // Reset the gacha display to empty state
     setShowResults(false)
@@ -1170,6 +1210,8 @@ function GachaMachineContent() {
                 Market
               </Button>
             </Link>
+
+            <PremiumStoreButton theme={currentTheme} />
           </div>
         </div>
 
