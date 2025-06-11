@@ -29,10 +29,7 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
         _;
     }
 
-    constructor(
-        
-    ) ERC721("IPPYNFT", "IPPY") Ownable(msg.sender) {
-    }
+    constructor() ERC721("IPPYNFT", "IPPY") Ownable(msg.sender) {}
 
     /**
      * @dev Set the BlindBox contract address (only owner can call)

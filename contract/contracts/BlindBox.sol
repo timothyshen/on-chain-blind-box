@@ -201,8 +201,7 @@ contract BlindBox is ERC1155, Ownable, ReentrancyGuard {
         );
     }
 
-    // Legacy function for backwards compatibility
-    function mint(address to, uint256 tokenId) external onlyOwner {
-        _mint(to, tokenId, 1, "");
+    function getIPPYNFT() external view returns (address) {
+        return address(ippyNFT);
     }
 }
