@@ -1,12 +1,17 @@
 import { readClient } from "@/lib/contract/client";
-import { blindBoxABI, ippyIPABI } from "@/lib/contract";
+import {
+  blindBoxABI,
+  ippyIPABI,
+  blindBoxAddress,
+  ippyNFTAddress,
+} from "@/lib/contract";
 
 // BlindBox Read Functions
 
 // Get BlindBox Info
 export const getContractInfo = () => {
   const blindBoxInfo = readClient.readContract({
-    address: "0x0000000000000000000000000000000000000000",
+    address: blindBoxAddress,
     abi: blindBoxABI,
     functionName: "getContractInfo",
   });
@@ -17,7 +22,7 @@ export const getContractInfo = () => {
 // Get User BlindBox Balance
 export const getUserBlindBoxBalance = () => {
   const userBlindBoxBalance = readClient.readContract({
-    address: "0x0000000000000000000000000000000000000000",
+    address: blindBoxAddress,
     abi: blindBoxABI,
     functionName: "getUserBlindBoxBalance",
   });
@@ -27,31 +32,34 @@ export const getUserBlindBoxBalance = () => {
 
 // IPPYNFT Read Functions
 
-export const getUserNFTs = (address: string) => {
+export const getUserNFTs = (address: `0x${string}`) => {
   const userNFTs = readClient.readContract({
-    address: "0x0000000000000000000000000000000000000000",
+    address: ippyNFTAddress,
     abi: ippyIPABI,
     functionName: "getUserNFTs",
+    args: [address],
   });
 
   return userNFTs;
 };
 
-export const getUserNFTTypeCounts = (address: string) => {
+export const getUserNFTTypeCounts = (address: `0x${string}`) => {
   const userNFTTypeCounts = readClient.readContract({
-    address: "0x0000000000000000000000000000000000000000",
+    address: ippyNFTAddress,
     abi: ippyIPABI,
     functionName: "getUserNFTTypeCounts",
+    args: [address],
   });
 
   return userNFTTypeCounts;
 };
 
-export const getUserOwnsHiddenNFT = (address: string) => {
+export const getUserOwnsHiddenNFT = (address: `0x${string}`) => {
   const userOwnsHiddenNFT = readClient.readContract({
-    address: "0x0000000000000000000000000000000000000000",
+    address: ippyNFTAddress,
     abi: ippyIPABI,
     functionName: "getUserOwnsHiddenNFT",
+    args: [address],
   });
 
   return userOwnsHiddenNFT;
@@ -59,7 +67,7 @@ export const getUserOwnsHiddenNFT = (address: string) => {
 
 export const getTotalSupply = () => {
   const totalSupply = readClient.readContract({
-    address: "0x0000000000000000000000000000000000000000",
+    address: ippyNFTAddress,
     abi: ippyIPABI,
     functionName: "totalSupply",
   });
