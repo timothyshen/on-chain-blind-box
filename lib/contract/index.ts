@@ -1,13 +1,13 @@
 import { blindBoxABI } from "./blindboxABI";
 import { ippyIPABI } from "./ippyIPABI";
-import { readClient, walletClient } from "./client";
+import { readClient, getWalletClient } from "./client";
 import { blindBoxAddress, ippyNFTAddress } from "./contractAddress";
 
 export {
   blindBoxABI,
   ippyIPABI,
   readClient,
-  walletClient,
+  getWalletClient,
   blindBoxAddress,
   ippyNFTAddress,
 };
