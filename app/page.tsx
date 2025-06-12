@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Coins, Package, Store, Sparkles, Zap, Palette, Share, Crown } from "lucide-react"
+import { Coins, Package, Store, Sparkles, Zap, Palette, Share, Crown, User } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { soundManager } from "@/utils/sounds"
@@ -19,7 +19,8 @@ import {
   CoinAnimation,
   ItemEntranceEffect,
 } from "@/components/enhanced-animations"
-import { PremiumStoreButton } from "@/components/premium-store-button"
+import { usePrivy } from "@privy-io/react-auth";
+
 
 export interface GachaItem {
   id: string
@@ -477,9 +478,9 @@ const CelebrationParticles = ({ theme, show }: { theme: Theme; show: boolean }) 
     <>
       <style jsx>{`
         ${Array.from({ length: 30 }, (_, i) => {
-          const yOffset = -300 - Math.random() * 150
-          const xDrift = (Math.random() - 0.5) * 200
-          return `
+        const yOffset = -300 - Math.random() * 150
+        const xDrift = (Math.random() - 0.5) * 200
+        return `
             @keyframes float-up-${i} {
               0% {
                 opacity: 0;
@@ -499,7 +500,7 @@ const CelebrationParticles = ({ theme, show }: { theme: Theme; show: boolean }) 
               }
             }
           `
-        }).join("")}
+      }).join("")}
       `}</style>
       <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">{particles}</div>
     </>
@@ -550,6 +551,8 @@ function GachaMachineContent() {
   const [currentConsecutiveRare, setCurrentConsecutiveRare] = useState(0)
   const [showAchievementModal, setShowAchievementModal] = useState(false)
   const [currentAchievement, setCurrentAchievement] = useState<Achievement | null>(null)
+
+  const { login, logout, user, connectWallet } = usePrivy();
 
   // Initialize sound manager on first render
   useEffect(() => {
@@ -1211,7 +1214,19 @@ function GachaMachineContent() {
               </Button>
             </Link>
 
-            <PremiumStoreButton theme={currentTheme} />
+            <Button
+              variant="outline"
+              size="lg"
+              className={cn(
+                "text-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl",
+                currentTheme.isDark
+                  ? "bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+                  : "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
+              )}
+              onClick={user ? logout : login}>
+              <User className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              {user ? "Logout" : "Login"}
+            </Button>
           </div>
         </div>
 
@@ -1297,67 +1312,67 @@ function GachaMachineContent() {
                   <div className="relative z-10 grid grid-cols-3 gap-3 h-full p-4">
                     {isSpinning && !showBlindBoxModal
                       ? Array.from({ length: 9 }).map((_, i) => (
-                          <div
-                            key={i}
-                            className={cn(
-                              "rounded-2xl flex items-center justify-center transition-all duration-200 border-2 shadow-lg",
-                              blinkingCell === i
-                                ? cn(
-                                    "bg-gradient-to-br from-amber-300 to-amber-500 border-amber-200",
-                                    "ring-4 ring-amber-400/60 shadow-xl scale-105",
-                                    animationPhase === "landing" && "scale-110",
-                                    animationPhase === "landing" && i === 4 && "scale-125",
-                                  )
-                                : "bg-white/10 border-white/20 backdrop-blur-sm",
-                            )}
-                          >
-                            {blinkingCell === i ? (
-                              <Sparkles
-                                className={cn(
-                                  "w-5 h-5 md:w-6 md:h-6 text-amber-800 drop-shadow-lg",
-                                  animationPhase === "fast" && "animate-ping",
-                                  animationPhase === "landing" && i === 4 && "animate-pulse",
-                                )}
-                              />
-                            ) : (
-                              <div className="text-sm md:text-base text-white/40 font-medium">?</div>
-                            )}
-                          </div>
-                        ))
+                        <div
+                          key={i}
+                          className={cn(
+                            "rounded-2xl flex items-center justify-center transition-all duration-200 border-2 shadow-lg",
+                            blinkingCell === i
+                              ? cn(
+                                "bg-gradient-to-br from-amber-300 to-amber-500 border-amber-200",
+                                "ring-4 ring-amber-400/60 shadow-xl scale-105",
+                                animationPhase === "landing" && "scale-110",
+                                animationPhase === "landing" && i === 4 && "scale-125",
+                              )
+                              : "bg-white/10 border-white/20 backdrop-blur-sm",
+                          )}
+                        >
+                          {blinkingCell === i ? (
+                            <Sparkles
+                              className={cn(
+                                "w-5 h-5 md:w-6 md:h-6 text-amber-800 drop-shadow-lg",
+                                animationPhase === "fast" && "animate-ping",
+                                animationPhase === "landing" && i === 4 && "animate-pulse",
+                              )}
+                            />
+                          ) : (
+                            <div className="text-sm md:text-base text-white/40 font-medium">?</div>
+                          )}
+                        </div>
+                      ))
                       : showResults && currentResults.length > 0
                         ? currentResults.slice(0, 9).map((item, i) => {
-                            const isNewest = i === 0 && !showBlindBoxModal
-                            return (
-                              <div
-                                key={`${item.id}-${item.name}-${i}`}
-                                className={cn(
-                                  "rounded-2xl border-2 p-2 flex flex-col items-center justify-center text-center transition-all duration-500 shadow-lg",
-                                  COLLECTION_COLORS[item.collection],
-                                  VERSION_STYLES[item.version],
-                                  isNewest
-                                    ? "ring-4 ring-amber-400/60 scale-105 shadow-xl z-10 border-amber-300"
-                                    : "opacity-60 scale-90",
-                                  item.version === "hidden" && isNewest && "shadow-purple-500/30",
-                                  item.collection === "space" && isNewest && "animate-pulse shadow-amber-500/40",
-                                )}
-                              >
-                                <div className="text-xl md:text-2xl mb-1 drop-shadow-sm">{item.emoji}</div>
-                                {isNewest && (
-                                  <div className="text-[8px] md:text-[9px] font-bold leading-none mt-1 opacity-80">
-                                    {item.collection.charAt(0).toUpperCase()}
-                                  </div>
-                                )}
-                              </div>
-                            )
-                          })
-                        : Array.from({ length: 9 }).map((_, i) => (
+                          const isNewest = i === 0 && !showBlindBoxModal
+                          return (
                             <div
-                              key={i}
-                              className="rounded-2xl flex items-center justify-center bg-white/10 border-2 border-white/20 backdrop-blur-sm shadow-lg"
+                              key={`${item.id}-${item.name}-${i}`}
+                              className={cn(
+                                "rounded-2xl border-2 p-2 flex flex-col items-center justify-center text-center transition-all duration-500 shadow-lg",
+                                COLLECTION_COLORS[item.collection],
+                                VERSION_STYLES[item.version],
+                                isNewest
+                                  ? "ring-4 ring-amber-400/60 scale-105 shadow-xl z-10 border-amber-300"
+                                  : "opacity-60 scale-90",
+                                item.version === "hidden" && isNewest && "shadow-purple-500/30",
+                                item.collection === "space" && isNewest && "animate-pulse shadow-amber-500/40",
+                              )}
                             >
-                              <div className="text-sm md:text-base text-white/40 font-medium">?</div>
+                              <div className="text-xl md:text-2xl mb-1 drop-shadow-sm">{item.emoji}</div>
+                              {isNewest && (
+                                <div className="text-[8px] md:text-[9px] font-bold leading-none mt-1 opacity-80">
+                                  {item.collection.charAt(0).toUpperCase()}
+                                </div>
+                              )}
                             </div>
-                          ))}
+                          )
+                        })
+                        : Array.from({ length: 9 }).map((_, i) => (
+                          <div
+                            key={i}
+                            className="rounded-2xl flex items-center justify-center bg-white/10 border-2 border-white/20 backdrop-blur-sm shadow-lg"
+                          >
+                            <div className="text-sm md:text-base text-white/40 font-medium">?</div>
+                          </div>
+                        ))}
                   </div>
                 </div>
               </div>
@@ -1394,7 +1409,7 @@ function GachaMachineContent() {
                         currentTheme.leverHandleBorder,
                         leverPulled ? "rotate-90 scale-95" : "rotate-0 scale-100",
                         !(coins < 1 || isSpinning || showBlindBoxModal) &&
-                          "hover:scale-105 hover:shadow-2xl active:scale-95",
+                        "hover:scale-105 hover:shadow-2xl active:scale-95",
                       )}
                       style={{ width: "72px", height: "72px" }}
                       aria-label="Turn Gacha Knob"
@@ -1484,14 +1499,14 @@ function GachaMachineContent() {
                           ? "border-slate-600/50 hover:bg-slate-700/30 text-slate-300 backdrop-blur-sm"
                           : "border-slate-300/50 hover:bg-slate-100/50 text-slate-700 backdrop-blur-sm",
                       currentTheme.id === theme.id &&
-                        theme.id === "classicRed" &&
-                        "bg-gradient-to-br from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 ring-red-400 text-white",
+                      theme.id === "classicRed" &&
+                      "bg-gradient-to-br from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 ring-red-400 text-white",
                       currentTheme.id === theme.id &&
-                        theme.id === "cyberpunkNeon" &&
-                        "bg-gradient-to-br from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 ring-pink-400 text-white",
+                      theme.id === "cyberpunkNeon" &&
+                      "bg-gradient-to-br from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 ring-pink-400 text-white",
                       currentTheme.id === theme.id &&
-                        theme.id === "pastelDream" &&
-                        "bg-gradient-to-br from-pink-300 to-purple-400 hover:from-pink-400 hover:to-purple-500 ring-purple-300 text-white",
+                      theme.id === "pastelDream" &&
+                      "bg-gradient-to-br from-pink-300 to-purple-400 hover:from-pink-400 hover:to-purple-500 ring-purple-300 text-white",
                     )}
                   >
                     <div
@@ -1766,7 +1781,7 @@ function GachaMachineContent() {
             setCurrentAchievement(null)
           }}
         />
-      </div>
+      </div >
     </>
   )
 }
