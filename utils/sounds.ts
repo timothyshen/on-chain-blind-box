@@ -1,3 +1,6 @@
+// Enhanced sound manager for the gacha machine with ambient sounds and rarity-specific music
+
+// Create audio instances for each sound
 const createAudio = (src: string): HTMLAudioElement => {
   const audio = new Audio(src)
   audio.preload = "auto"

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { CreditCard } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { soundManager } from "@/utils/sounds"
-import { StripeCheckout } from "./stripe-checkout"
 
 interface PremiumStoreButtonProps {
   theme: any
@@ -36,8 +35,6 @@ export function PremiumStoreButton({ theme }: PremiumStoreButtonProps) {
           <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
         </div>
       </Button>
-
-      {showStore && <StripeCheckout onClose={() => setShowStore(false)} theme={theme} />}
     </>
   )
 }
