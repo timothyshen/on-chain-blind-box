@@ -6,11 +6,8 @@ import { Theme } from "@/types/theme"
 import { usePrivy } from "@privy-io/react-auth"
 import { SoundToggle } from "@/components/sound-toggle"
 
-interface MachineHeaderProps {
-    theme: Theme
-}
 
-export const MachineHeader = ({ theme }: MachineHeaderProps) => {
+export const MachineHeader = () => {
     const { login, logout, user } = usePrivy()
 
     return (
@@ -26,7 +23,7 @@ export const MachineHeader = ({ theme }: MachineHeaderProps) => {
                     <h1
                         className={cn(
                             "text-3xl md:text-5xl font-bold tracking-tight",
-                            theme.isDark ? "text-white" : "text-slate-800",
+                            "text-slate-800",
                             "drop-shadow-lg",
                         )}
                     >
@@ -34,8 +31,8 @@ export const MachineHeader = ({ theme }: MachineHeaderProps) => {
                     </h1>
                     <p
                         className={cn(
-                            "text-sm md:text-base font-medium tracking-wide",
-                            theme.isDark ? "text-slate-300" : "text-slate-600",
+                            "text-sm md:text-base font-medium tracking-wide hidden sm:block",
+                            "text-slate-600",
                         )}
                     >
                         Premium Collection Experience
@@ -45,46 +42,13 @@ export const MachineHeader = ({ theme }: MachineHeaderProps) => {
 
             <div className="flex gap-3 md:gap-4 items-center">
                 <SoundToggle />
-                <Link href="/inventory">
-                    <Button
-                        variant="outline"
-                        size="lg"
-                        className={cn(
-                            "text-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl",
-                            theme.isDark
-                                ? "bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-                                : "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
-                        )}
-                    >
-                        <Package className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                        Collection
-                    </Button>
-                </Link>
-
-                <Link href="/market">
-                    <Button
-                        variant="outline"
-                        size="lg"
-                        className={cn(
-                            "text-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl",
-                            theme.isDark
-                                ? "bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-                                : "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
-                        )}
-                    >
-                        <Store className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                        Market
-                    </Button>
-                </Link>
 
                 <Button
                     variant="outline"
                     size="lg"
                     className={cn(
                         "text-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl",
-                        theme.isDark
-                            ? "bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-                            : "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
+                        "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
                     )}
                     onClick={user ? logout : login}
                 >

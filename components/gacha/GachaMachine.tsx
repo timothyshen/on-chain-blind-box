@@ -79,7 +79,6 @@ export const GachaMachine = () => {
                 onOpenInventory={() => { }}
                 onOpenMarket={() => { }}
             />
-            <CoinBalance theme={currentTheme} coins={coins} onAddCoin={addCoin} />
             <BlindBoxModal
                 isOpen={showBlindBoxModal}
                 onClose={closeModalAndReset}

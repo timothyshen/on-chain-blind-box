@@ -7,11 +7,10 @@ import { soundManager } from "@/utils/sounds"
 import { cn } from "@/lib/utils"
 
 interface SoundToggleProps {
-  isDark?: boolean
   className?: string
 }
 
-export function SoundToggle({ isDark = true, className }: SoundToggleProps) {
+export function SoundToggle({ className }: SoundToggleProps) {
   const [isMuted, setIsMuted] = useState(true)
 
   // Initialize on mount
@@ -39,9 +38,7 @@ export function SoundToggle({ isDark = true, className }: SoundToggleProps) {
       onClick={toggleMute}
       className={cn(
         "w-8 h-8 rounded-full",
-        isDark
-          ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
-          : "bg-black/5 border-black/10 text-black/70 hover:bg-black/10",
+        "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
         className,
       )}
       title={isMuted ? "Unmute sounds" : "Mute sounds"}

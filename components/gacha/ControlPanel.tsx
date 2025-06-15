@@ -19,11 +19,11 @@ export const ControlPanel = ({
     onOpenMarket,
 }: ControlPanelProps) => {
     return (
-        <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-center items-center gap-4 z-50">
+        <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-center items-center gap-2 sm:gap-4 z-50 w-full max-w-full overflow-x-auto sm:w-max sm:left-1/2 sm:transform sm:-translate-x-1/2">
             <div
                 className={cn(
                     "flex items-center gap-4 px-6 py-3 rounded-2xl border-2 shadow-lg backdrop-blur-md",
-                    theme.controlPanelBg,
+                    "bg-white/80 backdrop-blur-md",
                     theme.controlPanelBorder,
                 )}
             >
@@ -33,8 +33,8 @@ export const ControlPanel = ({
                     size="sm"
                     onClick={onAddCoin}
                     className={cn(
-                        "flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300",
-                        theme.controlPanelButtonBg,
+                        "flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-xl transition-all duration-300",
+                        "bg-white/80 backdrop-blur-md flex-1 sm:flex-none",
                         "hover:scale-105 active:scale-95",
                     )}
                 >
@@ -49,7 +49,7 @@ export const ControlPanel = ({
                     onClick={onOpenInventory}
                     className={cn(
                         "flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300",
-                        theme.controlPanelButtonBg,
+                        "bg-white/80 backdrop-blur-md",
                         "hover:scale-105 active:scale-95",
                     )}
                 >
@@ -64,7 +64,7 @@ export const ControlPanel = ({
                     onClick={onOpenMarket}
                     className={cn(
                         "flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300",
-                        theme.controlPanelButtonBg,
+                        "bg-white/80 backdrop-blur-md",
                         "hover:scale-105 active:scale-95",
                     )}
                 >
