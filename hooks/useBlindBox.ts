@@ -1,24 +1,29 @@
 import {
   blindBoxABI,
   readClient,
-  getWalletClient,
+  useWalletClient,
   blindBoxAddress,
 } from "@/lib/contract";
 import { parseEther } from "viem";
 
-const walletClient = getWalletClient();
-
 export const useBlindBox = () => {
+  const { getWalletClient } = useWalletClient();
+  const walletClient = getWalletClient();
+
   // purchaseBoxes(uint256 amount) payable - Buy blind boxes
   // openBox(uint256 amount) - Open boxes to reveal NFTs
 
   const purchaseBoxes = async (amount: number) => {
-    const tx = await walletClient.writeContract({
+    const request = await readClient.simulateContract({
       address: blindBoxAddress,
       abi: blindBoxABI,
       functionName: "purchaseBoxes",
-      value: amount * parseEther("0.01"),
+      value: BigInt(amount) * parseEther("0.01"),
       args: [amount],
+    });
+
+    const tx = await walletClient.writeContract({
+      request,
     });
 
     return tx;
@@ -37,8 +42,6 @@ export const useBlindBox = () => {
 
   return { purchaseBoxes, openBoxes };
 };
-
-
 
 // import {
 //   http,

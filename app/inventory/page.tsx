@@ -103,6 +103,10 @@ export default function Inventory() {
   const getUniqueItems = () => {
     const itemMap = new Map<string, GachaItem & { count: number }>()
 
+    if (itemMap.size === 0) {
+      return []
+    }
+
     inventory.forEach((item) => {
       // Create a unique key that includes both id and version
       const key = `${item.id}-${item.version}`
@@ -113,6 +117,8 @@ export default function Inventory() {
         itemMap.set(key, { ...item, count: 1 })
       }
     })
+
+
 
     return Array.from(itemMap.values())
   }
@@ -886,7 +892,7 @@ export default function Inventory() {
                     >
                       {
                         collectionCompletionPercentage[
-                          selectedCollectionDetail as keyof typeof collectionCompletionPercentage
+                        selectedCollectionDetail as keyof typeof collectionCompletionPercentage
                         ]
                       }
                       % Complete
@@ -966,20 +972,20 @@ export default function Inventory() {
                 {collectionCompletionPercentage[
                   selectedCollectionDetail as keyof typeof collectionCompletionPercentage
                 ] === 100 && (
-                  <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
-                    <CardContent className="p-4 flex items-center gap-4">
-                      <div className="bg-green-100 p-3 rounded-full">
-                        <Award className="w-6 h-6 text-green-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-green-800">Collection Complete!</h4>
-                        <p className="text-sm text-green-700">
-                          You've collected all items in this collection. Special rewards have been unlocked!
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
+                    <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+                      <CardContent className="p-4 flex items-center gap-4">
+                        <div className="bg-green-100 p-3 rounded-full">
+                          <Award className="w-6 h-6 text-green-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-green-800">Collection Complete!</h4>
+                          <p className="text-sm text-green-700">
+                            You've collected all items in this collection. Special rewards have been unlocked!
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
               </CardContent>
 
               <CardFooter className="flex justify-end gap-3 border-t p-4">

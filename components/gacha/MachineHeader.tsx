@@ -1,0 +1,97 @@
+import { Crown, Package, Store, User } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { Theme } from "@/types/theme"
+import { usePrivy } from "@privy-io/react-auth"
+import { SoundToggle } from "@/components/sound-toggle"
+
+interface MachineHeaderProps {
+    theme: Theme
+}
+
+export const MachineHeader = ({ theme }: MachineHeaderProps) => {
+    const { login, logout, user } = usePrivy()
+
+    return (
+        <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center w-full max-w-7xl mx-auto">
+            <div className="flex items-center gap-3">
+                <div className="relative">
+                    <Crown className="w-8 h-8 md:w-10 md:h-10 text-amber-400 drop-shadow-lg" />
+                    <div className="absolute inset-0 w-8 h-8 md:w-10 md:h-10 text-amber-400 animate-ping opacity-20">
+                        <Crown className="w-full h-full" />
+                    </div>
+                </div>
+                <div>
+                    <h1
+                        className={cn(
+                            "text-3xl md:text-5xl font-bold tracking-tight",
+                            theme.isDark ? "text-white" : "text-slate-800",
+                            "drop-shadow-lg",
+                        )}
+                    >
+                        Gacha Zone
+                    </h1>
+                    <p
+                        className={cn(
+                            "text-sm md:text-base font-medium tracking-wide",
+                            theme.isDark ? "text-slate-300" : "text-slate-600",
+                        )}
+                    >
+                        Premium Collection Experience
+                    </p>
+                </div>
+            </div>
+
+            <div className="flex gap-3 md:gap-4 items-center">
+                <SoundToggle />
+                <Link href="/inventory">
+                    <Button
+                        variant="outline"
+                        size="lg"
+                        className={cn(
+                            "text-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl",
+                            theme.isDark
+                                ? "bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+                                : "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
+                        )}
+                    >
+                        <Package className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                        Collection
+                    </Button>
+                </Link>
+
+                <Link href="/market">
+                    <Button
+                        variant="outline"
+                        size="lg"
+                        className={cn(
+                            "text-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl",
+                            theme.isDark
+                                ? "bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+                                : "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
+                        )}
+                    >
+                        <Store className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                        Market
+                    </Button>
+                </Link>
+
+                <Button
+                    variant="outline"
+                    size="lg"
+                    className={cn(
+                        "text-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl",
+                        theme.isDark
+                            ? "bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+                            : "bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm",
+                    )}
+                    onClick={user ? logout : login}
+                >
+                    <User className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                    {user ? "Logout" : "Login"}
+                </Button>
+            </div>
+        </div>
+    )
+} 
