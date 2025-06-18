@@ -142,7 +142,6 @@ export const MachineBody = ({
                                                     item.collection === "space" && isNewest && "animate-pulse shadow-amber-500/40",
                                                 )}
                                             >
-                                                <div className="text-xl md:text-2xl mb-1 drop-shadow-sm">{item.emoji}</div>
                                                 {isNewest && (
                                                     <div className="text-[8px] md:text-[9px] font-bold leading-none mt-1 opacity-80">
                                                         {item.collection.charAt(0).toUpperCase()}
@@ -156,7 +155,6 @@ export const MachineBody = ({
                                             key={i}
                                             className="rounded-2xl flex items-center justify-center bg-white/10 border-2 border-white/20 backdrop-blur-sm shadow-lg"
                                         >
-                                            <div className="text-sm md:text-base text-white/40 font-medium">?</div>
                                         </div>
                                     ))}
                         </div>

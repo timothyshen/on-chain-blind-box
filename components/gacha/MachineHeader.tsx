@@ -8,6 +8,10 @@ import { SoundToggle } from "@/components/sound-toggle"
 export const MachineHeader = () => {
     const { login, logout, user } = usePrivy()
 
+    const sliceAddress = (address: string) => {
+        return `${address.slice(0, 6)}...${address.slice(-4)}`
+    }
+
     return (
         <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center w-full max-w-7xl mx-auto">
             <div className="flex items-center gap-3">
@@ -40,8 +44,8 @@ export const MachineHeader = () => {
 
             <div className="flex gap-3 md:gap-4 items-center">
                 <SoundToggle />
-                <div>
-                    {user?.wallet?.address}
+                <div className="px-3 py-2 border-1 border-slate-200 rounded-md text-sm bg-white/80 backdrop-blur-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl">
+                    {sliceAddress(user?.wallet?.address || "")}
                 </div>
                 <Button
                     variant="outline"

@@ -223,6 +223,7 @@ export const useGachaMachine = () => {
 
     const result = getRandomItem();
     console.log("result", result);
+    console.log("inventory", inventory);
     const existingItem = inventory.find(
       (item) => item.id === result.id && item.version === result.version
     );

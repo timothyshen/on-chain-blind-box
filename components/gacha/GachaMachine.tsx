@@ -6,6 +6,7 @@ import { MachineBody } from "./MachineBody"
 import { ControlPanel } from "./ControlPanel"
 import { BlindBoxModal } from "./BlindBoxModal"
 import { AnimationEffects } from "./AnimationEffects"
+import { useRouter } from "next/navigation"
 
 export const GachaMachine = () => {
     const {
@@ -27,6 +28,8 @@ export const GachaMachine = () => {
     } = useGachaMachine()
 
     const { addToInventory } = useInventory()
+
+    const router = useRouter()
 
 
     const handlePullGacha = () => {
@@ -57,8 +60,8 @@ export const GachaMachine = () => {
             <ControlPanel
                 coins={coins}
                 onAddCoin={addCoin}
-                onOpenInventory={() => { }}
-                onOpenMarket={() => { }}
+                onOpenInventory={() => router.push("/inventory")}
+                onOpenMarket={() => router.push("/market")}
             />
             <BlindBoxModal
                 isOpen={showBlindBoxModal}
@@ -69,8 +72,6 @@ export const GachaMachine = () => {
             />
             <AnimationEffects
                 showCelebration={showCelebration}
-                showItemEntrance={showItemEntrance}
-                currentItem={currentBlindBox}
             />
         </div>
     )

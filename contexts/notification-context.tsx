@@ -6,7 +6,7 @@ import { soundManager } from "@/utils/sounds"
 
 export interface Notification {
   id: string
-  type: "success" | "warning" | "info" | "error" | "achievement" | "pity" | "collection" | "legendary"
+  type: "success" | "warning" | "info" | "error" | "collection"
   title: string
   message?: string
   duration?: number
@@ -49,10 +49,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         warning: "buttonClick",
         info: "buttonClick",
         error: "buttonClick",
-        achievement: "celebration",
-        pity: "sparkle",
         collection: "sparkle",
-        legendary: "celebration",
       }
 
       soundManager.play(soundMap[newNotification.type] as any, { volume: 0.6 })

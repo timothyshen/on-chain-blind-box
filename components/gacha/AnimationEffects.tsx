@@ -4,14 +4,10 @@ import { COLLECTION_COLORS, VERSION_STYLES } from "@/types/gacha"
 
 interface AnimationEffectsProps {
     showCelebration: boolean
-    showItemEntrance: boolean
-    currentItem: GachaItem | null
 }
 
 export const AnimationEffects = ({
     showCelebration,
-    showItemEntrance,
-    currentItem,
 }: AnimationEffectsProps) => {
     return (
         <>
@@ -34,22 +30,6 @@ export const AnimationEffects = ({
                 </div>
             )}
 
-            {/* Item Entrance Effect */}
-            {showItemEntrance && currentItem && (
-                <div className="fixed inset-0 pointer-events-none z-50">
-                    <div
-                        className={cn(
-                            "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-xl border-2 p-4 flex flex-col items-center justify-center text-center animate-item-entrance",
-                            COLLECTION_COLORS[currentItem.collection],
-                            VERSION_STYLES[currentItem.version],
-                        )}
-                    >
-                        <div className="text-4xl mb-2 drop-shadow-lg">{currentItem.emoji}</div>
-                        <div className="text-sm font-medium">{currentItem.name}</div>
-                        <div className="text-xs opacity-80 mt-1">{currentItem.collection}</div>
-                    </div>
-                </div>
-            )}
         </>
     )
 } 
