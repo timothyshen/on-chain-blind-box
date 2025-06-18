@@ -8,6 +8,7 @@ import {
 import { useSound } from "./useSound";
 import { useInventory } from "./useInventory";
 import { useBlindBox } from "./useBlindBox";
+import { useNotifications } from "@/contexts/notification-context";
 
 export const useGachaMachine = () => {
   const {
@@ -25,6 +26,7 @@ export const useGachaMachine = () => {
     removeFromUnrevealed,
   } = useInventory();
   const { purchaseBoxes } = useBlindBox();
+  const { addNotification } = useNotifications();
   const [coins, setCoins] = useState(10);
   const [isSpinning, setIsSpinning] = useState(false);
   const [leverPulled, setLeverPulled] = useState(false);
@@ -131,6 +133,14 @@ export const useGachaMachine = () => {
     if (animationTimeoutId) clearTimeout(animationTimeoutId);
 
     startBlinkingAnimation();
+
+    addNotification({
+      type: "success",
+      title: "Starting Gacha!",
+      message: `Pulling a box...`,
+      icon: "🎰",
+      duration: 4000,
+    });
   };
 
   const startBlinkingAnimation = () => {
@@ -212,6 +222,7 @@ export const useGachaMachine = () => {
     setBlinkingCell(null);
 
     const result = getRandomItem();
+    console.log("result", result);
     const existingItem = inventory.find(
       (item) => item.id === result.id && item.version === result.version
     );
@@ -278,13 +289,13 @@ export const useGachaMachine = () => {
     setShowCoinAnimation(true);
     setCoins((prev) => prev + 5);
 
-    // addNotification({
-    //   type: "success",
-    //   title: "Free Coins!",
-    //   message: "Added 5 coins to your balance",
-    //   icon: "🪙",
-    //   duration: 3000,
-    // });
+    addNotification({
+      type: "success",
+      title: "Free Coins!",
+      message: "Added 5 coins to your balance",
+      icon: "🪙",
+      duration: 3000,
+    });
   };
 
   return {

@@ -20,7 +20,8 @@ export function useWalletClient() {
   const getWalletClient = async () => {
     try {
       if (!wallets || wallets.length === 0) {
-        throw new Error("No wallet connected");
+        console.log("No wallet connected");
+        return null;
       }
 
       const wallet = wallets[0];

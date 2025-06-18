@@ -1,8 +1,6 @@
 import { Crown, Package, Store, User } from "lucide-react"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Theme } from "@/types/theme"
 import { usePrivy } from "@privy-io/react-auth"
 import { SoundToggle } from "@/components/sound-toggle"
 
@@ -42,7 +40,9 @@ export const MachineHeader = () => {
 
             <div className="flex gap-3 md:gap-4 items-center">
                 <SoundToggle />
-
+                <div>
+                    {user?.wallet?.address}
+                </div>
                 <Button
                     variant="outline"
                     size="lg"

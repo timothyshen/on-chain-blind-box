@@ -1,6 +1,5 @@
 "use client"
 import { useGachaMachine } from "@/hooks/useGachaMachine"
-import { useTheme } from "@/hooks/useTheme"
 import { useInventory } from "@/hooks/useInventory"
 import { MachineHeader } from "./MachineHeader"
 import { MachineBody } from "./MachineBody"

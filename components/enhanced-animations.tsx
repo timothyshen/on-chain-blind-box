@@ -231,10 +231,8 @@ export const CollectionParticles = ({
 
 // Machine idle animation component
 export const MachineIdleEffects = ({
-  theme,
   isActive,
 }: {
-  theme: any
   isActive: boolean
 }) => {
   const [pulsePhase, setPulsePhase] = useState(0)

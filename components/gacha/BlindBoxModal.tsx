@@ -1,3 +1,4 @@
+"use client"
 import { Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { GachaItem } from "@/types/gacha"
@@ -11,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Share } from "lucide-react"
 import { soundManager } from "@/utils/sounds"
 import { shareToTwitter } from "@/utils/twitter-share"
+import { useNotifications } from "@/contexts/notification-context"
 
 interface BlindBoxModalProps {
     isOpen: boolean
@@ -27,19 +29,20 @@ export const BlindBoxModal = ({
     onReveal,
     isRevealed,
 }: BlindBoxModalProps) => {
+    const { addNotification } = useNotifications();
     const handleShare = () => {
         if (item) {
             // Play button click sound
             soundManager.play("buttonClick")
             shareToTwitter(item, false)
 
-            // addNotification({
-            //     type: "info",
-            //     title: "Shared to Twitter!",
-            //     message: "Show off your amazing pull!",
-            //     icon: "🐦",
-            //     duration: 3000,
-            // })
+            addNotification({
+                type: "info",
+                title: "Shared to Twitter!",
+                message: "Show off your amazing pull!",
+                icon: "🐦",
+                duration: 3000,
+            })
         }
     }
     return (

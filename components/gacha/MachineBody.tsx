@@ -187,35 +187,53 @@ export const MachineBody = ({
                                 onClick={onPullGacha}
                                 // disabled={coins < 1 || isSpinning || showBlindBoxModal}
                                 className={cn(
-                                    "w-18 h-18 md:w-22 md:h-22 rounded-full border-4 shadow-xl transition-all duration-500 ease-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed relative group",
-                                    "bg-gradient-to-b from-yellow-200 to-yellow-300",
-                                    "border-yellow-100",
+                                    "relative w-18 h-18 md:w-22 md:h-22 rounded-full transition-all duration-500 ease-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed group",
+                                    "bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500",
+                                    "shadow-lg hover:shadow-xl",
+                                    "border-2 border-amber-200/50",
                                     leverPulled ? "rotate-90 scale-95" : "rotate-0 scale-100",
                                     !(coins < 1 || isSpinning || showBlindBoxModal) &&
-                                    "hover:scale-105 hover:shadow-2xl active:scale-95",
+                                    "hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/25 active:scale-95",
                                 )}
                                 style={{ width: "72px", height: "72px" }}
                                 aria-label="Turn Gacha Knob"
                             >
-                                <div className="absolute inset-3 rounded-full border-2 border-black/20 bg-gradient-to-br from-white/20 to-transparent">
-                                    <div className="w-full h-full relative">
-                                        {Array.from({ length: 12 }).map((_, i) => (
-                                            <div
-                                                key={i}
-                                                className="absolute w-0.5 h-4 bg-black/30 rounded-full"
-                                                style={{
-                                                    left: "50%",
-                                                    top: "2px",
-                                                    transformOrigin: "50% 28px",
-                                                    transform: `translateX(-50%) rotate(${i * 30}deg)`,
-                                                }}
+                                {/* Outer ring with metallic effect */}
+                                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-slate-300 via-slate-400 to-slate-500 p-1">
+                                    <div className="w-full h-full rounded-full bg-gradient-to-br from-amber-200 via-yellow-300 to-amber-400 relative overflow-hidden">
+                                        {/* Inner highlight ring */}
+                                        <div className="absolute inset-2 rounded-full border border-white/40 bg-gradient-to-br from-white/30 to-transparent">
+                                            {/* Radial notches for grip */}
+                                            <div className="w-full h-full relative">
+                                                {Array.from({ length: 16 }).map((_, i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="absolute w-0.5 h-3 bg-gradient-to-b from-slate-600/60 to-slate-400/40 rounded-full"
+                                                        style={{
+                                                            left: "50%",
+                                                            top: "4px",
+                                                            transformOrigin: "50% 24px",
+                                                            transform: `translateX(-50%) rotate(${i * 22.5}deg)`,
+                                                        }}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Center piece with icon */}
+                                        <div className="absolute inset-4 rounded-full bg-gradient-to-br from-amber-100 via-yellow-200 to-amber-300 border border-amber-400/50 flex items-center justify-center shadow-inner">
+                                            <Zap
+                                                className="w-5 h-5 md:w-6 md:h-6 transition-all duration-500 drop-shadow-md text-amber-700 group-hover:scale-110 group-hover:text-amber-800"
                                             />
-                                        ))}
+                                        </div>
+
+                                        {/* Glossy highlight effect */}
+                                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 via-transparent to-transparent"></div>
                                     </div>
                                 </div>
-                                <Zap
-                                    className="w-7 h-7 md:w-8 md:h-8 transition-all duration-500 drop-shadow-lg text-orange-600 group-hover:scale-110"
-                                />
+
+                                {/* Glow effect on hover */}
+                                <div className="absolute inset-0 rounded-full bg-amber-400/0 group-hover:bg-amber-400/10 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]"></div>
                             </button>
                         </div>
 
@@ -237,7 +255,7 @@ export const MachineBody = ({
                 </div>
 
                 {/* Machine Idle Effects */}
-                <MachineIdleEffects theme={theme} isActive={isSpinning || showBlindBoxModal} />
+                <MachineIdleEffects isActive={isSpinning || showBlindBoxModal} />
             </div>
         </div>
     )
