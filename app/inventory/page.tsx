@@ -217,7 +217,7 @@ export default function Inventory() {
           </div>
 
           <div className="flex items-center gap-3 md:ml-auto">
-            <SoundToggle isDark={false} />
+            <SoundToggle />
           </div>
         </div>
 

@@ -1,17 +1,14 @@
 import { cn } from "@/lib/utils"
-import { Theme } from "@/types/theme"
 import { GachaItem } from "@/types/gacha"
 import { COLLECTION_COLORS, VERSION_STYLES } from "@/types/gacha"
 
 interface AnimationEffectsProps {
-    theme: Theme
     showCelebration: boolean
     showItemEntrance: boolean
     currentItem: GachaItem | null
 }
 
 export const AnimationEffects = ({
-    theme,
     showCelebration,
     showItemEntrance,
     currentItem,

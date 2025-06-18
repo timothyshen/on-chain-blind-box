@@ -1,12 +1,10 @@
-import { Sparkles, Zap } from "lucide-react"
+import { Coins, Sparkles, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Theme } from "@/types/theme"
 import { GachaItem } from "@/types/gacha"
 import { COLLECTION_COLORS, VERSION_STYLES } from "@/types/gacha"
 import { MachineIdleEffects } from "@/components/enhanced-animations"
 
 interface MachineBodyProps {
-    theme: Theme
     isSpinning: boolean
     showBlindBoxModal: boolean
     blinkingCell: number | null
@@ -19,7 +17,6 @@ interface MachineBodyProps {
 }
 
 export const MachineBody = ({
-    theme,
     isSpinning,
     showBlindBoxModal,
     blinkingCell,
@@ -36,8 +33,8 @@ export const MachineBody = ({
             <div
                 className={cn(
                     "w-[300px] h-[90px] md:w-[360px] md:h-[110px] rounded-b-3xl border-4 shadow-2xl transition-all duration-700",
-                    theme.machineBg,
-                    theme.machineBorder,
+                    "bg-gradient-to-b from-pink-200 via-purple-200 to-blue-200",
+                    "border-white/80",
                     "border-t-0 relative overflow-hidden",
                 )}
             >
@@ -45,9 +42,7 @@ export const MachineBody = ({
                 <div className="w-full h-full flex items-center justify-center relative z-10">
                     <div
                         className={cn(
-                            "text-xl md:text-2xl font-bold tracking-[0.2em] transition-all duration-700",
-                            theme.topBezelText,
-                            "drop-shadow-lg",
+                            "text-xl md:text-2xl font-bold tracking-[0.2em] transition-all duration-700 text-purple-700 drop-shadow-lg"
                         )}
                     >
                         PREMIUM GACHA
@@ -59,8 +54,8 @@ export const MachineBody = ({
             <div
                 className={cn(
                     "relative w-[360px] h-[480px] md:w-[420px] md:h-[560px] rounded-t-3xl border-4 shadow-2xl transition-all duration-700 overflow-hidden",
-                    theme.machineBg,
-                    theme.machineBorder,
+                    "bg-gradient-to-b from-pink-200 via-purple-200 to-blue-200",
+                    "border-white/80",
                     "border-b-0",
                 )}
             >
@@ -69,11 +64,8 @@ export const MachineBody = ({
                 {/* Display Window */}
                 <div className="relative w-full h-[65%] p-5 flex flex-col">
                     <div
-                        className={cn(
-                            "w-full h-full rounded-2xl border-4 shadow-inner overflow-hidden transition-all duration-700 relative",
-                            theme.displayWindowBg,
-                            "border-white/20",
-                        )}
+                        className=
+                        "w-full h-full rounded-2xl border-4 shadow-inner overflow-hidden transition-all duration-700 relative bg-white/40 backdrop-blur-sm border-white/20"
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent pointer-events-none"></div>
 
@@ -176,13 +168,11 @@ export const MachineBody = ({
                     {/* Coin Slot */}
                     <div className="flex justify-center mb-4">
                         <div
-                            className={cn(
-                                "w-32 h-10 md:w-36 md:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-700 shadow-inner",
-                                theme.coinSlotBg,
-                                "border-white/30 backdrop-blur-sm",
-                            )}
+                            className=
+                            "w-32 h-10 md:w-36 md:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-700 shadow-inner bg-white/50 backdrop-blur-sm border-white/30"
                         >
-                            <div className={cn("font-semibold text-xs md:text-sm tracking-wide", theme.coinSlotText)}>
+                            <div className="font-semibold text-xs md:text-sm tracking-wide text-purple-600">
+                                <Coins className="inline w-3 h-3 md:w-4 md:h-4 mr-2" />
                                 INSERT COIN
                             </div>
                         </div>
@@ -195,11 +185,11 @@ export const MachineBody = ({
                             <div className="text-xs md:text-sm text-black/60 mb-3 font-medium tracking-wide">TURN</div>
                             <button
                                 onClick={onPullGacha}
-                                disabled={coins < 1 || isSpinning || showBlindBoxModal}
+                                // disabled={coins < 1 || isSpinning || showBlindBoxModal}
                                 className={cn(
                                     "w-18 h-18 md:w-22 md:h-22 rounded-full border-4 shadow-xl transition-all duration-500 ease-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed relative group",
-                                    theme.leverHandleBg,
-                                    theme.leverHandleBorder,
+                                    "bg-gradient-to-b from-yellow-200 to-yellow-300",
+                                    "border-yellow-100",
                                     leverPulled ? "rotate-90 scale-95" : "rotate-0 scale-100",
                                     !(coins < 1 || isSpinning || showBlindBoxModal) &&
                                     "hover:scale-105 hover:shadow-2xl active:scale-95",
@@ -224,29 +214,22 @@ export const MachineBody = ({
                                     </div>
                                 </div>
                                 <Zap
-                                    className={cn(
-                                        "w-7 h-7 md:w-8 md:h-8 transition-all duration-500 drop-shadow-lg",
-                                        theme.leverHandleIconColor,
-                                        "group-hover:scale-110",
-                                    )}
+                                    className="w-7 h-7 md:w-8 md:h-8 transition-all duration-500 drop-shadow-lg text-orange-600 group-hover:scale-110"
                                 />
                             </button>
                         </div>
 
                         {/* Dispensing Chute */}
                         <div className="flex flex-col items-center">
-                            <div className="text-xs md:text-sm text-white/60 mb-3 font-medium tracking-wide">PRIZE</div>
+                            <div className="text-xs md:text-sm text-green-600 mb-3 font-medium tracking-wide">PRIZE</div>
                             <div
-                                className={cn(
-                                    "w-24 h-14 md:w-28 md:h-16 rounded-xl border-2 transition-all duration-700 shadow-inner flex items-center justify-center",
-                                    theme.coinSlotBg,
-                                    "border-white/30 backdrop-blur-sm",
-                                )}
+                                className={
+                                    "w-24 h-14 md:w-28 md:h-16 rounded-xl border-2 transition-all duration-700 shadow-inner flex items-center justify-center bg-white/50 backdrop-blur-sm border-white/30 backdrop-blur-sm"}
                             >
                                 {showBlindBoxModal ? (
                                     <div className="text-3xl md:text-4xl animate-bounce drop-shadow-lg">📦</div>
                                 ) : (
-                                    <div className="text-xs md:text-sm text-white/40 font-medium">EMPTY</div>
+                                    <div className="text-xs md:text-sm text-gray/40 font-medium">EMPTY</div>
                                 )}
                             </div>
                         </div>

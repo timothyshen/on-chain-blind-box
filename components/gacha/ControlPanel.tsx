@@ -1,10 +1,8 @@
 import { Gift, Package, Coins } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Theme } from "@/types/theme"
 import { Button } from "@/components/ui/button"
 
 interface ControlPanelProps {
-    theme: Theme
     coins: number
     onAddCoin: () => void
     onOpenInventory: () => void
@@ -12,7 +10,6 @@ interface ControlPanelProps {
 }
 
 export const ControlPanel = ({
-    theme,
     coins,
     onAddCoin,
     onOpenInventory,
@@ -21,11 +18,8 @@ export const ControlPanel = ({
     return (
         <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-center items-center gap-2 sm:gap-4 z-50 w-full max-w-full overflow-x-auto sm:w-max sm:left-1/2 sm:transform sm:-translate-x-1/2">
             <div
-                className={cn(
-                    "flex items-center gap-4 px-6 py-3 rounded-2xl border-2 shadow-lg backdrop-blur-md",
-                    "bg-white/80 backdrop-blur-md",
-                    theme.controlPanelBorder,
-                )}
+                className=
+                "flex items-center gap-4 px-6 py-3 rounded-2xl border-2 shadow-lg backdrop-blur-md bg-white/80 backdrop-blur-md border-purple-200/50"
             >
                 {/* Coin Balance */}
                 <Button

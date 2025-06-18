@@ -6,7 +6,6 @@ import {
   VERSION_CHANCES,
 } from "@/types/gacha";
 import { useSound } from "./useSound";
-import { useAchievements } from "./useAchievements";
 import { useInventory } from "./useInventory";
 import { useBlindBox } from "./useBlindBox";
 
@@ -18,9 +17,13 @@ export const useGachaMachine = () => {
     playCoinInsert,
     playButtonClick,
   } = useSound();
-  const { addNotification } = useAchievements();
-  const { inventory, addToInventory, unrevealedItems, addToUnrevealed } =
-    useInventory();
+  const {
+    inventory,
+    addToInventory,
+    unrevealedItems,
+    addToUnrevealed,
+    removeFromUnrevealed,
+  } = useInventory();
   const { purchaseBoxes } = useBlindBox();
   const [coins, setCoins] = useState(10);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -31,6 +34,7 @@ export const useGachaMachine = () => {
   const [currentBlindBox, setCurrentBlindBox] = useState<GachaItem | null>(
     null
   );
+
   const [isNewItem, setIsNewItem] = useState(false);
   const [isItemRevealed, setIsItemRevealed] = useState(false);
   const [blinkingCell, setBlinkingCell] = useState<number | null>(null);
@@ -253,6 +257,7 @@ export const useGachaMachine = () => {
     setShowBlindBoxModal(false);
     setCurrentBlindBox(null);
     setIsItemRevealed(false);
+    setIsSpinning(false);
   };
 
   const revealAllItems = () => {
@@ -262,16 +267,10 @@ export const useGachaMachine = () => {
     setCurrentResults((prev) =>
       [...unrevealedItems.reverse(), ...prev].slice(0, 9)
     );
-    setUnrevealedItems([]);
-    setShowResults(true);
-
-    addNotification({
-      type: "info",
-      title: "All Boxes Revealed!",
-      message: `Opened ${unrevealedItems.length} boxes at once`,
-      icon: "📦",
-      duration: 4000,
+    unrevealedItems.forEach((item) => {
+      removeFromUnrevealed(item);
     });
+    setShowResults(true);
   };
 
   const addCoin = () => {
@@ -279,13 +278,13 @@ export const useGachaMachine = () => {
     setShowCoinAnimation(true);
     setCoins((prev) => prev + 5);
 
-    addNotification({
-      type: "success",
-      title: "Free Coins!",
-      message: "Added 5 coins to your balance",
-      icon: "🪙",
-      duration: 3000,
-    });
+    // addNotification({
+    //   type: "success",
+    //   title: "Free Coins!",
+    //   message: "Added 5 coins to your balance",
+    //   icon: "🪙",
+    //   duration: 3000,
+    // });
   };
 
   return {

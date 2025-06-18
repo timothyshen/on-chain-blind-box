@@ -86,10 +86,10 @@ export const RarityParticles = ({
     <>
       <style jsx>{`
         ${Array.from({ length: config.count }, (_, i) => {
-          const finalY = -200 - Math.random() * 150
-          const finalX = (Math.random() - 0.5) * 800
-          const finalRotation = Math.random() * 720
-          return `
+        const finalY = -200 - Math.random() * 150
+        const finalX = (Math.random() - 0.5) * 800
+        const finalRotation = Math.random() * 720
+        return `
             @keyframes rarityFloat-${i} {
               0% {
                 opacity: 0;
@@ -109,7 +109,7 @@ export const RarityParticles = ({
               }
             }
           `
-        }).join("")}
+      }).join("")}
       `}</style>
       <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">{particles}</div>
     </>
@@ -199,10 +199,10 @@ export const CollectionParticles = ({
     <>
       <style jsx>{`
         ${Array.from({ length: config.count }, (_, i) => {
-          const finalY = -200 - Math.random() * 150
-          const finalX = (Math.random() - 0.5) * 800
-          const finalRotation = Math.random() * 720
-          return `
+        const finalY = -200 - Math.random() * 150
+        const finalX = (Math.random() - 0.5) * 800
+        const finalRotation = Math.random() * 720
+        return `
             @keyframes rarityFloat-${i} {
               0% {
                 opacity: 0;
@@ -222,7 +222,7 @@ export const CollectionParticles = ({
               }
             }
           `
-        }).join("")}
+      }).join("")}
       `}</style>
       <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">{particles}</div>
     </>
@@ -257,9 +257,7 @@ export const MachineIdleEffects = ({
       <div
         className={cn(
           "absolute inset-0 rounded-3xl opacity-20 transition-opacity duration-2000",
-          theme.id === "classicRed" && "bg-red-500/10",
-          theme.id === "cyberpunkNeon" && "bg-pink-500/10",
-          theme.id === "pastelDream" && "bg-purple-300/10",
+          "bg-purple-300/10",
           pulsePhase % 2 === 0 ? "opacity-20" : "opacity-10",
         )}
       />
