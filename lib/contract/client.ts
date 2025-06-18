@@ -6,8 +6,10 @@ import {
   custom,
   Hex,
 } from "viem";
+import "viem/window";
 import { storyAeneid } from "viem/chains";
 import { useWallets } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
 
 export const readClient = createPublicClient({
   chain: storyAeneid,
@@ -16,6 +18,8 @@ export const readClient = createPublicClient({
 
 export function useWalletClient() {
   const { wallets } = useWallets();
+  const { user } = usePrivy();
+  console.log("wallets", wallets);
 
   const getWalletClient = async () => {
     try {
@@ -23,16 +27,20 @@ export function useWalletClient() {
         console.log("No wallet connected");
         return null;
       }
-
-      const wallet = wallets[0];
+      const currentWallet = user?.wallet?.address;
+      const wallet = wallets.find((wallet) => wallet.address === currentWallet);
+      if (!wallet) {
+        console.log("No wallet found");
+        return null;
+      }
+      console.log("wallet", wallet);
       const provider = await wallet.getEthereumProvider();
 
       const walletClient = createWalletClient({
-        account: wallet.address as Hex,
         chain: storyAeneid,
         transport: custom(provider),
       });
-
+      console.log("walletClient", walletClient);
       return walletClient;
     } catch (error) {
       console.error("Error getting wallet client:", error);

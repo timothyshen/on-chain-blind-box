@@ -4,116 +4,175 @@ import {
   useWalletClient,
   blindBoxAddress,
 } from "@/lib/contract";
-import { parseEther } from "viem";
+import { useState } from "react";
+import { parseEther, formatEther } from "viem";
+import { useNotifications } from "@/contexts/notification-context";
 
 export const useBlindBox = () => {
   const { getWalletClient } = useWalletClient();
-  const walletClient = getWalletClient();
+  const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
+  const { addNotification } = useNotifications();
+
+  // Get contract information (price, max per tx, etc.)
+  const getContractInfo = async () => {
+    try {
+      const result = await readClient.readContract({
+        address: blindBoxAddress,
+        abi: blindBoxABI,
+        functionName: "getContractInfo",
+      });
+
+      const [price, maxPerTx, totalSupply, currentSupply, remainingBoxes] =
+        result as [bigint, bigint, bigint, bigint, bigint];
+
+      return {
+        price: formatEther(price),
+        maxPerTx: Number(maxPerTx),
+        totalSupply: Number(totalSupply),
+        currentSupply: Number(currentSupply),
+        remainingBoxes: Number(remainingBoxes),
+      };
+    } catch (error) {
+      console.error("Error getting contract info:", error);
+      throw error;
+    }
+  };
+
+  // Get user's blind box balance
+  const getUserBoxBalance = async (userAddress: string) => {
+    try {
+      const balance = await readClient.readContract({
+        address: blindBoxAddress,
+        abi: blindBoxABI,
+        functionName: "getUserBoxBalance",
+        args: [userAddress],
+      });
+
+      return Number(balance);
+    } catch (error) {
+      console.error("Error getting user balance:", error);
+      throw error;
+    }
+  };
+
+  // Check user's ETH balance
+  const checkUserBalance = async (
+    userAddress: string,
+    requiredAmount: bigint
+  ) => {
+    try {
+      const balance = await readClient.getBalance({
+        address: userAddress as `0x${string}`,
+      });
+
+      return {
+        hasEnough: balance >= requiredAmount,
+        balance: formatEther(balance),
+        required: formatEther(requiredAmount),
+      };
+    } catch (error) {
+      console.error("Error checking user balance:", error);
+      throw error;
+    }
+  };
 
   // purchaseBoxes(uint256 amount) payable - Buy blind boxes
-  // openBox(uint256 amount) - Open boxes to reveal NFTs
-
   const purchaseBoxes = async (amount: number) => {
-    const request = await readClient.simulateContract({
-      address: blindBoxAddress,
-      abi: blindBoxABI,
-      functionName: "purchaseBoxes",
-      value: BigInt(amount) * parseEther("0.01"),
-      args: [amount],
-    });
+    try {
+      setIsPurchaseLoading(true);
+      addNotification({
+        title: "Purchasing boxes...",
+        message: `Purchasing ${amount} boxes...`,
+        type: "info",
+      });
+      const walletClient = await getWalletClient();
+      if (!walletClient) {
+        throw new Error("No wallet connected");
+      }
 
-    const tx = await walletClient.writeContract({
-      request,
-    });
+      // Get the account address
+      const [account] = await walletClient.getAddresses();
+      console.log("account", account);
+      // Calculate total cost
+      const totalCost = parseEther("0.01") * BigInt(amount);
 
-    return tx;
+      // First simulate the contract call to ensure it will succeed
+      const { request } = await readClient.simulateContract({
+        address: blindBoxAddress,
+        abi: blindBoxABI,
+        functionName: "purchaseBoxes",
+        value: totalCost,
+        args: [BigInt(amount)],
+        account,
+      });
+
+      // Then execute the actual transaction
+      const txHash = await walletClient.writeContract(request);
+      setIsPurchaseLoading(false);
+      const tx = await readClient.waitForTransactionReceipt({
+        hash: txHash,
+      });
+      const txLink = `https://aeneid.storyscan.io/tx/${txHash}`;
+
+      addNotification({
+        title: "Boxes purchased!",
+        message: `You have purchased ${amount} boxes!`,
+        type: "success",
+        action: {
+          label: "View on StoryScan",
+          onClick: () => {
+            window.open(txLink, "_blank");
+          },
+        },
+        duration: 10000,
+      });
+      return txHash;
+    } catch (error) {
+      console.error("Error purchasing boxes:", error);
+      throw error;
+    }
   };
 
+  // openBoxes(uint256 amount) - Open boxes to reveal NFTs
   const openBoxes = async (amount: number) => {
-    const tx = await walletClient.writeContract({
-      address: blindBoxAddress,
-      abi: blindBoxABI,
-      functionName: "openBoxes",
-      args: [amount],
-    });
+    try {
+      const walletClient = await getWalletClient();
+      if (!walletClient) {
+        throw new Error("No wallet connected");
+      }
 
-    return tx;
+      // Get the account address
+      const [account] = await walletClient.getAddresses();
+
+      // Check if user has enough boxes
+      const boxBalance = await getUserBoxBalance(account);
+      if (boxBalance < amount) {
+        throw new Error(
+          `You only have ${boxBalance} boxes but trying to open ${amount}`
+        );
+      }
+
+      // Execute the transaction directly
+      const txHash = await walletClient.writeContract({
+        address: blindBoxAddress,
+        abi: blindBoxABI,
+        functionName: "openBox",
+        args: [BigInt(amount)],
+        account,
+      });
+
+      return txHash;
+    } catch (error) {
+      console.error("Error opening boxes:", error);
+      throw error;
+    }
   };
 
-  return { purchaseBoxes, openBoxes };
+  return {
+    purchaseBoxes,
+    openBoxes,
+    getContractInfo,
+    getUserBoxBalance,
+    checkUserBalance,
+  };
 };
-
-// import {
-//   http,
-//   type Address,
-//   type Hash,
-//   type TransactionReceipt,
-//   createPublicClient,
-//   createWalletClient,
-//   custom,
-//   stringify,
-// } from "viem";
-// import { goerli } from "viem/chains";
-// import "viem/window";
-// import { wagmiContract } from "./contract";
-
-// const publicClient = createPublicClient({
-//   chain: goerli,
-//   transport: http(),
-// });
-// const walletClient = createWalletClient({
-//   chain: goerli,
-//   transport: custom(window.ethereum!),
-// });
-
-// function Example() {
-//   const [account, setAccount] = useState<Address>();
-//   const [hash, setHash] = useState<Hash>();
-//   const [receipt, setReceipt] = useState<TransactionReceipt>();
-
-//   const connect = async () => {
-//     const [address] = await walletClient.requestAddresses();
-//     setAccount(address);
-//   };
-
-//   const mint = async () => {
-//     if (!account) return;
-//     const { request } = await publicClient.simulateContract({
-//       ...wagmiContract,
-//       functionName: "mint",
-//       account,
-//     });
-//     const hash = await walletClient.writeContract(request);
-//     setHash(hash);
-//   };
-
-//   useEffect(() => {
-//     (async () => {
-//       if (hash) {
-//         const receipt = await publicClient.waitForTransactionReceipt({ hash });
-//         setReceipt(receipt);
-//       }
-//     })();
-//   }, [hash]);
-
-//   if (account)
-//     return (
-//       <>
-//         <div>Connected: {account}</div>
-//         <button onClick={mint}>Mint</button>
-//         {receipt && (
-//           <div>
-//             Receipt:{" "}
-//             <pre>
-//               <code>{stringify(receipt, null, 2)}</code>
-//             </pre>
-//           </div>
-//         )}
-//       </>
-//     );
-//   return <button onClick={connect}>Connect Wallet</button>;
-// }
-
-// ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-//   <Example />
-// );

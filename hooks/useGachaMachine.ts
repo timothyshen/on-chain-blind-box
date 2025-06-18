@@ -126,7 +126,6 @@ export const useGachaMachine = () => {
 
     await new Promise((resolve) => setTimeout(resolve, 500));
     setLeverPulled(false);
-    // purchaseBoxes(1);
 
     if (animationIntervalRef.current)
       clearInterval(animationIntervalRef.current);
@@ -217,40 +216,49 @@ export const useGachaMachine = () => {
     scheduleNextBlink();
   };
 
-  const finishAnimation = () => {
+  const finishAnimation = async () => {
     setAnimationPhase("none");
     setBlinkingCell(null);
 
-    const result = getRandomItem();
-    console.log("result", result);
-    console.log("inventory", inventory);
-    const existingItem = inventory.find(
-      (item) => item.id === result.id && item.version === result.version
-    );
-    setIsNewItem(!existingItem);
-    addToInventory(result);
-    addToUnrevealed(result);
-    setCurrentBlindBox(result);
-
-    setCollectionParticleType(result.collection);
-    setShowRarityParticles(true);
-
-    setEntranceItem(result);
-    setShowItemEntrance(true);
-
-    if (result.collection === "space") {
-      setShowCelebration(true);
-      setShowScreenShake(true);
-
-      setTimeout(() => setShowCelebration(false), 4000);
-      setTimeout(() => setShowScreenShake(false), 2000);
-    }
-
-    setTimeout(() => {
-      setShowBlindBoxModal(true);
+    try {
+      const tx = await purchaseBoxes(1);
+      console.log("tx", tx);
+    } catch (error) {
+      console.error("Error purchasing boxes:", error);
+    } finally {
       setIsSpinning(false);
-      setShowRarityParticles(false);
-    }, 2500);
+
+      const result = getRandomItem();
+      console.log("result", result);
+      console.log("inventory", inventory);
+      const existingItem = inventory.find(
+        (item) => item.id === result.id && item.version === result.version
+      );
+      setIsNewItem(!existingItem);
+      addToInventory(result);
+      addToUnrevealed(result);
+      setCurrentBlindBox(result);
+
+      setCollectionParticleType(result.collection);
+      setShowRarityParticles(true);
+
+      setEntranceItem(result);
+      setShowItemEntrance(true);
+
+      if (result.collection === "space") {
+        setShowCelebration(true);
+        setShowScreenShake(true);
+
+        setTimeout(() => setShowCelebration(false), 4000);
+        setTimeout(() => setShowScreenShake(false), 2000);
+      }
+
+      setTimeout(() => {
+        setShowBlindBoxModal(true);
+        setIsSpinning(false);
+        setShowRarityParticles(false);
+      }, 2500);
+    }
   };
 
   const revealBlindBox = () => {

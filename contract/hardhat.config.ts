@@ -28,6 +28,21 @@ const config: HardhatUserConfig = {
       accounts: [privateKey],
     },
   },
+  etherscan: {
+    apiKey: {
+      storyAeneid: "abc",
+    },
+    customChains: [
+      {
+        network: "storyAeneid",
+        chainId: 1315,
+        urls: {
+          apiURL: "https://aeneid.storyscan.io/api",
+          browserURL: "https://aeneid.storyscan.io",
+        },
+      },
+    ],
+  },
 };
 
 export default config;
