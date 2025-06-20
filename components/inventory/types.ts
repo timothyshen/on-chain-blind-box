@@ -1,11 +1,6 @@
-export interface GachaItem {
-  id: string;
-  name: string;
-  collection: "toys" | "magic" | "fantasy" | "tech" | "nature" | "space";
-  emoji: string;
-  description: string;
-  version: "standard" | "hidden";
-}
+// Re-export from the main types file
+import type { GachaItem } from "@/types/gacha";
+export type { GachaItem } from "@/types/gacha";
 
 export interface GachaItemWithCount extends GachaItem {
   count: number;

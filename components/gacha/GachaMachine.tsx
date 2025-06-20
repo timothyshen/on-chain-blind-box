@@ -19,7 +19,6 @@ export const GachaMachine = () => {
         showResults,
         leverPulled,
         showCelebration,
-        showItemEntrance,
         currentBlindBox,
         pullGacha,
         addCoin,

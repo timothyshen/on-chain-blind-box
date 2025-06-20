@@ -22,7 +22,7 @@ interface BlindBoxModalProps {
 }
 
 export const BlindBoxModal = ({
-    isOpen,
+    isOpen = true,
     onClose,
     item,
     onReveal,
@@ -49,7 +49,7 @@ export const BlindBoxModal = ({
             <DialogContent className="max-w-lg w-full shadow-2xl transition-all duration-700 border-0 items-center justify-center z-50 p-4 backdrop-blur-lg">
                 {!isRevealed ? (
                     // Enhanced Blind Box State
-                    <div className="mb-8">
+                    <div className="my-8 flex flex-col items-center justify-center">
                         <div className="text-6xl md:text-7xl mb-6 animate-bounce drop-shadow-lg">📦</div>
                         <h2
                             className="text-2xl md:text-3xl font-bold mb-3 text-black"
@@ -145,7 +145,7 @@ export const BlindBoxModal = ({
                             size="lg"
                             className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
                         >
-                            🎁 Open Premium Box
+                            🎁 Open  Box
                         </Button>
                     ) : (
                         <>

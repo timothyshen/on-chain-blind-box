@@ -240,7 +240,7 @@ export const MachineBody = ({
                             <div className="text-xs md:text-sm text-green-600 mb-3 font-medium tracking-wide">PRIZE</div>
                             <div
                                 className={
-                                    "w-24 h-14 md:w-28 md:h-16 rounded-xl border-2 transition-all duration-700 shadow-inner flex items-center justify-center bg-white/50 backdrop-blur-sm border-white/30 backdrop-blur-sm"}
+                                    "w-24 h-14 md:w-28 md:h-16 rounded-xl border-2 transition-all duration-700 shadow-inner flex items-center justify-center bg-white/50 border-white/30 backdrop-blur-sm"}
                             >
                                 {showBlindBoxModal ? (
                                     <div className="text-3xl md:text-4xl animate-bounce drop-shadow-lg">📦</div>
