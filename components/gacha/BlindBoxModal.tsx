@@ -145,7 +145,7 @@ export const BlindBoxModal = ({
                             size="lg"
                             className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
                         >
-                            🎁 Open  Box
+                            🎁 Open Box
                         </Button>
                     ) : (
                         <>

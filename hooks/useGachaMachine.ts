@@ -25,7 +25,7 @@ export const useGachaMachine = () => {
     addToUnrevealed,
     removeFromUnrevealed,
   } = useInventory();
-  const { purchaseBoxes } = useBlindBox();
+  const { purchaseBoxes, openBoxes } = useBlindBox();
   const { addNotification } = useNotifications();
   const [coins, setCoins] = useState(10);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -219,50 +219,52 @@ export const useGachaMachine = () => {
   const finishAnimation = async () => {
     setAnimationPhase("none");
     setBlinkingCell(null);
+    setShowBlindBoxModal(true);
 
-    try {
-      const tx = await purchaseBoxes(1);
-      console.log("tx", tx);
-    } catch (error) {
-      console.error("Error purchasing boxes:", error);
-    } finally {
-      setIsSpinning(false);
+    // try {
+    //   const tx = await purchaseBoxes(1);
+    //   console.log("tx", tx);
+    // } catch (error) {
+    //   console.error("Error purchasing boxes:", error);
+    // } finally {
+    //   setIsSpinning(false);
 
-      const result = getRandomItem();
-      console.log("result", result);
-      console.log("inventory", inventory);
-      const existingItem = inventory.find(
-        (item) => item.id === result.id && item.version === result.version
-      );
-      setIsNewItem(!existingItem);
-      addToInventory(result);
-      addToUnrevealed(result);
-      setCurrentBlindBox(result);
+    //   const result = getRandomItem();
+    //   console.log("result", result);
+    //   console.log("inventory", inventory);
+    //   const existingItem = inventory.find(
+    //     (item) => item.id === result.id && item.version === result.version
+    //   );
+    //   setIsNewItem(!existingItem);
+    //   addToInventory(result);
+    //   addToUnrevealed(result);
+    //   setCurrentBlindBox(result);
 
-      setCollectionParticleType(result.collection);
-      setShowRarityParticles(true);
+    //   setCollectionParticleType(result.collection);
+    //   setShowRarityParticles(true);
 
-      setEntranceItem(result);
-      setShowItemEntrance(true);
+    //   setEntranceItem(result);
+    //   setShowItemEntrance(true);
 
-      if (result.collection === "space") {
-        setShowCelebration(true);
-        setShowScreenShake(true);
+    //   if (result.collection === "space") {
+    //     setShowCelebration(true);
+    //     setShowScreenShake(true);
 
-        setTimeout(() => setShowCelebration(false), 4000);
-        setTimeout(() => setShowScreenShake(false), 2000);
-      }
+    //     setTimeout(() => setShowCelebration(false), 4000);
+    //     setTimeout(() => setShowScreenShake(false), 2000);
+    //   }
 
-      setTimeout(() => {
-        setShowBlindBoxModal(true);
-        setIsSpinning(false);
-        setShowRarityParticles(false);
-      }, 2500);
-    }
+    //   setTimeout(() => {
+    //     setShowBlindBoxModal(true);
+    //     setIsSpinning(false);
+    //     setShowRarityParticles(false);
+    //   }, 2500);
+    // }
   };
 
   const revealBlindBox = () => {
     playBoxOpen();
+    openBoxes(1);
     setIsItemRevealed(true);
 
     if (currentBlindBox) {
