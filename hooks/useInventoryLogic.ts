@@ -9,7 +9,14 @@ import {
 import { useBlindBox } from "./useBlindBox";
 
 export const useInventoryLogic = () => {
-  const { inventory, unrevealedItems, removeFromUnrevealed } = useInventory();
+  const {
+    inventory,
+    unrevealedItems,
+    removeFromUnrevealed,
+    refreshInventory,
+    isLoading,
+    error,
+  } = useInventory();
 
   const { openBoxes } = useBlindBox();
   // Create a proper grouping that treats each version as a separate item
@@ -39,40 +46,14 @@ export const useInventoryLogic = () => {
 
   const collectionStats: CollectionStats = useMemo(
     () => ({
-      toys: getUniqueItems.filter((item) => item.collection === "toys").length,
-      magic: getUniqueItems.filter((item) => item.collection === "magic")
-        .length,
-      fantasy: getUniqueItems.filter((item) => item.collection === "fantasy")
-        .length,
-      tech: getUniqueItems.filter((item) => item.collection === "tech").length,
-      nature: getUniqueItems.filter((item) => item.collection === "nature")
-        .length,
-      space: getUniqueItems.filter((item) => item.collection === "space")
-        .length,
+      ippy: getUniqueItems.filter((item) => item.collection === "ippy").length,
     }),
     [getUniqueItems]
   );
 
   const collectionCompletionPercentage: CollectionStats = useMemo(
     () => ({
-      toys: Math.round(
-        (collectionStats.toys / (COLLECTION_TOTALS.toys * 2)) * 100
-      ),
-      magic: Math.round(
-        (collectionStats.magic / (COLLECTION_TOTALS.magic * 2)) * 100
-      ),
-      fantasy: Math.round(
-        (collectionStats.fantasy / (COLLECTION_TOTALS.fantasy * 2)) * 100
-      ),
-      tech: Math.round(
-        (collectionStats.tech / (COLLECTION_TOTALS.tech * 2)) * 100
-      ),
-      nature: Math.round(
-        (collectionStats.nature / (COLLECTION_TOTALS.nature * 2)) * 100
-      ),
-      space: Math.round(
-        (collectionStats.space / (COLLECTION_TOTALS.space * 2)) * 100
-      ),
+      ippy: Math.round((collectionStats.ippy / COLLECTION_TOTALS.ippy) * 100),
     }),
     [collectionStats]
   );
@@ -85,16 +66,28 @@ export const useInventoryLogic = () => {
   // Reveal functions using the hook's removeFromUnrevealed
   const revealItemFromInventory = async (index: number) => {
     if (index >= 0 && index < unrevealedItems.length) {
-      const itemToRemove = unrevealedItems[index];
-      const tx = await openBoxes(1);
-      console.log(tx);
-      removeFromUnrevealed(itemToRemove);
+      try {
+        const tx = await openBoxes(1);
+        console.log("Box opened:", tx);
+        // Refresh inventory to get latest data from contract
+        refreshInventory();
+      } catch (error) {
+        console.error("Error opening box:", error);
+      }
     }
   };
 
-  const revealAllFromInventory = () => {
-    // Remove all unrevealed items
-    unrevealedItems.forEach((item) => removeFromUnrevealed(item));
+  const revealAllFromInventory = async () => {
+    if (unrevealedItems.length === 0) return;
+
+    try {
+      const tx = await openBoxes(unrevealedItems.length);
+      console.log("All boxes opened:", tx);
+      // Refresh inventory to get latest data from contract
+      refreshInventory();
+    } catch (error) {
+      console.error("Error opening all boxes:", error);
+    }
   };
 
   // Filter and sort function
@@ -135,6 +128,9 @@ export const useInventoryLogic = () => {
     // From useInventory hook
     inventory,
     unrevealedItems,
+    isLoading,
+    error,
+    refreshInventory,
 
     // Statistics
     totalItems,

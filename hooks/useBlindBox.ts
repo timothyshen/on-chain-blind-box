@@ -7,21 +7,17 @@ import {
 import { useState } from "react";
 import { parseEther, formatEther } from "viem";
 import { useNotifications } from "@/contexts/notification-context";
+import { getContractInfo, getUserBlindBoxBalance } from "./contractRead";
 
 export const useBlindBox = () => {
   const { getWalletClient } = useWalletClient();
   const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
   const { addNotification } = useNotifications();
 
-  // Get contract information (price, max per tx, etc.)
-  const getContractInfo = async () => {
+  // Helper function to format contract info response
+  const formatContractInfo = async () => {
     try {
-      const result = await readClient.readContract({
-        address: blindBoxAddress,
-        abi: blindBoxABI,
-        functionName: "getContractInfo",
-      });
-
+      const result = await getContractInfo();
       const [price, maxPerTx, totalSupply, currentSupply, remainingBoxes] =
         result as [bigint, bigint, bigint, bigint, bigint];
 
@@ -38,16 +34,12 @@ export const useBlindBox = () => {
     }
   };
 
-  // Get user's blind box balance
+  // Helper function to get user box balance
   const getUserBoxBalance = async (userAddress: string) => {
     try {
-      const balance = await readClient.readContract({
-        address: blindBoxAddress,
-        abi: blindBoxABI,
-        functionName: "getUserBoxBalance",
-        args: [userAddress],
-      });
-
+      const balance = await getUserBlindBoxBalance(
+        userAddress as `0x${string}`
+      );
       return Number(balance);
     } catch (error) {
       console.error("Error getting user balance:", error);
@@ -171,7 +163,7 @@ export const useBlindBox = () => {
   return {
     purchaseBoxes,
     openBoxes,
-    getContractInfo,
+    getContractInfo: formatContractInfo, // Use formatted version
     getUserBoxBalance,
     checkUserBalance,
   };

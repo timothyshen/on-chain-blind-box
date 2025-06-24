@@ -19,12 +19,13 @@ export const getContractInfo = () => {
   return blindBoxInfo;
 };
 
-// Get User BlindBox Balance
-export const getUserBlindBoxBalance = () => {
+// Get User BlindBox Balance - Fixed to include address parameter
+export const getUserBlindBoxBalance = (address: `0x${string}`) => {
   const userBlindBoxBalance = readClient.readContract({
     address: blindBoxAddress,
     abi: blindBoxABI,
-    functionName: "getUserBlindBoxBalance",
+    functionName: "getUserBoxBalance", // Match the actual contract function name
+    args: [address],
   });
 
   return userBlindBoxBalance;
@@ -58,7 +59,7 @@ export const getUserOwnsHiddenNFT = (address: `0x${string}`) => {
   const userOwnsHiddenNFT = readClient.readContract({
     address: ippyNFTAddress,
     abi: ippyIPABI,
-    functionName: "getUserOwnsHiddenNFT",
+    functionName: "userOwnsHiddenNFT", // Match the actual contract function name
     args: [address],
   });
 
@@ -73,4 +74,25 @@ export const getTotalSupply = () => {
   });
 
   return totalSupply;
+};
+
+// Add missing contract read functions
+export const getGlobalNFTStats = () => {
+  const globalStats = readClient.readContract({
+    address: ippyNFTAddress,
+    abi: ippyIPABI,
+    functionName: "getGlobalNFTStats",
+  });
+
+  return globalStats;
+};
+
+export const getProbabilityInfo = () => {
+  const probabilityInfo = readClient.readContract({
+    address: blindBoxAddress,
+    abi: blindBoxABI,
+    functionName: "getProbabilityInfo",
+  });
+
+  return probabilityInfo;
 };
