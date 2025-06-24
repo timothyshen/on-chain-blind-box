@@ -53,21 +53,22 @@ export const MachineBody = ({
             {/* Main Machine Body */}
             <div
                 className={cn(
-                    "relative w-[420px] h-[600px] md:w-[420px] md:h-[600px] transition-all duration-700 overflow-hidden",
-                    "bg-[url('/imageAssets/GachaMachine.png')] bg-cover bg-center z-10"
+                    "relative w-[420px] h-[600px] md:w-[420px] md:h-[600px] transition-all duration-700"
                 )}
             >
-                {/* <div className="absolute inset-0 from-white/5 via-transparent to-black/10 pointer-events-none bg-[url('/imageAssets/GachaBackground.png')] bg-cover bg-center"></div> */}
+                {/* Machine Body Background (lowest layer) */}
+                <div className="absolute inset-0 bg-[url('/imageAssets/GachaMachine.png')] bg-cover bg-center z-10"></div>
 
+                {/* Machine Body Overlay (highest layer) */}
+                <div className="absolute inset-0 bg-[url('/imageAssets/GachaMachine.png')] bg-cover bg-center z-30 pointer-events-none"></div>
                 {/* Display Window */}
-                <div className="relative w-full h-[75%] p-5 flex flex-col">
+                <div className="relative w-full h-[77%] p-4 flex flex-col z-20">
                     <div
-                        className=
-                        "w-full h-full rounded-2xl border-4 shadow-inner overflow-hidden transition-all duration-700 relative bg-white/40 backdrop-blur-sm border-white/20"
+                        className="w-full h-full mt-6 px-4 rounded-xl bg-[url('/imageAssets/GachaBackground.png')] bg-cover bg-center overflow-hidden z-20"
                     >
 
                         {/* Active Display Area */}
-                        <div className="relative z-10 grid grid-cols-3 gap-3 h-full p-2">
+                        <div className="relative z-25 grid grid-cols-3 gap-3 h-full p-2">
                             {isSpinning && !showBlindBoxModal
                                 ? Array.from({ length: 9 }).map((_, i) => (
                                     <div
@@ -104,7 +105,7 @@ export const MachineBody = ({
                                             <div
                                                 key={`${item.id}-${item.name}-${i}`}
                                                 className={cn(
-                                                    "rounded-2xl border-2 p-2 flex flex-col items-center justify-center text-center transition-all duration-500 shadow-lg",
+                                                    "flex flex-col items-center justify-center text-center transition-all duration-500 shadow-lg",
                                                     COLLECTION_COLORS[item.collection],
                                                     VERSION_STYLES[item.version],
                                                     isNewest
@@ -134,15 +135,14 @@ export const MachineBody = ({
                 </div>
 
                 {/* Control Panel */}
-                <div className="w-full h-[25%] p-4 flex flex-col justify-between">
+                <div className="relative w-full h-[23%] px-4 flex flex-col justify-between">
 
                     {/* Turn Knob and Dispensing Area */}
                     <div className="flex justify-between items-end">
                         {/* Dispensing Chute */}
                         <div className="flex flex-col items-center z-20">
                             <div
-                                className={
-                                    "w-[220px] h-[100px] ml-8  rounded-xl flex items-center justify-center bg-[url('/imageAssets/ItemPlacement.png')] bg-cover bg-center"}
+                                className="w-[215px] h-[85px] ml-9 mr-2 mb-2 rounded-xl flex items-center justify-center bg-[url('/imageAssets/ItemPlacement.png')] bg-auto z-40 object-contain"
                             >
                                 {showBlindBoxModal && (
                                     <div className="text-3xl md:text-4xl animate-bounce drop-shadow-lg">📦</div>
@@ -151,12 +151,12 @@ export const MachineBody = ({
                         </div>
 
                         {/* Turn Knob */}
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-center z-50">
                             <button
                                 onClick={onPullGacha}
                                 // disabled={coins < 1 || isSpinning || showBlindBoxModal}
                                 className={cn(
-                                    "relative mr-1 rounded-full transition-all duration-500 ease-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed group z-20",
+                                    "relative mr-1 rounded-full transition-all duration-500 ease-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed group z-50",
                                     leverPulled ? "bg-[url('/imageAssets/GachaAfter.png')] bg-cover bg-center" : "bg-[url('/imageAssets/GachaBefore.png')] bg-cover bg-center",
                                     "shadow-lg hover:shadow-xl",
                                     "border-2 border-amber-200/50",
