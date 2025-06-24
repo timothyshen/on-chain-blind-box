@@ -9,14 +9,8 @@ import {
 import { useBlindBox } from "./useBlindBox";
 
 export const useInventoryLogic = () => {
-  const {
-    inventory,
-    unrevealedItems,
-    removeFromUnrevealed,
-    refreshInventory,
-    isLoading,
-    error,
-  } = useInventory();
+  const { inventory, unrevealedItems, refreshInventory, isLoading, error } =
+    useInventory();
 
   const { openBoxes } = useBlindBox();
   // Create a proper grouping that treats each version as a separate item

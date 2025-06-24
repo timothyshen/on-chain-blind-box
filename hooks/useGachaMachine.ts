@@ -228,11 +228,9 @@ export const useGachaMachine = () => {
       setTimeout(() => setShowCelebration(false), 4000);
       setTimeout(() => setShowScreenShake(false), 2000);
 
-      setTimeout(() => {
-        setShowBlindBoxModal(true);
-        setIsSpinning(false);
-        setShowRarityParticles(false);
-      }, 2500);
+      setShowBlindBoxModal(true);
+      setIsSpinning(false);
+      setShowRarityParticles(false);
     }
   };
 
@@ -249,7 +247,7 @@ export const useGachaMachine = () => {
       setIsItemRevealed(true);
 
       if (currentBlindBox) {
-        playItemReveal(currentBlindBox.collection);
+        playItemReveal("ippy");
       }
     } catch (error) {
       console.error("Error opening box:", error);

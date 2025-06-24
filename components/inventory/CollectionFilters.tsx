@@ -155,35 +155,22 @@ export function CollectionFilters({
                             >
                                 All
                             </Button>
-                            {["toys", "magic", "fantasy", "tech", "nature", "space"].map((collection) => (
-                                <Button
-                                    key={collection}
-                                    variant={selectedCollection === collection ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => {
-                                        onCollectionChange(collection)
-                                        handleButtonClick()
-                                    }}
-                                    className={cn(
-                                        "transition-all duration-300",
-                                        selectedCollection === collection
-                                            ? collection === "toys"
-                                                ? "bg-pink-600 hover:bg-pink-700 text-white"
-                                                : collection === "magic"
-                                                    ? "bg-purple-600 hover:bg-purple-700 text-white"
-                                                    : collection === "fantasy"
-                                                        ? "bg-amber-600 hover:bg-amber-700 text-white"
-                                                        : collection === "tech"
-                                                            ? "bg-cyan-600 hover:bg-cyan-700 text-white"
-                                                            : collection === "nature"
-                                                                ? "bg-green-600 hover:bg-green-700 text-white"
-                                                                : "bg-indigo-600 hover:bg-indigo-700 text-white"
-                                            : "bg-white/80 border-slate-200 text-slate-700 hover:bg-slate-100",
-                                    )}
-                                >
-                                    {collection.charAt(0).toUpperCase() + collection.slice(1)}
-                                </Button>
-                            ))}
+                            <Button
+                                variant={selectedCollection === "ippy" ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => {
+                                    onCollectionChange("ippy")
+                                    handleButtonClick()
+                                }}
+                                className={cn(
+                                    "transition-all duration-300",
+                                    selectedCollection === "ippy"
+                                        ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                        : "bg-white/80 border-slate-200 text-slate-700 hover:bg-slate-100",
+                                )}
+                            >
+                                IPPY NFT
+                            </Button>
                         </div>
 
                         <div className="flex items-center gap-2 ml-4">

@@ -14,6 +14,7 @@ import { CollectionView } from "@/components/inventory/CollectionView"
 import { GridView } from "@/components/inventory/GridView"
 import { ListView } from "@/components/inventory/ListView"
 import { CollectionModal } from "@/components/inventory/CollectionModal"
+import Footer from "@/components/Footer"
 
 // Import custom hooks
 import { useInventoryLogic } from "@/hooks/useInventoryLogic"
@@ -87,80 +88,83 @@ export default function Inventory() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-4">
-      <div className="max-w-7xl mx-auto">
-        <InventoryHeader />
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-4">
+        <div className="max-w-7xl mx-auto">
+          <InventoryHeader />
 
-        <InventoryStats
-          totalItems={totalItems}
-          uniqueItems={uniqueItems}
-          hiddenCount={hiddenCount}
-          collectionStats={collectionStats}
-        />
+          <InventoryStats
+            totalItems={totalItems}
+            uniqueItems={uniqueItems}
+            hiddenCount={hiddenCount}
+          />
 
-        {/* Main Tabs */}
-        <Tabs
-          value={activeTab}
-          onValueChange={(value) => setActiveTab(value as "blindbox" | "collection")}
-          className="space-y-6"
-        >
-          <TabsList className="bg-white/80 border-slate-200 shadow-lg backdrop-blur-sm">
-            <TabsTrigger
-              value="blindbox"
-              className="data-[state=active]:bg-amber-600 data-[state=active]:text-white"
-              onClick={() => soundManager.play("buttonClick")}
-            >
-              <Package className="w-4 h-4 mr-2" />
-              Blind Boxes ({unrevealedItems.length})
-            </TabsTrigger>
-            <TabsTrigger
-              value="collection"
-              className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-              onClick={() => soundManager.play("buttonClick")}
-            >
-              <Bookmark className="w-4 h-4 mr-2" />
-              Collection ({uniqueItems})
-            </TabsTrigger>
-          </TabsList>
+          {/* Main Tabs */}
+          <Tabs
+            value={activeTab}
+            onValueChange={(value) => setActiveTab(value as "blindbox" | "collection")}
+            className="space-y-6"
+          >
+            <TabsList className="bg-white/80 border-slate-200 shadow-lg backdrop-blur-sm">
+              <TabsTrigger
+                value="blindbox"
+                className="data-[state=active]:bg-amber-600 data-[state=active]:text-white"
+                onClick={() => soundManager.play("buttonClick")}
+              >
+                <Package className="w-4 h-4 mr-2" />
+                Blind Boxes ({unrevealedItems.length})
+              </TabsTrigger>
+              <TabsTrigger
+                value="collection"
+                className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                onClick={() => soundManager.play("buttonClick")}
+              >
+                <Bookmark className="w-4 h-4 mr-2" />
+                Collection ({uniqueItems})
+              </TabsTrigger>
+            </TabsList>
 
-          {/* Blind Box Tab */}
-          <TabsContent value="blindbox" className="space-y-6">
-            <BlindBoxTab
-              unrevealedItems={unrevealedItems}
-              onRevealItem={revealItemFromInventory}
-              onRevealAll={revealAllFromInventory}
-            />
-          </TabsContent>
+            {/* Blind Box Tab */}
+            <TabsContent value="blindbox" className="space-y-6">
+              <BlindBoxTab
+                unrevealedItems={unrevealedItems}
+                onRevealItem={revealItemFromInventory}
+                onRevealAll={revealAllFromInventory}
+              />
+            </TabsContent>
 
-          {/* Collection Tab */}
-          <TabsContent value="collection" className="space-y-6">
-            <CollectionFilters
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              selectedCollection={selectedCollection}
-              onCollectionChange={setSelectedCollection}
-              selectedVersion={selectedVersion}
-              onVersionChange={setSelectedVersion}
-              sortBy={sortBy}
-              onSortChange={setSortBy}
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-            />
+            {/* Collection Tab */}
+            <TabsContent value="collection" className="space-y-6">
+              <CollectionFilters
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                selectedCollection={selectedCollection}
+                onCollectionChange={setSelectedCollection}
+                selectedVersion={selectedVersion}
+                onVersionChange={setSelectedVersion}
+                sortBy={sortBy}
+                onSortChange={setSortBy}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+              />
 
-            {renderCollectionContent()}
-          </TabsContent>
-        </Tabs>
+              {renderCollectionContent()}
+            </TabsContent>
+          </Tabs>
 
-        {/* Collection Detail Modal */}
-        <CollectionModal
-          selectedCollectionDetail={selectedCollectionDetail}
-          showModal={showCollectionModal}
-          onClose={closeCollectionModal}
-          collectionStats={collectionStats}
-          collectionCompletionPercentage={collectionCompletionPercentage}
-          getCollectionItems={getCollectionItems}
-        />
+          {/* Collection Detail Modal */}
+          <CollectionModal
+            selectedCollectionDetail={selectedCollectionDetail}
+            showModal={showCollectionModal}
+            onClose={closeCollectionModal}
+            collectionStats={collectionStats}
+            collectionCompletionPercentage={collectionCompletionPercentage}
+            getCollectionItems={getCollectionItems}
+          />
+        </div>
+
       </div>
-    </div>
+      <Footer />
+    </>
   )
 }

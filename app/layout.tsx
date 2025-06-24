@@ -20,7 +20,7 @@ export default function RootLayout({
         <Providers>
           <NotificationProvider>
             {children}
-            <Footer />
+            
           </NotificationProvider>
         </Providers>
       </body>

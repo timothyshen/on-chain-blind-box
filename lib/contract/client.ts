@@ -19,7 +19,6 @@ export const readClient = createPublicClient({
 export function useWalletClient() {
   const { wallets } = useWallets();
   const { user } = usePrivy();
-  console.log("wallets", wallets);
 
   const getWalletClient = async () => {
     try {
