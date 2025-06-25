@@ -33,7 +33,6 @@ export default function Inventory() {
     getCollectionItems,
     getFilteredItems,
     revealItemFromInventory,
-    revealAllFromInventory,
   } = useInventoryLogic()
 
   // Use the inventory filters hook
@@ -78,10 +77,6 @@ export default function Inventory() {
 
     if (viewMode === "grid") {
       return <GridView items={filteredItems} inventoryLength={inventory.length} />
-    }
-
-    if (viewMode === "list") {
-      return <ListView items={filteredItems} inventoryLength={inventory.length} />
     }
 
     return null
@@ -129,7 +124,6 @@ export default function Inventory() {
               <BlindBoxTab
                 unrevealedItems={unrevealedItems}
                 onRevealItem={revealItemFromInventory}
-                onRevealAll={revealAllFromInventory}
               />
             </TabsContent>
 

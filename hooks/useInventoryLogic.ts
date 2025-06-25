@@ -63,10 +63,11 @@ export const useInventoryLogic = () => {
       try {
         const tx = await openBoxes(1);
         console.log("Box opened:", tx);
-        // Refresh inventory to get latest data from contract
-        refreshInventory();
+        // Refresh inventory to get latest data from contract after successful transaction
+        await refreshInventory();
       } catch (error) {
         console.error("Error opening box:", error);
+        // Error notification is already handled in openBoxes function
       }
     }
   };
@@ -77,10 +78,11 @@ export const useInventoryLogic = () => {
     try {
       const tx = await openBoxes(unrevealedItems.length);
       console.log("All boxes opened:", tx);
-      // Refresh inventory to get latest data from contract
-      refreshInventory();
+      // Refresh inventory to get latest data from contract after successful transaction
+      await refreshInventory();
     } catch (error) {
       console.error("Error opening all boxes:", error);
+      // Error notification is already handled in openBoxes function
     }
   };
 

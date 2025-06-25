@@ -66,18 +66,6 @@ export function CollectionFilters({
                     >
                         <Grid3X3 className="w-4 h-4" />
                     </Button>
-                    <Button
-                        variant={viewMode === "list" ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => {
-                            onViewModeChange("list")
-                            handleButtonClick()
-                        }}
-                        className="rounded-l-none"
-                        title="List View"
-                    >
-                        <List className="w-4 h-4" />
-                    </Button>
                 </div>
             </div>
 

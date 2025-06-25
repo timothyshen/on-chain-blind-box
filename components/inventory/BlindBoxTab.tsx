@@ -9,18 +9,12 @@ import { GachaItem } from "./types"
 interface BlindBoxTabProps {
     unrevealedItems: GachaItem[]
     onRevealItem: (index: number) => void
-    onRevealAll: () => void
 }
 
-export function BlindBoxTab({ unrevealedItems, onRevealItem, onRevealAll }: BlindBoxTabProps) {
+export function BlindBoxTab({ unrevealedItems, onRevealItem }: BlindBoxTabProps) {
     const handleRevealItem = (index: number) => {
         soundManager.play("boxOpen")
         onRevealItem(index)
-    }
-
-    const handleRevealAll = () => {
-        soundManager.play("celebration")
-        onRevealAll()
     }
 
     if (unrevealedItems.length === 0) {
@@ -58,18 +52,6 @@ export function BlindBoxTab({ unrevealedItems, onRevealItem, onRevealAll }: Blin
                             📦
                         </button>
                     ))}
-                </div>
-                <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                    <Button
-                        onClick={handleRevealAll}
-                        size="lg"
-                        className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                        🎁 Reveal All Boxes
-                    </Button>
-                    <p className="text-amber-700 text-sm font-medium">
-                        Click individual boxes to reveal them one by one, or reveal all at once
-                    </p>
                 </div>
             </CardContent>
         </Card>

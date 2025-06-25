@@ -36,10 +36,10 @@ export function ListView({ items, inventoryLength }: ListViewProps) {
                     key={index}
                     className={cn(
                         "transition-all duration-300 cursor-pointer border-2 shadow-lg hover:shadow-xl",
-                        COLLECTION_COLORS[item.collection],
+                        COLLECTION_COLORS.ippy,
                         VERSION_STYLES[item.version],
-                        COLLECTION_GLOW[item.collection],
-                        item.collection === "space" && "ring-2 ring-indigo-300/50",
+                        COLLECTION_GLOW.ippy,
+                        item.collection === "ippy" && "ring-2 ring-indigo-300/50",
                     )}
                     onClick={() => soundManager.play("buttonClick")}
                 >

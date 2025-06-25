@@ -71,12 +71,14 @@ export const useBlindBox = () => {
   // purchaseBoxes(uint256 amount) payable - Buy blind boxes
   const purchaseBoxes = async (amount: number) => {
     try {
-      setIsPurchaseLoading(true);
+      // Step 1: Show preparing notification
       addNotification({
         title: "Purchasing boxes...",
         message: `Purchasing ${amount} boxes...`,
         type: "info",
+        persistent: true, // Keep until we update it
       });
+
       const walletClient = await getWalletClient();
       if (!walletClient) {
         throw new Error("No wallet connected");
@@ -85,6 +87,7 @@ export const useBlindBox = () => {
       // Get the account address
       const [account] = await walletClient.getAddresses();
       console.log("account", account);
+
       // Calculate total cost
       const totalCost = parseEther("0.01") * BigInt(amount);
 
@@ -98,16 +101,36 @@ export const useBlindBox = () => {
         account,
       });
 
-      // Then execute the actual transaction
+      // Step 2: Show submitting notification
+      setIsPurchaseLoading(true);
+      addNotification({
+        title: "Submitting transaction...",
+        message: `Sending purchase transaction for ${amount} boxes...`,
+        type: "info",
+        persistent: true,
+      });
+
+      // Execute the actual transaction
       const txHash = await walletClient.writeContract(request);
-      setIsPurchaseLoading(false);
+
+      // Step 3: Show waiting for confirmation notification
+      addNotification({
+        title: "Transaction submitted!",
+        message: `Waiting for confirmation... Hash: ${txHash.slice(0, 10)}...`,
+        type: "info",
+        persistent: true,
+      });
+
+      // Step 4: Wait for transaction receipt
       const tx = await readClient.waitForTransactionReceipt({
         hash: txHash,
       });
+
       const txLink = `https://aeneid.storyscan.io/tx/${txHash}`;
 
+      // Step 5: Show success notification
       addNotification({
-        title: "Boxes purchased!",
+        title: "Boxes purchased successfully!",
         message: `You have purchased ${amount} boxes!`,
         type: "success",
         action: {
@@ -118,9 +141,22 @@ export const useBlindBox = () => {
         },
         duration: 10000,
       });
+
+      setIsPurchaseLoading(false);
       return txHash;
     } catch (error) {
       console.error("Error purchasing boxes:", error);
+      setIsPurchaseLoading(false);
+
+      // Show error notification
+      addNotification({
+        title: "Purchase failed",
+        message:
+          error instanceof Error ? error.message : "An unknown error occurred",
+        type: "error",
+        duration: 8000,
+      });
+
       throw error;
     }
   };
@@ -128,6 +164,14 @@ export const useBlindBox = () => {
   // openBoxes(uint256 amount) - Open boxes to reveal NFTs
   const openBoxes = async (amount: number) => {
     try {
+      // Step 1: Show preparing notification
+      addNotification({
+        title: "Preparing to open boxes...",
+        message: `Setting up to open ${amount} boxes...`,
+        type: "info",
+        duration: 5000,
+      });
+
       const walletClient = await getWalletClient();
       if (!walletClient) {
         throw new Error("No wallet connected");
@@ -144,7 +188,15 @@ export const useBlindBox = () => {
         );
       }
 
-      // Execute the transaction directly
+      // Step 2: Show submitting notification
+      addNotification({
+        title: "Submitting transaction...",
+        message: `Opening ${amount} boxes...`,
+        type: "info",
+        duration: 5000,
+      });
+
+      // Execute the transaction
       const txHash = await walletClient.writeContract({
         address: blindBoxAddress,
         abi: blindBoxABI,
@@ -153,9 +205,48 @@ export const useBlindBox = () => {
         account,
       });
 
+      // Step 3: Show waiting for confirmation notification
+      addNotification({
+        title: "Transaction submitted!",
+        message: `Waiting for boxes to open... Hash: ${txHash.slice(0, 10)}...`,
+        type: "info",
+        persistent: true,
+      });
+
+      // Step 4: Wait for transaction receipt
+      const tx = await readClient.waitForTransactionReceipt({
+        hash: txHash,
+      });
+
+      const txLink = `https://aeneid.storyscan.io/tx/${txHash}`;
+
+      // Step 5: Show success notification
+      addNotification({
+        title: "Boxes opened successfully!",
+        message: `${amount} boxes have been opened! Check your inventory for new items.`,
+        type: "success",
+        action: {
+          label: "View on StoryScan",
+          onClick: () => {
+            window.open(txLink, "_blank");
+          },
+        },
+        duration: 10000,
+      });
+
       return txHash;
     } catch (error) {
       console.error("Error opening boxes:", error);
+
+      // Show error notification
+      addNotification({
+        title: "Failed to open boxes",
+        message:
+          error instanceof Error ? error.message : "An unknown error occurred",
+        type: "error",
+        duration: 8000,
+      });
+
       throw error;
     }
   };

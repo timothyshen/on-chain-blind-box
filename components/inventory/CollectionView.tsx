@@ -101,7 +101,7 @@ export function CollectionView({
                                         key={index}
                                         className={cn(
                                             "aspect-square rounded-lg border flex items-center justify-center text-2xl shadow-sm",
-                                            COLLECTION_COLORS[item.collection],
+                                            COLLECTION_COLORS.ippy,
                                             VERSION_STYLES[item.version],
                                         )}
                                     >
