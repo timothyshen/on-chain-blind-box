@@ -46,12 +46,7 @@ export function CollectionModal({
                 <div
                     className={cn(
                         "h-3",
-                        collection === "toys" && "bg-pink-500",
-                        collection === "magic" && "bg-purple-500",
-                        collection === "fantasy" && "bg-amber-500",
-                        collection === "tech" && "bg-cyan-500",
-                        collection === "nature" && "bg-green-500",
-                        collection === "space" && "bg-indigo-500",
+                        COLLECTION_COLORS.ippy,
                     )}
                 />
 
@@ -88,12 +83,7 @@ export function CollectionModal({
                             <div
                                 className={cn(
                                     "h-3 rounded-full",
-                                    collection === "toys" && "bg-pink-500",
-                                    collection === "magic" && "bg-purple-500",
-                                    collection === "fantasy" && "bg-amber-500",
-                                    collection === "tech" && "bg-cyan-500",
-                                    collection === "nature" && "bg-green-500",
-                                    collection === "space" && "bg-indigo-500",
+                                    COLLECTION_COLORS.ippy
                                 )}
                                 style={{ width: `${completionPercentage}%` }}
                             ></div>
@@ -111,7 +101,7 @@ export function CollectionModal({
                                 key={index}
                                 className={cn(
                                     "transition-all duration-300 border-2 shadow-md",
-                                    COLLECTION_COLORS[item.collection],
+                                    COLLECTION_COLORS.ippy,
                                     VERSION_STYLES[item.version],
                                 )}
                             >

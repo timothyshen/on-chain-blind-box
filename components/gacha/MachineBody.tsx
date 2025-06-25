@@ -40,12 +40,39 @@ export const MachineBody = ({
             >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
                 <div className="w-full h-full flex items-center justify-center relative z-10">
-                    <div
-                        className={cn(
-                            "text-xl md:text-2xl font-bold tracking-[0.2em] transition-all duration-700 text-purple-700 drop-shadow-lg"
-                        )}
-                    >
-                        PREMIUM GACHA
+                    <div className="flex items-center justify-center space-x-2">
+                        <div className="relative">
+                            <div
+                                className={cn(
+                                    "text-xl md:text-2xl font-bold tracking-wider transition-all duration-700 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600"
+                                )}
+                            >
+                                IPPY
+                            </div>
+                            <div className="absolute -inset-1 blur-sm bg-gradient-to-r from-purple-400 to-pink-400 opacity-30 animate-pulse rounded-lg"></div>
+                        </div>
+                        <Zap className="w-5 h-5 text-yellow-400 animate-bounce" />
+                        <div className="relative">
+                            <div
+                                className={cn(
+                                    "text-xl md:text-2xl font-bold tracking-wider transition-all duration-700 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-600 to-pink-500"
+                                )}
+                            >
+                                IPPY
+                            </div>
+                            <div className="absolute -inset-1 blur-sm bg-gradient-to-r from-pink-400 to-purple-400 opacity-30 animate-pulse rounded-lg"></div>
+                        </div>
+                        <Sparkles className="w-5 h-5 text-yellow-400 animate-spin-slow" />
+                        <div className="relative">
+                            <div
+                                className={cn(
+                                    "text-xl md:text-2xl font-bold tracking-wider transition-all duration-700 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600"
+                                )}
+                            >
+                                IPPY
+                            </div>
+                            <div className="absolute -inset-1 blur-sm bg-gradient-to-r from-purple-400 to-pink-400 opacity-30 animate-pulse rounded-lg"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,13 +133,11 @@ export const MachineBody = ({
                                                 key={`${item.id}-${item.name}-${i}`}
                                                 className={cn(
                                                     "flex flex-col items-center justify-center text-center transition-all duration-500 shadow-lg",
-                                                    COLLECTION_COLORS[item.collection],
                                                     VERSION_STYLES[item.version],
                                                     isNewest
                                                         ? "ring-4 ring-amber-400/60 scale-105 shadow-xl z-10 border-amber-300"
                                                         : "opacity-60 scale-90",
                                                     item.version === "hidden" && isNewest && "shadow-purple-500/30",
-                                                    item.collection === "space" && isNewest && "animate-pulse shadow-amber-500/40",
                                                 )}
                                             >
                                                 {isNewest && (
@@ -173,6 +198,9 @@ export const MachineBody = ({
                 {/* Machine Idle Effects */}
                 <MachineIdleEffects isActive={isSpinning || showBlindBoxModal} />
             </div>
+            <p className="text-center text-sm text-black">
+                &copy; {new Date().getFullYear()} IPPYGACHA. All rights reserved.
+            </p>
         </div>
     )
 } 

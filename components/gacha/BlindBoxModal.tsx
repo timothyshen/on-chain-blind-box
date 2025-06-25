@@ -83,9 +83,8 @@ export const BlindBoxModal = ({
                             <div
                                 className={cn(
                                     "mx-auto w-32 h-32 md:w-40 md:h-40 rounded-2xl border-4 p-6 md:p-8 flex flex-col items-center justify-center mb-6 transition-all duration-500 shadow-xl",
-                                    COLLECTION_COLORS[item.collection],
-                                    VERSION_STYLES[item.version],
-                                    item.collection === "space" && "legendary-glow",
+                                    COLLECTION_COLORS.ippy,
+                                    item.collection === "ippy" && "legendary-glow",
                                 )}
                             >
                                 <div className="text-4xl md:text-5xl mb-2 drop-shadow-lg">{item.emoji}</div>
@@ -97,7 +96,6 @@ export const BlindBoxModal = ({
                                 className={cn(
                                     "text-2xl md:text-3xl font-bold mb-3",
                                     "text-white",
-                                    item.collection === "space" && "text-amber-400",
                                 )}
                             >
                                 {item.name}

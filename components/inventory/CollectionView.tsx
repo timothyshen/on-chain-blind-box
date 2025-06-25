@@ -35,36 +35,18 @@ export function CollectionView({
 
     return (
         <div className="space-y-8">
-            {/* Collection Series Display */}
-            {(["toys", "magic", "fantasy", "tech", "nature", "space"] as const).map((collection) => {
+            {/* IPPY NFT Collection Display */}
+            {(() => {
+                const collection = "ippy"
                 const collectionItems = getCollectionItems(collection)
                 const info = COLLECTION_INFO[collection]
                 const completionPercentage = collectionCompletionPercentage[collection]
 
                 return (
                     <Card
-                        key={collection}
-                        className={cn(
-                            "overflow-hidden border-2 shadow-lg hover:shadow-xl transition-all duration-300",
-                            collection === "toys" && "border-pink-300",
-                            collection === "magic" && "border-purple-300",
-                            collection === "fantasy" && "border-amber-300",
-                            collection === "tech" && "border-cyan-300",
-                            collection === "nature" && "border-green-300",
-                            collection === "space" && "border-indigo-300",
-                        )}
+                        className="overflow-hidden border-2 border-blue-300 shadow-lg hover:shadow-xl transition-all duration-300"
                     >
-                        <div
-                            className={cn(
-                                "h-3",
-                                collection === "toys" && "bg-pink-500",
-                                collection === "magic" && "bg-purple-500",
-                                collection === "fantasy" && "bg-amber-500",
-                                collection === "tech" && "bg-cyan-500",
-                                collection === "nature" && "bg-green-500",
-                                collection === "space" && "bg-indigo-500",
-                            )}
-                        />
+                        <div className="h-3 bg-blue-500" />
 
                         <CardHeader className="pb-2">
                             <div className="flex justify-between items-center">
@@ -88,7 +70,7 @@ export function CollectionView({
                             <div className="flex justify-between items-center mb-2">
                                 <div className="text-sm font-medium">
                                     Collection Progress: {collectionItems.length} /{" "}
-                                    {COLLECTION_TOTALS[collection] * 2} items
+                                    {COLLECTION_TOTALS[collection]} items
                                 </div>
                                 <Badge
                                     className={cn(
@@ -107,15 +89,7 @@ export function CollectionView({
                             {/* Progress bar */}
                             <div className="w-full bg-slate-200 rounded-full h-2.5 mb-4">
                                 <div
-                                    className={cn(
-                                        "h-2.5 rounded-full",
-                                        collection === "toys" && "bg-pink-500",
-                                        collection === "magic" && "bg-purple-500",
-                                        collection === "fantasy" && "bg-amber-500",
-                                        collection === "tech" && "bg-cyan-500",
-                                        collection === "nature" && "bg-green-500",
-                                        collection === "space" && "bg-indigo-500",
-                                    )}
+                                    className="h-2.5 rounded-full bg-blue-500"
                                     style={{ width: `${completionPercentage}%` }}
                                 ></div>
                             </div>
@@ -127,7 +101,7 @@ export function CollectionView({
                                         key={index}
                                         className={cn(
                                             "aspect-square rounded-lg border flex items-center justify-center text-2xl shadow-sm",
-                                            COLLECTION_COLORS[item.collection],
+                                            COLLECTION_COLORS.ippy,
                                             VERSION_STYLES[item.version],
                                         )}
                                     >
@@ -153,7 +127,7 @@ export function CollectionView({
                         )}
                     </Card>
                 )
-            })}
+            })()}
         </div>
     )
 } 

@@ -1,14 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  GachaItem,
-  GACHA_ITEMS,
-  COLLECTION_CHANCES,
-  VERSION_CHANCES,
-} from "@/types/gacha";
+import { GachaItem } from "@/types/gacha";
 import { useSound } from "./useSound";
 import { useInventory } from "./useInventory";
 import { useBlindBox } from "./useBlindBox";
 import { useNotifications } from "@/contexts/notification-context";
+import { usePrivy } from "@privy-io/react-auth";
+import { getUserBlindBoxBalance } from "./contractRead";
 
 export const useGachaMachine = () => {
   const {
@@ -24,10 +21,26 @@ export const useGachaMachine = () => {
     unrevealedItems,
     addToUnrevealed,
     removeFromUnrevealed,
+    refreshInventory,
   } = useInventory();
   const { purchaseBoxes, openBoxes } = useBlindBox();
   const { addNotification } = useNotifications();
+  const { user } = usePrivy();
   const [coins, setCoins] = useState(10);
+
+  // Add fetchContractBalance function
+  const fetchContractBalance = async () => {
+    if (!user?.wallet?.address) return;
+    try {
+      const balance = await getUserBlindBoxBalance(
+        user.wallet.address as `0x${string}`
+      );
+      console.log("Contract balance:", Number(balance));
+    } catch (error) {
+      console.error("Error fetching contract balance:", error);
+    }
+  };
+
   const [isSpinning, setIsSpinning] = useState(false);
   const [leverPulled, setLeverPulled] = useState(false);
   const [currentResults, setCurrentResults] = useState<GachaItem[]>([]);
@@ -52,60 +65,19 @@ export const useGachaMachine = () => {
   const [showItemEntrance, setShowItemEntrance] = useState(false);
   const [entranceItem, setEntranceItem] = useState<GachaItem | null>(null);
   const [showRarityParticles, setShowRarityParticles] = useState(false);
-  const [collectionParticleType, setCollectionParticleType] = useState<
-    "toys" | "magic" | "fantasy" | "tech" | "nature" | "space"
-  >("toys");
+  const [collectionParticleType, setCollectionParticleType] =
+    useState<"ippy">("ippy");
 
-  const getRandomItem = (): GachaItem => {
-    const random = Math.random();
-    let cumulativeChance = 0;
-    let selectedCollection:
-      | "toys"
-      | "magic"
-      | "fantasy"
-      | "tech"
-      | "nature"
-      | "space" = "toys";
-
-    for (const [collection, chance] of Object.entries(COLLECTION_CHANCES)) {
-      cumulativeChance += chance;
-      if (random <= cumulativeChance) {
-        selectedCollection = collection as
-          | "toys"
-          | "magic"
-          | "fantasy"
-          | "tech"
-          | "nature"
-          | "space";
-        break;
-      }
-    }
-
-    const versionRandom = Math.random();
-    let versionCumulativeChance = 0;
-    let selectedVersion: "standard" | "hidden" = "standard";
-    for (const [version, chance] of Object.entries(VERSION_CHANCES)) {
-      versionCumulativeChance += chance;
-      if (versionRandom <= versionCumulativeChance) {
-        selectedVersion = version as "standard" | "hidden";
-        break;
-      }
-    }
-
-    const matchingItems = GACHA_ITEMS.filter(
-      (item) =>
-        item.collection === selectedCollection &&
-        item.version === selectedVersion
-    );
-
-    if (matchingItems.length === 0) {
-      const fallbackItems = GACHA_ITEMS.filter(
-        (item) => item.collection === selectedCollection
-      );
-      return fallbackItems[Math.floor(Math.random() * fallbackItems.length)];
-    }
-
-    return matchingItems[Math.floor(Math.random() * matchingItems.length)];
+  // Contract handles randomness - this is just a placeholder for the UI
+  const getPlaceholderItem = (): GachaItem => {
+    return {
+      id: "placeholder",
+      name: "IPPY NFT",
+      description: "IPPY NFT from contract",
+      emoji: "🎁",
+      collection: "ippy",
+      version: "standard",
+    };
   };
 
   const pullGacha = async () => {
@@ -219,56 +191,66 @@ export const useGachaMachine = () => {
   const finishAnimation = async () => {
     setAnimationPhase("none");
     setBlinkingCell(null);
-    setShowBlindBoxModal(true);
+    try {
+      const tx = await purchaseBoxes(1);
+      console.log("Purchased box:", tx);
 
-    // try {
-    //   const tx = await purchaseBoxes(1);
-    //   console.log("tx", tx);
-    // } catch (error) {
-    //   console.error("Error purchasing boxes:", error);
-    // } finally {
-    //   setIsSpinning(false);
+      // Refresh balances after purchase
+      fetchContractBalance();
+      refreshInventory();
+    } catch (error) {
+      console.error("Error purchasing boxes:", error);
+    } finally {
+      setIsSpinning(false);
 
-    //   const result = getRandomItem();
-    //   console.log("result", result);
-    //   console.log("inventory", inventory);
-    //   const existingItem = inventory.find(
-    //     (item) => item.id === result.id && item.version === result.version
-    //   );
-    //   setIsNewItem(!existingItem);
-    //   addToInventory(result);
-    //   addToUnrevealed(result);
-    //   setCurrentBlindBox(result);
+      // Use placeholder item for UI - actual item comes from contract
+      const result = getPlaceholderItem();
+      console.log("Using placeholder for UI:", result);
 
-    //   setCollectionParticleType(result.collection);
-    //   setShowRarityParticles(true);
+      const existingItem = inventory.find(
+        (item) => item.id === result.id && item.version === result.version
+      );
+      setIsNewItem(!existingItem);
 
-    //   setEntranceItem(result);
-    //   setShowItemEntrance(true);
+      // Since we're using contract data, these functions now trigger refreshes
+      addToInventory(result);
+      addToUnrevealed(result);
+      setCurrentBlindBox(result);
 
-    //   if (result.collection === "space") {
-    //     setShowCelebration(true);
-    //     setShowScreenShake(true);
+      setCollectionParticleType(result.collection);
+      setShowRarityParticles(true);
+      setEntranceItem(result);
+      setShowItemEntrance(true);
 
-    //     setTimeout(() => setShowCelebration(false), 4000);
-    //     setTimeout(() => setShowScreenShake(false), 2000);
-    //   }
+      // No collection-specific celebration since we only have IPPY
+      setShowCelebration(true);
+      setShowScreenShake(true);
+      setTimeout(() => setShowCelebration(false), 4000);
+      setTimeout(() => setShowScreenShake(false), 2000);
 
-    //   setTimeout(() => {
-    //     setShowBlindBoxModal(true);
-    //     setIsSpinning(false);
-    //     setShowRarityParticles(false);
-    //   }, 2500);
-    // }
+      setShowBlindBoxModal(true);
+      setIsSpinning(false);
+      setShowRarityParticles(false);
+    }
   };
 
-  const revealBlindBox = () => {
+  const revealBlindBox = async () => {
     playBoxOpen();
-    openBoxes(1);
-    setIsItemRevealed(true);
+    try {
+      const tx = await openBoxes(1);
+      console.log("Opened box:", tx);
 
-    if (currentBlindBox) {
-      playItemReveal(currentBlindBox.collection);
+      // Refresh balances after opening
+      fetchContractBalance();
+      refreshInventory();
+
+      setIsItemRevealed(true);
+
+      if (currentBlindBox) {
+        playItemReveal("ippy");
+      }
+    } catch (error) {
+      console.error("Error opening box:", error);
     }
   };
 

@@ -75,25 +75,7 @@ const VERSION_STYLES = {
   hidden: "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white border-white/30 shadow-lg",
 }
 
-// Collection display names and icons
-const COLLECTION_INFO = {
-  toys: { name: "Toys Collection", icon: "🧸", description: "Playful and fun collectibles" },
-  magic: { name: "Magic Collection", icon: "🔮", description: "Mystical and enchanted items" },
-  fantasy: { name: "Fantasy Collection", icon: "👑", description: "Legendary fantasy treasures" },
-  tech: { name: "Tech Collection", icon: "⚡", description: "Futuristic technological wonders" },
-  nature: { name: "Nature Collection", icon: "🌿", description: "Natural world collectibles" },
-  space: { name: "Space Collection", icon: "🚀", description: "Rare cosmic discoveries" },
-}
 
-// Collection-based pricing tiers
-const COLLECTION_PRICE_RANGES = {
-  toys: { min: 1, max: 5 },
-  magic: { min: 8, max: 20 },
-  fantasy: { min: 15, max: 40 },
-  tech: { min: 10, max: 25 },
-  nature: { min: 5, max: 15 },
-  space: { min: 50, max: 150 },
-}
 
 // Update the mock listings with collection-based pricing
 const MOCK_LISTINGS: MarketListing[] = [

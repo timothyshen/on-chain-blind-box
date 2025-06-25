@@ -44,9 +44,11 @@ export const MachineHeader = () => {
 
             <div className="flex gap-3 md:gap-4 items-center">
                 <SoundToggle />
-                <div className="px-3 py-2 border-1 border-slate-200 rounded-md text-sm bg-white/80 backdrop-blur-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl">
-                    {sliceAddress(user?.wallet?.address || "")}
-                </div>
+                {user && (
+                    <div className="px-3 py-2 border-1 border-slate-200 rounded-md text-sm bg-white/80 backdrop-blur-sm md:text-base font-medium transition-all duration-300 shadow-lg hover:shadow-xl">
+                        {sliceAddress(user?.wallet?.address || "")}
+                    </div>
+                )}
                 <Button
                     variant="outline"
                     size="lg"
