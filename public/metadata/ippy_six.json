@@ -1,0 +1,15 @@
+{
+  "name": "IPPY Hidden Legendary",
+  "description": "An ultra-rare hidden IPPY NFT with mystical powers. Only a select few will ever possess this legendary collectible from the blind box collection.",
+  "image": "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeihlatpqpninawjrxfd4vof3atoqmhw4xwnqo7mpl5xqxg24zrdzbu",
+  "external_url": "",
+  "background_color": "#ffffff",
+  "attributes": [
+    { "trait_type": "Theme", "value": "Hidden" },
+    { "trait_type": "Rarity", "value": "Legendary" },
+    { "trait_type": "Type ID", "value": 0 },
+    { "trait_type": "Power Level", "value": "Mythical" },
+    { "trait_type": "Aura", "value": "Golden" },
+    { "trait_type": "Special Ability", "value": "Reality Warp" }
+  ]
+}

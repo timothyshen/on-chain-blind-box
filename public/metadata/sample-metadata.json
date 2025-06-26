@@ -1,0 +1,116 @@
+{
+  "metadata_examples": {
+    "hidden_nft": {
+      "name": "IPPY Hidden Legendary",
+      "description": "An ultra-rare hidden IPPY NFT with mystical powers. Only a select few will ever possess this legendary collectible from the blind box collection.",
+      "image": "https://api.ippy.com/images/hidden/legendary.png",
+      "external_url": "https://ippy.com/nft/hidden",
+      "background_color": "000000",
+      "attributes": [
+        { "trait_type": "Theme", "value": "Hidden" },
+        { "trait_type": "Rarity", "value": "Legendary" },
+        { "trait_type": "Type ID", "value": 0 },
+        { "trait_type": "Power Level", "value": "Mythical" },
+        { "trait_type": "Aura", "value": "Golden" },
+        { "trait_type": "Special Ability", "value": "Reality Warp" }
+      ]
+    },
+    "nature_nft": {
+      "name": "IPPY Nature Guardian",
+      "description": "A beautiful nature-themed IPPY NFT representing the harmony between technology and the natural world. Each Nature Guardian embodies the serene power of forests, mountains, and wildlife.",
+      "image": "https://api.ippy.com/images/nature/guardian.png",
+      "external_url": "https://ippy.com/nft/nature",
+      "background_color": "228B22",
+      "attributes": [
+        { "trait_type": "Theme", "value": "Nature" },
+        { "trait_type": "Rarity", "value": "Standard" },
+        { "trait_type": "Type ID", "value": 1 },
+        { "trait_type": "Element", "value": "Earth" },
+        { "trait_type": "Season", "value": "Spring" },
+        { "trait_type": "Ecosystem", "value": "Forest" }
+      ]
+    },
+    "tech_nft": {
+      "name": "IPPY Cyber Sentinel",
+      "description": "A cutting-edge tech-themed IPPY NFT from the digital frontier. These Cyber Sentinels guard the boundaries between the physical and virtual worlds with advanced AI capabilities.",
+      "image": "https://api.ippy.com/images/tech/sentinel.png",
+      "external_url": "https://ippy.com/nft/tech",
+      "background_color": "00FFFF",
+      "attributes": [
+        { "trait_type": "Theme", "value": "Tech" },
+        { "trait_type": "Rarity", "value": "Standard" },
+        { "trait_type": "Type ID", "value": 2 },
+        { "trait_type": "CPU Type", "value": "Quantum" },
+        { "trait_type": "Network", "value": "Neural" },
+        { "trait_type": "Interface", "value": "Holographic" }
+      ]
+    },
+    "art_nft": {
+      "name": "IPPY Artistic Muse",
+      "description": "An inspiring art-themed IPPY NFT celebrating creativity and imagination. Each Artistic Muse channels the energy of great masters and contemporary visionaries alike.",
+      "image": "https://api.ippy.com/images/art/muse.png",
+      "external_url": "https://ippy.com/nft/art",
+      "background_color": "9932CC",
+      "attributes": [
+        { "trait_type": "Theme", "value": "Art" },
+        { "trait_type": "Rarity", "value": "Standard" },
+        { "trait_type": "Type ID", "value": 3 },
+        { "trait_type": "Art Style", "value": "Abstract" },
+        { "trait_type": "Medium", "value": "Digital" },
+        { "trait_type": "Color Palette", "value": "Vibrant" }
+      ]
+    },
+    "music_nft": {
+      "name": "IPPY Rhythm Keeper",
+      "description": "A harmonious music-themed IPPY NFT that resonates with the universal language of sound. These Rhythm Keepers bring melody and beat to the blockchain.",
+      "image": "https://api.ippy.com/images/music/keeper.png",
+      "external_url": "https://ippy.com/nft/music",
+      "background_color": "FF1493",
+      "attributes": [
+        { "trait_type": "Theme", "value": "Music" },
+        { "trait_type": "Rarity", "value": "Standard" },
+        { "trait_type": "Type ID", "value": 4 },
+        { "trait_type": "Genre", "value": "Electronic" },
+        { "trait_type": "Instrument", "value": "Synthesizer" },
+        { "trait_type": "Tempo", "value": "Upbeat" }
+      ]
+    },
+    "sports_nft": {
+      "name": "IPPY Athletic Champion",
+      "description": "A dynamic sports-themed IPPY NFT embodying the spirit of competition and excellence. These Athletic Champions inspire greatness and push the boundaries of human potential.",
+      "image": "https://api.ippy.com/images/sports/champion.png",
+      "external_url": "https://ippy.com/nft/sports",
+      "background_color": "FF4500",
+      "attributes": [
+        { "trait_type": "Theme", "value": "Sports" },
+        { "trait_type": "Rarity", "value": "Standard" },
+        { "trait_type": "Type ID", "value": 5 },
+        { "trait_type": "Sport", "value": "Multi-Sport" },
+        { "trait_type": "Position", "value": "All-Star" },
+        { "trait_type": "Performance", "value": "Elite" }
+      ]
+    },
+    "gaming_nft": {
+      "name": "IPPY Digital Warrior",
+      "description": "An epic gaming-themed IPPY NFT from virtual realms beyond imagination. These Digital Warriors have conquered countless worlds and mastered every challenge.",
+      "image": "https://api.ippy.com/images/gaming/warrior.png",
+      "external_url": "https://ippy.com/nft/gaming",
+      "background_color": "8A2BE2",
+      "attributes": [
+        { "trait_type": "Theme", "value": "Gaming" },
+        { "trait_type": "Rarity", "value": "Standard" },
+        { "trait_type": "Type ID", "value": 6 },
+        { "trait_type": "Class", "value": "Warrior" },
+        { "trait_type": "Level", "value": "Legendary" },
+        { "trait_type": "Achievement", "value": "World Conqueror" }
+      ]
+    }
+  },
+  "schema_notes": {
+    "required_fields": ["name", "description", "image"],
+    "optional_fields": ["external_url", "background_color", "attributes"],
+    "attribute_format": "Array of objects with trait_type and value",
+    "image_recommendations": "Use HTTPS URLs, preferably IPFS for decentralization",
+    "description_length": "Keep under 1000 characters for best display"
+  }
+}
