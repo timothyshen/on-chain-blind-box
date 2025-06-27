@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input"
 interface GachaItem {
   id: string
   name: string
-  collection: "toys" | "magic" | "fantasy" | "tech" | "nature" | "space"
+  collection: "ippy"
   emoji: string
   description: string
   version: "standard" | "hidden"
@@ -52,21 +52,11 @@ interface TradeOffer {
 
 // Collection-based colors and styles
 const COLLECTION_COLORS = {
-  toys: "bg-pink-50 border-pink-200 text-pink-700 hover:bg-pink-100",
-  magic: "bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100",
-  fantasy: "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100",
-  tech: "bg-cyan-50 border-cyan-200 text-cyan-700 hover:bg-cyan-100",
-  nature: "bg-green-50 border-green-200 text-green-700 hover:bg-green-100",
-  space: "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100",
+  ippy: "bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500",
 }
 
 const COLLECTION_GLOW = {
-  toys: "hover:shadow-pink-200/50",
-  magic: "hover:shadow-purple-200/50",
-  fantasy: "hover:shadow-amber-200/50",
-  tech: "hover:shadow-cyan-200/50",
-  nature: "hover:shadow-green-200/50",
-  space: "hover:shadow-indigo-200/50",
+  ippy: "hover:shadow-pink-200/50",
 }
 
 // Add version styles
@@ -84,7 +74,7 @@ const MOCK_LISTINGS: MarketListing[] = [
     item: {
       id: "8",
       name: "Dragon Egg",
-      collection: "fantasy",
+      collection: "ippy",
       emoji: "🥚",
       description: "Ancient and powerful",
       version: "standard",
@@ -152,109 +142,7 @@ const MOCK_LISTINGS: MarketListing[] = [
     price: 120,
     quantity: 1,
     featured: true,
-  },
-  {
-    id: "6",
-    item: {
-      id: "11h",
-      name: "Laser Sword",
-      collection: "tech",
-      emoji: "⚡",
-      description: "Futuristic weapon",
-      version: "hidden",
-    },
-    seller: "TechMaster",
-    price: 45,
-    quantity: 2,
-    limited: true,
-  },
-  {
-    id: "7",
-    item: {
-      id: "13",
-      name: "Sacred Tree",
-      collection: "nature",
-      emoji: "🌳",
-      description: "Ancient wisdom",
-      version: "standard",
-    },
-    seller: "NatureKeeper",
-    price: 12,
-    quantity: 5,
-    discount: 15,
-  },
-  {
-    id: "8",
-    item: {
-      id: "2h",
-      name: "Teddy Bear",
-      collection: "toys",
-      emoji: "🧸",
-      description: "Soft and cuddly",
-      version: "hidden",
-    },
-    seller: "ToyMaster",
-    price: 18,
-    quantity: 2,
-  },
-  {
-    id: "9",
-    item: {
-      id: "16h",
-      name: "Moon Crystal",
-      collection: "space",
-      emoji: "🌙",
-      description: "Lunar energy",
-      version: "hidden",
-    },
-    seller: "MoonWalker",
-    price: 180,
-    quantity: 1,
-    limited: true,
-    featured: true,
-  },
-  // Add these blind box listings
-  {
-    id: "10",
-    blindBox: {
-      id: "bb1",
-      name: "Mystery Premium Box",
-      description: "Could contain any collection item!",
-      emoji: "📦",
-    },
-    seller: "MysteryTrader",
-    price: 8,
-    quantity: 5,
-    isBlindBox: true,
-  },
-  {
-    id: "11",
-    blindBox: {
-      id: "bb2",
-      name: "Rare Mystery Box",
-      description: "Higher chance for epic+ items",
-      emoji: "🎁",
-    },
-    seller: "BoxCollector",
-    price: 15,
-    quantity: 2,
-    isBlindBox: true,
-    featured: true,
-  },
-  {
-    id: "12",
-    blindBox: {
-      id: "bb3",
-      name: "Space Collection Box",
-      description: "Guaranteed Space collection item inside!",
-      emoji: "🌟",
-    },
-    seller: "StarHunter",
-    price: 45,
-    quantity: 1,
-    isBlindBox: true,
-    limited: true,
-  },
+  }
 ]
 
 // Update the mock trades with collection-based items
@@ -267,7 +155,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "5",
         name: "Crystal Ball",
-        collection: "magic",
+        collection: "ippy",
         emoji: "🔮",
         description: "Sees the future",
         version: "standard",
@@ -275,7 +163,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "5",
         name: "Crystal Ball",
-        collection: "magic",
+        collection: "ippy",
         emoji: "🔮",
         description: "Sees the future",
         version: "standard",
@@ -285,7 +173,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "7",
         name: "Golden Crown",
-        collection: "fantasy",
+        collection: "ippy",
         emoji: "👑",
         description: "Fit for royalty",
         version: "standard",
@@ -302,7 +190,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "2h",
         name: "Teddy Bear",
-        collection: "toys",
+        collection: "ippy",
         emoji: "🧸",
         description: "Soft and cuddly",
         version: "hidden",
@@ -312,7 +200,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "4",
         name: "Magic Wand",
-        collection: "magic",
+        collection: "ippy",
         emoji: "🪄",
         description: "Sparkles with mystery",
         version: "standard",
@@ -329,7 +217,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "12",
         name: "Hologram",
-        collection: "tech",
+        collection: "ippy",
         emoji: "🌐",
         description: "3D projection",
         version: "standard",
@@ -337,7 +225,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "14",
         name: "Rainbow Flower",
-        collection: "nature",
+        collection: "ippy",
         emoji: "🌺",
         description: "Blooms in all colors",
         version: "standard",
@@ -347,7 +235,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "16h",
         name: "Moon Crystal",
-        collection: "space",
+        collection: "ippy",
         emoji: "🌙",
         description: "Lunar energy",
         version: "hidden",
@@ -378,7 +266,7 @@ const MOCK_TRADES: TradeOffer[] = [
       {
         id: "15h",
         name: "Shooting Star",
-        collection: "space",
+        collection: "ippy",
         emoji: "⭐",
         description: "Make a wish",
         version: "hidden",
@@ -499,7 +387,7 @@ export default function Market() {
 
   // Calculate market stats
   const totalListings = listings.length
-  const spaceItems = listings.filter((listing) => listing.item?.collection === "space").length
+  const spaceItems = listings.filter((listing) => listing.item?.collection === "ippy").length
   const hiddenItems = listings.filter((listing) => listing.item?.version === "hidden").length
   const blindBoxes = listings.filter((listing) => listing.isBlindBox).length
   const averagePrice = Math.round(listings.reduce((sum, listing) => sum + listing.price, 0) / listings.length)
@@ -616,7 +504,7 @@ export default function Market() {
                     key={listing.id}
                     className={cn(
                       "transition-all duration-300 cursor-pointer border-2 shadow-lg hover:shadow-xl hover:scale-105",
-                      COLLECTION_COLORS[listing.item?.collection || "toys"],
+                      COLLECTION_COLORS[listing.item?.collection || "ippy"],
                       listing.item && VERSION_STYLES[listing.item.version],
                       listing.item && COLLECTION_GLOW[listing.item.collection],
                       "ring-2 ring-blue-300/50",
@@ -635,13 +523,8 @@ export default function Market() {
                         <Badge
                           variant="secondary"
                           className={cn(
-                            "text-xs font-bold",
-                            listing.item?.collection === "toys" && "bg-pink-100 text-pink-800 border-pink-300",
-                            listing.item?.collection === "magic" && "bg-purple-100 text-purple-800 border-purple-300",
-                            listing.item?.collection === "fantasy" && "bg-amber-100 text-amber-800 border-amber-300",
-                            listing.item?.collection === "tech" && "bg-cyan-100 text-cyan-800 border-cyan-300",
-                            listing.item?.collection === "nature" && "bg-green-100 text-green-800 border-green-300",
-                            listing.item?.collection === "space" && "bg-indigo-100 text-indigo-800 border-indigo-300",
+                            "text-xs font-bold bg-pink-100 text-pink-800 border-pink-300",
+
                           )}
                         >
                           {listing.item?.collection.toUpperCase()}
@@ -926,10 +809,10 @@ export default function Market() {
                     "transition-all duration-300 cursor-pointer border-2 shadow-lg hover:shadow-xl hover:scale-105 relative",
                     listing.isBlindBox
                       ? "bg-gradient-to-br from-amber-50 to-orange-50 border-amber-300 hover:shadow-amber-200/50"
-                      : COLLECTION_COLORS[listing.item?.collection || "toys"],
+                      : COLLECTION_COLORS[listing.item?.collection || "ippy"],
                     listing.item && VERSION_STYLES[listing.item.version],
                     listing.item && COLLECTION_GLOW[listing.item.collection],
-                    listing.item?.collection === "space" && "ring-2 ring-indigo-300/50",
+                    listing.item?.collection === "ippy" && "ring-2 ring-indigo-300/50",
                     listing.featured && "ring-2 ring-blue-300/50",
                     listing.limited && "ring-2 ring-red-300/50",
                   )}
@@ -977,12 +860,8 @@ export default function Market() {
                             variant="secondary"
                             className={cn(
                               "text-xs font-bold",
-                              listing.item?.collection === "toys" && "bg-pink-100 text-pink-800 border-pink-300",
-                              listing.item?.collection === "magic" && "bg-purple-100 text-purple-800 border-purple-300",
-                              listing.item?.collection === "fantasy" && "bg-amber-100 text-amber-800 border-amber-300",
-                              listing.item?.collection === "tech" && "bg-cyan-100 text-cyan-800 border-cyan-300",
-                              listing.item?.collection === "nature" && "bg-green-100 text-green-800 border-green-300",
-                              listing.item?.collection === "space" && "bg-indigo-100 text-indigo-800 border-indigo-300",
+                              "bg-pink-100 text-pink-800 border-pink-300",
+
                             )}
                           >
                             {listing.item?.collection.toUpperCase()}
@@ -1039,7 +918,7 @@ export default function Market() {
                         size="sm"
                       >
                         {coins >=
-                        (listing.discount ? Math.round(listing.price * (1 - listing.discount / 100)) : listing.price)
+                          (listing.discount ? Math.round(listing.price * (1 - listing.discount / 100)) : listing.price)
                           ? listing.isBlindBox
                             ? "Buy Mystery Box"
                             : "Buy Now"
