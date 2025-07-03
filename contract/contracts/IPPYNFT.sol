@@ -23,7 +23,8 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
 
     // Base URIs for different NFT types - allows individual theming
     mapping(uint256 => string) public nftTypeBaseURIs;
-    string private defaultBaseURI = "https://api.ippy.com/metadata/";
+    string private defaultBaseURI =
+        "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/";
 
     // Tracking for statistics
     mapping(uint256 => uint256) public nftTypeCounts; // nftType => count minted
@@ -46,13 +47,27 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
 
     constructor() ERC721("IPPYNFT", "IPPY") Ownable(msg.sender) {
         // Initialize default base URIs for each NFT type
-        nftTypeBaseURIs[HIDDEN_NFT_ID] = "https://api.ippy.com/hidden/";
-        nftTypeBaseURIs[STANDARD_NFT_1] = "https://api.ippy.com/nature/";
-        nftTypeBaseURIs[STANDARD_NFT_2] = "https://api.ippy.com/tech/";
-        nftTypeBaseURIs[STANDARD_NFT_3] = "https://api.ippy.com/art/";
-        nftTypeBaseURIs[STANDARD_NFT_4] = "https://api.ippy.com/music/";
-        nftTypeBaseURIs[STANDARD_NFT_5] = "https://api.ippy.com/sports/";
-        nftTypeBaseURIs[STANDARD_NFT_6] = "https://api.ippy.com/gaming/";
+        nftTypeBaseURIs[
+            HIDDEN_NFT_ID
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/blippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_1
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/ippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_2
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/bippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_3
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/thippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_4
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/stippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_5
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/raippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_6
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/mippy.json";
     }
 
     /**
@@ -115,13 +130,13 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
     function getNFTTypeName(
         uint256 nftType
     ) external pure returns (string memory) {
-        if (nftType == HIDDEN_NFT_ID) return "Hidden";
-        if (nftType == STANDARD_NFT_1) return "Nature";
-        if (nftType == STANDARD_NFT_2) return "Tech";
-        if (nftType == STANDARD_NFT_3) return "Art";
-        if (nftType == STANDARD_NFT_4) return "Music";
-        if (nftType == STANDARD_NFT_5) return "Sports";
-        if (nftType == STANDARD_NFT_6) return "Gaming";
+        if (nftType == HIDDEN_NFT_ID) return "BLIPPY";
+        if (nftType == STANDARD_NFT_1) return "IPPY";
+        if (nftType == STANDARD_NFT_2) return "BIPPY";
+        if (nftType == STANDARD_NFT_3) return "THIPPY";
+        if (nftType == STANDARD_NFT_4) return "STIPPY";
+        if (nftType == STANDARD_NFT_5) return "RAIPPY";
+        if (nftType == STANDARD_NFT_6) return "MIPPY";
         return "Unknown";
     }
 
@@ -238,8 +253,6 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
         defaultBaseURI = _baseURI;
         emit DefaultBaseURIUpdated(_baseURI);
     }
-
-
 
     /**
      * @dev Get NFTs by type for a user
