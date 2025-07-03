@@ -17,6 +17,9 @@ import { useGameState } from "@/hooks/use-game-state"
 import { useCablePhysics } from "@/hooks/use-cable-physics"
 import type { Prize, DroppedPrize as DroppedPrizeType } from "@/types/game"
 import { MachineHeader } from "@/components/gacha/MachineHeader"
+import { ControlPanel } from "@/components/gacha/ControlPanel"
+import { useRouter } from "next/navigation"
+
 
 // Constants for claw behavior
 const CLAW_TIP_Y_OFFSET = 35 // Offset from clawY (mechanism top) to the tips when open/descending
@@ -60,6 +63,7 @@ export default function ClawMachine() {
     endGame,
     dismissResult,
   } = useGameState()
+  const router = useRouter()
 
 
   const isMobile = useMobileDetection()
@@ -961,6 +965,12 @@ export default function ClawMachine() {
           </div>
         )}
       </div>
+      <ControlPanel
+        coins={coins}
+        onAddCoin={addCoins}
+        onOpenInventory={() => router.push("/inventory")}
+        onOpenMarket={() => router.push("/market")}
+      />
       {showResult && gameResult && (
         <GameResultModal
           result={gameResult}
