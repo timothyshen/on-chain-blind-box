@@ -107,13 +107,8 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
 
         uint256 nftType = tokenIdToNFTType[tokenId];
         string memory baseURI = nftTypeBaseURIs[nftType];
-
-        // If no specific base URI is set for this type, use default
-        if (bytes(baseURI).length == 0) {
-            baseURI = defaultBaseURI;
-        }
-
-        return string(abi.encodePacked(baseURI, _toString(tokenId), ".json"));
+        // For specific NFT types, return the direct metadata URL (no tokenId appending)
+        return baseURI;
     }
 
     /**
