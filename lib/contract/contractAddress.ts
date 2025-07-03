@@ -1,2 +1,2 @@
-export const blindBoxAddress = "0xa705b6bD5bfdcF145a4C0A4D785Ce9411dd03076";
-export const ippyNFTAddress = "0x5e0B21926c7EF962Ce6C0eeB62C5B2733eEb3DE6";
+export const blindBoxAddress = "0x3C259F9805847D85Bc720D5615128832C2987ef3";
+export const ippyNFTAddress = "0x354F47762A36eD1a4e5D3d5701b3198881add486";
