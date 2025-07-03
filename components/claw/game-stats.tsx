@@ -9,22 +9,18 @@ interface GameStatsProps {
   coins: number
   score: number
   gameActive: boolean
-  isMuted: boolean
   onStartGame: () => void
   onAddCoins: () => void
   onResetGame: () => void
-  onToggleMute: () => void
 }
 
 export function GameStats({
   coins,
   score,
   gameActive,
-  isMuted,
   onStartGame,
   onAddCoins,
   onResetGame,
-  onToggleMute,
 }: GameStatsProps) {
   return (
     <Card className="bg-black/20 border-purple-500/30 backdrop-blur w-full lg:w-80">
@@ -34,8 +30,8 @@ export function GameStats({
             <Gamepad2 className="w-5 h-5" />
             Game Stats
           </CardTitle>
-          <Button onClick={onToggleMute} variant="ghost" size="icon" className="text-white hover:bg-white/10">
-            {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+            <VolumeX className="w-5 h-5" />
             <span className="sr-only">Toggle sound</span>
           </Button>
         </div>

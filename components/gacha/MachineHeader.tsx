@@ -1,15 +1,21 @@
-import { Crown, Package, Store, User } from "lucide-react"
+import { Crown, Package, Store, User, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { usePrivy } from "@privy-io/react-auth"
 import { SoundToggle } from "@/components/sound-toggle"
+import { useRouter } from "next/navigation"
 
 
-export const MachineHeader = () => {
+export const MachineHeader = ({ name, subtitle, isDark }: { name: string, subtitle: string, isDark: boolean }) => {
     const { login, logout, user } = usePrivy()
+    const router = useRouter()
 
     const sliceAddress = (address: string) => {
         return `${address.slice(0, 6)}...${address.slice(-4)}`
+    }
+
+    const handleHomeClick = () => {
+        router.push('/')
     }
 
     return (
@@ -25,19 +31,19 @@ export const MachineHeader = () => {
                     <h1
                         className={cn(
                             "text-3xl md:text-5xl font-bold tracking-tight",
-                            "text-slate-800",
+                            isDark ? "text-slate-800" : "text-white",
                             "drop-shadow-lg",
                         )}
                     >
-                        Gacha Zone
+                        {name}
                     </h1>
                     <p
                         className={cn(
                             "text-sm md:text-base font-medium tracking-wide hidden sm:block",
-                            "text-slate-600",
+                            isDark ? "text-slate-600" : "text-white",
                         )}
                     >
-                        Premium Collection Experience
+                        {subtitle}
                     </p>
                 </div>
             </div>
@@ -49,6 +55,15 @@ export const MachineHeader = () => {
                         {sliceAddress(user?.wallet?.address || "")}
                     </div>
                 )}
+                <Button
+                    variant="outline"
+                    size="lg"
+                    className="bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm"
+                    onClick={handleHomeClick}
+                >
+                    <Home className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                    Home
+                </Button>
                 <Button
                     variant="outline"
                     size="lg"

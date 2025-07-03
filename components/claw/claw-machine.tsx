@@ -10,13 +10,13 @@ import { PrizeBall } from "./prize-ball"
 import { CableSystem } from "./cable-system"
 import { ClawMechanism } from "./claw-mechanism"
 import { GameResultModal } from "./game-result-modal"
-import { useMobileDetection } from "../hooks/use-mobile-detection"
-import { useButtonInteractions } from "../hooks/use-button-interactions"
-import { useKeyboardControls } from "../hooks/use-keyboard-controls"
-import { useGameState } from "../hooks/use-game-state"
-import { useCablePhysics } from "../hooks/use-cable-physics"
-import type { Prize, DroppedPrize as DroppedPrizeType } from "../types/game"
-import { useSoundEffects } from "../hooks/use-sound-effects"
+import { useMobileDetection } from "@/hooks/use-mobile-detection"
+import { useButtonInteractions } from "@/hooks/use-button-interactions"
+import { useKeyboardControls } from "@/hooks/use-keyboard-controls"
+import { useGameState } from "@/hooks/use-game-state"
+import { useCablePhysics } from "@/hooks/use-cable-physics"
+import type { Prize, DroppedPrize as DroppedPrizeType } from "@/types/game"
+import { MachineHeader } from "@/components/gacha/MachineHeader"
 
 // Constants for claw behavior
 const CLAW_TIP_Y_OFFSET = 35 // Offset from clawY (mechanism top) to the tips when open/descending
@@ -61,7 +61,6 @@ export default function ClawMachine() {
     dismissResult,
   } = useGameState()
 
-  const { isMuted, toggleMute, playMove, playGrab, playWin, playLose, playCoin } = useSoundEffects()
 
   const isMobile = useMobileDetection()
   const { pressedButtons, heldButtons, handleButtonPress, startHolding, stopHolding, holdIntervals } =
@@ -85,13 +84,8 @@ export default function ClawMachine() {
     }
   }, [])
 
-  const disturbBallsAroundClaw = useCallback(() => {
-    // Placeholder for potential future logic
-  }, [isGrabbing, clawX, clawY])
-
   const moveClawLeft = useCallback(() => {
     if (!gameActive || isGrabbing) return
-    playMove()
     handleButtonPress("left")
     const step = 15
     setClawX((prev) => Math.max(20, prev - step))
@@ -101,11 +95,10 @@ export default function ClawMachine() {
       setIsClawMoving(false)
       setCableSwayAngle(0)
     }, 200)
-  }, [gameActive, isGrabbing, setClawX, handleButtonPress, setIsClawMoving, setCableSwayAngle, playMove])
+  }, [gameActive, isGrabbing, setClawX, handleButtonPress, setIsClawMoving, setCableSwayAngle])
 
   const moveClawRight = useCallback(() => {
     if (!gameActive || isGrabbing) return
-    playMove()
     handleButtonPress("right")
     const step = 15
     setClawX((prev) => Math.min(MACHINE_WIDTH - 60, prev + step))
@@ -115,7 +108,7 @@ export default function ClawMachine() {
       setIsClawMoving(false)
       setCableSwayAngle(0)
     }, 200)
-  }, [gameActive, isGrabbing, setClawX, handleButtonPress, setIsClawMoving, setCableSwayAngle, MACHINE_WIDTH, playMove])
+  }, [gameActive, isGrabbing, setClawX, handleButtonPress, setIsClawMoving, setCableSwayAngle, MACHINE_WIDTH])
 
   const finishGrabSequence = useCallback(
     (wasSuccessful = false) => {
@@ -258,8 +251,6 @@ export default function ClawMachine() {
         const currentY = startY + (targetY - startY) * easeProgress
         setClawY(currentY)
 
-        // REMOVED: The block that made the prize fall based on prizeWillFall
-        // if (prizeWillFall && grabbedPrizeDetails && progress > 0.5 && progress < 0.6) { ... }
 
         if (progress < 1) {
           animationFrameRef.current = requestAnimationFrame(animateAscent)
@@ -278,18 +269,11 @@ export default function ClawMachine() {
     },
     [
       clawY,
-      // prizeWillFall, // No longer a primary factor for dropping in this function
-      grabbedPrizeId, // Check current state of grabbedPrizeId
       setClawY,
       setGrabPhase,
       setCableSwayAngle,
-      // setClawShaking, // Not needed if prize doesn't fall randomly
-      // setGrabbedPrizeId, // Not reset here if prize doesn't fall
       finishGrabSequence,
       startMovingToDropZone,
-      // setPrizeWillFall, // Not set here
-      // setDroppedPrize, // Not set here if prize doesn't fall
-      // endGame, // Not called here for a loss if prize doesn't fall
       cancelAnimation,
     ],
   )
@@ -297,7 +281,6 @@ export default function ClawMachine() {
   const grabPrize = useCallback(() => {
     if (!gameActive || isGrabbing) return
     cancelAnimation()
-    playGrab()
     setIsGrabbing(true)
     setGrabPhase("descending")
     setClawShaking(false)
@@ -421,11 +404,9 @@ export default function ClawMachine() {
     setIsClawMoving,
     setCableStabilizing,
     setClawY,
-    disturbBallsAroundClaw,
     setClawOpenness,
     setClawClosed,
     startAscent,
-    playGrab,
     MAX_DESCENT_Y,
     cancelAnimation,
   ])
@@ -453,19 +434,8 @@ export default function ClawMachine() {
   const currentDroppedPrize = useGameState().droppedPrize
 
   const onStartGame = () => {
-    playCoin()
     startGame()
   }
-
-  useEffect(() => {
-    if (gameResult) {
-      if (gameResult.won) {
-        playWin()
-      } else {
-        playLose()
-      }
-    }
-  }, [gameResult, playWin, playLose])
 
   // Add this useEffect after the existing useEffects, before the return statement
   useEffect(() => {
@@ -497,11 +467,11 @@ export default function ClawMachine() {
           setDroppedPrize((prev) =>
             prev
               ? {
-                  ...prev,
-                  x: currentX,
-                  y: currentY,
-                  rotation: rotation,
-                }
+                ...prev,
+                x: currentX,
+                y: currentY,
+                rotation: rotation,
+              }
               : null,
           )
 
@@ -510,10 +480,10 @@ export default function ClawMachine() {
             setDroppedPrize((prev) =>
               prev
                 ? {
-                    ...prev,
-                    dropPhase: "traveling",
-                    dropStartTime: now,
-                  }
+                  ...prev,
+                  dropPhase: "traveling",
+                  dropStartTime: now,
+                }
                 : null,
             )
           }
@@ -534,12 +504,12 @@ export default function ClawMachine() {
           setDroppedPrize((prev) =>
             prev
               ? {
-                  ...prev,
-                  x: currentX,
-                  y: currentY,
-                  bouncing: Math.abs(bounceHeight) > 2,
-                  rotation: (prev.rotation || 0) * (1 - progress),
-                }
+                ...prev,
+                x: currentX,
+                y: currentY,
+                bouncing: Math.abs(bounceHeight) > 2,
+                rotation: (prev.rotation || 0) * (1 - progress),
+              }
               : null,
           )
 
@@ -548,11 +518,11 @@ export default function ClawMachine() {
             setDroppedPrize((prev) =>
               prev
                 ? {
-                    ...prev,
-                    dropPhase: "collected",
-                    bouncing: false,
-                    rotation: 0,
-                  }
+                  ...prev,
+                  dropPhase: "collected",
+                  bouncing: false,
+                  rotation: 0,
+                }
                 : null,
             )
 
@@ -571,7 +541,8 @@ export default function ClawMachine() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-900 via-blue-900 to-indigo-900 p-2 sm:p-4">
-      <div className="w-full max-w-7xl mx-auto">
+      <MachineHeader name="Claw Machine" subtitle="Premium Collection Experience" isDark={false} />
+      <div className="w-full max-w-7xl mx-auto mt-[120px]">
         <div className="text-center mb-4 sm:mb-8">
           <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">🎪 Claw Machine 🎪</h1>
           <p className="text-purple-200 text-sm sm:text-base px-2">
@@ -589,8 +560,6 @@ export default function ClawMachine() {
                 onStartGame={onStartGame}
                 onAddCoins={addCoins}
                 onResetGame={resetGame}
-                isMuted={isMuted}
-                onToggleMute={toggleMute}
               />
             </div>
             <div className="w-full flex justify-center relative">
@@ -687,7 +656,7 @@ export default function ClawMachine() {
                             <p className="text-lg sm:text-xl font-bold mb-2">
                               {coins === 0 ? "No Coins Left!" : "Insert Coin to Play"}
                             </p>
-                            <p className="text-xs sm:text-sm opacity-75">Click "Start Game" to begin</p>
+                            <p className="text-xs sm:text-sm opacity-75">Click &quot;Start Game&quot; to begin</p>
                           </div>
                         </div>
                       )}
@@ -804,8 +773,6 @@ export default function ClawMachine() {
               onStartGame={onStartGame}
               onAddCoins={addCoins}
               onResetGame={resetGame}
-              isMuted={isMuted}
-              onToggleMute={toggleMute}
             />
             <div className="flex flex-col items-center space-y-4 relative">
               <Card className="bg-gradient-to-b from-pink-200 to-pink-400 border-4 border-pink-300 shadow-2xl rounded-3xl overflow-hidden w-max mx-auto relative">

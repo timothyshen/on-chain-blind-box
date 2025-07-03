@@ -88,7 +88,7 @@ const MOCK_LISTINGS: MarketListing[] = [
     item: {
       id: "4",
       name: "Magic Wand",
-      collection: "magic",
+      collection: "ippy",
       emoji: "🪄",
       description: "Sparkles with mystery",
       version: "standard",
@@ -103,7 +103,7 @@ const MOCK_LISTINGS: MarketListing[] = [
     item: {
       id: "9h",
       name: "Phoenix Feather",
-      collection: "fantasy",
+      collection: "ippy",
       emoji: "🪶",
       description: "Burns with eternal flame",
       version: "hidden",
@@ -118,7 +118,7 @@ const MOCK_LISTINGS: MarketListing[] = [
     item: {
       id: "1",
       name: "Rubber Duck",
-      collection: "toys",
+      collection: "ippy",
       emoji: "🦆",
       description: "A squeaky companion",
       version: "standard",
@@ -133,7 +133,7 @@ const MOCK_LISTINGS: MarketListing[] = [
     item: {
       id: "15",
       name: "Shooting Star",
-      collection: "space",
+      collection: "ippy",
       emoji: "⭐",
       description: "Make a wish",
       version: "standard",
@@ -321,7 +321,7 @@ export default function Market() {
         const blindBoxItem: GachaItem = {
           id: listing.blindBox.id,
           name: listing.blindBox.name,
-          collection: "toys", // Placeholder - will be determined when opened
+          collection: "ippy", // Placeholder - will be determined when opened
           emoji: listing.blindBox.emoji,
           description: listing.blindBox.description,
           version: "standard", // Placeholder
@@ -377,9 +377,7 @@ export default function Market() {
         case "collection":
           return (a.item?.collection || "").localeCompare(b.item?.collection || "")
         case "name":
-          return (a.isBlindBox ? a.blindBox?.name : a.item?.name || "").localeCompare(
-            (b.isBlindBox ? b.blindBox?.name : b.item?.name) || "",
-          )
+          return (a.isBlindBox ? a.blindBox?.name || "" : a.item?.name || "").localeCompare(b.isBlindBox ? b.blindBox?.name || "" : b.item?.name || "")
         default:
           return 0
       }
@@ -423,7 +421,7 @@ export default function Market() {
           </div>
 
           <div className="flex items-center gap-3 md:ml-auto">
-            <SoundToggle isDark={false} />
+            <SoundToggle />
 
             <Card className="bg-white/80 border-slate-200 shadow-lg backdrop-blur-sm">
               <CardContent className="p-4 flex items-center gap-2">
