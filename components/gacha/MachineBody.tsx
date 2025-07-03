@@ -167,7 +167,7 @@ export const MachineBody = ({
                         {/* Dispensing Chute */}
                         <div className="flex flex-col items-center z-20">
                             <div
-                                className="w-[215px] h-[85px] ml-9 mr-2 mb-2 rounded-xl flex items-center justify-center bg-[url('/imageAssets/ItemPlacement.png')] bg-auto z-40 object-contain"
+                                className="w-[210px] h-[75px] ml-9 my-2 flex items-center justify-center bg-[url('/imageAssets/ItemPlacement.png')] bg-auto z-40 object-contain"
                             >
                                 {showBlindBoxModal && (
                                     <div className="text-3xl md:text-4xl animate-bounce drop-shadow-lg">📦</div>
@@ -179,12 +179,12 @@ export const MachineBody = ({
                         <div className="flex flex-col items-center z-50">
                             <button
                                 onClick={onPullGacha}
-                                // disabled={coins < 1 || isSpinning || showBlindBoxModal}
+                                disabled={coins < 1 || isSpinning || showBlindBoxModal}
                                 className={cn(
                                     "relative mr-1 rounded-full transition-all duration-500 ease-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed group z-50",
                                     leverPulled ? "bg-[url('/imageAssets/GachaAfter.png')] bg-cover bg-center" : "bg-[url('/imageAssets/GachaBefore.png')] bg-cover bg-center",
                                     "shadow-lg hover:shadow-xl",
-                                    "border-2 border-amber-200/50",
+                                    "border-1 border-[#703B48]",
                                     !(coins < 1 || isSpinning || showBlindBoxModal) &&
                                     "hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/25 active:scale-95",
                                 )}

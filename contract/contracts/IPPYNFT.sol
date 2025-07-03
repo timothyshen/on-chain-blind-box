@@ -9,27 +9,66 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
     // Address of the BlindBox contract that can mint NFTs
     address public blindBoxContract;
 
-    // Base URIs for different NFT types
-    string private baseURIStandard = "https://api.ippy.com/standard/";
-    string private baseURIHidden = "https://api.ippy.com/hidden/";
-
     // NFT type constants (matching BlindBox contract)
-    uint256 public constant HIDDEN_NFT_ID = 0;
+    uint256 public constant HIDDEN_NFT_ID = 0; // Ultra rare hidden NFT
+    uint256 public constant STANDARD_NFT_1 = 1; // Nature Theme
+    uint256 public constant STANDARD_NFT_2 = 2; // Tech Theme
+    uint256 public constant STANDARD_NFT_3 = 3; // Art Theme
+    uint256 public constant STANDARD_NFT_4 = 4; // Music Theme
+    uint256 public constant STANDARD_NFT_5 = 5; // Sports Theme
+    uint256 public constant STANDARD_NFT_6 = 6; // Gaming Theme
+
+    // Storage for actual NFT type per token (crucial for proper URI generation)
+    mapping(uint256 => uint256) public tokenIdToNFTType;
+
+    // Base URIs for different NFT types - allows individual theming
+    mapping(uint256 => string) public nftTypeBaseURIs;
+    string private defaultBaseURI =
+        "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/";
 
     // Tracking for statistics
-    mapping(uint256 => uint256) public nftTypeCounts; // tokenId => count minted
-    mapping(address => mapping(uint256 => uint256)) public userNFTTypeCounts; // user => tokenId => count
+    mapping(uint256 => uint256) public nftTypeCounts; // nftType => count minted
+    mapping(address => mapping(uint256 => uint256)) public userNFTTypeCounts; // user => nftType => count
 
     // Events for frontend tracking
-    event NFTMinted(address indexed to, uint256 indexed tokenId, bool isHidden);
-    event BaseURIUpdated(string newStandardURI, string newHiddenURI);
+    event NFTMinted(
+        address indexed to,
+        uint256 indexed tokenId,
+        uint256 indexed nftType,
+        bool isHidden
+    );
+    event BaseURIUpdated(uint256 indexed nftType, string newURI);
+    event DefaultBaseURIUpdated(string newURI);
 
     modifier onlyBlindBox() {
         require(msg.sender == blindBoxContract, "Only BlindBox can mint");
         _;
     }
 
-    constructor() ERC721("IPPYNFT", "IPPY") Ownable(msg.sender) {}
+    constructor() ERC721("IPPYNFT", "IPPY") Ownable(msg.sender) {
+        // Initialize default base URIs for each NFT type
+        nftTypeBaseURIs[
+            HIDDEN_NFT_ID
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/blippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_1
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/ippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_2
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/bippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_3
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/thippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_4
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/stippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_5
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/raippy.json";
+        nftTypeBaseURIs[
+            STANDARD_NFT_6
+        ] = "https://maroon-nearby-bedbug-535.mypinata.cloud/ipfs/bafybeibv423q2y4hnj6m7r3wuhagmi2mlmiyyexvfqhipblppnhz6mjdxq/mippy.json";
+    }
 
     /**
      * @dev Set the BlindBox contract address (only owner can call)
@@ -39,51 +78,65 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
     }
 
     /**
-     * @dev Mint function called by BlindBox contract
+     * @dev Mint function called by BlindBox contract - now properly stores NFT type
      */
-    function mint(address to, uint256 tokenId) external onlyBlindBox {
+    function mint(address to, uint256 nftType) external onlyBlindBox {
+        require(nftType <= STANDARD_NFT_6, "Invalid NFT type");
+
         uint256 newTokenId = totalSupply(); // Use sequential token IDs
         _mint(to, newTokenId);
 
-        // Track statistics
-        nftTypeCounts[tokenId]++;
-        userNFTTypeCounts[to][tokenId]++;
+        // Store the actual NFT type for this token (this is the key improvement)
+        tokenIdToNFTType[newTokenId] = nftType;
 
-        bool isHidden = tokenId == HIDDEN_NFT_ID;
-        emit NFTMinted(to, newTokenId, isHidden);
+        // Track statistics
+        nftTypeCounts[nftType]++;
+        userNFTTypeCounts[to][nftType]++;
+
+        bool isHidden = nftType == HIDDEN_NFT_ID;
+        emit NFTMinted(to, newTokenId, nftType, isHidden);
     }
 
     /**
-     * @dev Override tokenURI to provide different metadata for different NFT types
+     * @dev Override tokenURI to provide proper metadata URLs for different NFT types
      */
     function tokenURI(
         uint256 tokenId
     ) public view override returns (string memory) {
         _requireOwned(tokenId);
 
-        uint256 nftType = _getNFTType(tokenId);
-
-        if (nftType == HIDDEN_NFT_ID) {
-            // Hidden NFT gets special metadata
-            return string(abi.encodePacked(baseURIHidden, _toString(tokenId)));
-        } else {
-            // Standard NFTs (IDs 1-6)
-            return
-                string(abi.encodePacked(baseURIStandard, _toString(tokenId)));
-        }
+        uint256 nftType = tokenIdToNFTType[tokenId];
+        string memory baseURI = nftTypeBaseURIs[nftType];
+        // For specific NFT types, return the direct metadata URL (no tokenId appending)
+        return baseURI;
     }
 
     /**
-     * @dev Get the NFT type (0-6) based on the token ID
+     * @dev Get the actual stored NFT type for a token
      */
-    function _getNFTType(uint256 tokenId) internal pure returns (uint256) {
-        // This is a simplified mapping - you might want to store the actual type
-        // For now, we'll derive it from the token ID pattern
-        return (tokenId % 7);
+    function getNFTType(uint256 tokenId) external view returns (uint256) {
+        _requireOwned(tokenId);
+        return tokenIdToNFTType[tokenId];
     }
 
     /**
-     * @dev Get all NFTs owned by a user with their types
+     * @dev Get NFT type name for display purposes
+     */
+    function getNFTTypeName(
+        uint256 nftType
+    ) external pure returns (string memory) {
+        if (nftType == HIDDEN_NFT_ID) return "BLIPPY";
+        if (nftType == STANDARD_NFT_1) return "IPPY";
+        if (nftType == STANDARD_NFT_2) return "BIPPY";
+        if (nftType == STANDARD_NFT_3) return "THIPPY";
+        if (nftType == STANDARD_NFT_4) return "STIPPY";
+        if (nftType == STANDARD_NFT_5) return "RAIPPY";
+        if (nftType == STANDARD_NFT_6) return "MIPPY";
+        return "Unknown";
+    }
+
+    /**
+     * @dev Get all NFTs owned by a user with their actual types
      */
     function getUserNFTs(
         address user
@@ -93,39 +146,54 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
         returns (
             uint256[] memory tokenIds,
             uint256[] memory nftTypes,
-            string[] memory tokenURIs
+            string[] memory tokenURIs,
+            string[] memory typeNames
         )
     {
         uint256 balance = balanceOf(user);
         tokenIds = new uint256[](balance);
         nftTypes = new uint256[](balance);
         tokenURIs = new string[](balance);
+        typeNames = new string[](balance);
 
         for (uint256 i = 0; i < balance; i++) {
             uint256 tokenId = tokenOfOwnerByIndex(user, i);
+            uint256 nftType = tokenIdToNFTType[tokenId];
+
             tokenIds[i] = tokenId;
-            nftTypes[i] = _getNFTType(tokenId);
+            nftTypes[i] = nftType;
             tokenURIs[i] = tokenURI(tokenId);
+            typeNames[i] = this.getNFTTypeName(nftType);
         }
 
-        return (tokenIds, nftTypes, tokenURIs);
+        return (tokenIds, nftTypes, tokenURIs, typeNames);
     }
 
     /**
-     * @dev Get user's NFT counts by type
+     * @dev Get user's NFT counts by actual type
      */
     function getUserNFTTypeCounts(
         address user
-    ) external view returns (uint256[] memory types, uint256[] memory counts) {
+    )
+        external
+        view
+        returns (
+            uint256[] memory types,
+            uint256[] memory counts,
+            string[] memory typeNames
+        )
+    {
         types = new uint256[](7); // 0-6 types
         counts = new uint256[](7);
+        typeNames = new string[](7);
 
         for (uint256 i = 0; i < 7; i++) {
             types[i] = i;
             counts[i] = userNFTTypeCounts[user][i];
+            typeNames[i] = this.getNFTTypeName(i);
         }
 
-        return (types, counts);
+        return (types, counts, typeNames);
     }
 
     /**
@@ -137,18 +205,21 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
         returns (
             uint256[] memory types,
             uint256[] memory counts,
+            string[] memory typeNames,
             uint256 totalMinted
         )
     {
         types = new uint256[](7);
         counts = new uint256[](7);
+        typeNames = new string[](7);
 
         for (uint256 i = 0; i < 7; i++) {
             types[i] = i;
             counts[i] = nftTypeCounts[i];
+            typeNames[i] = this.getNFTTypeName(i);
         }
 
-        return (types, counts, totalSupply());
+        return (types, counts, typeNames, totalSupply());
     }
 
     /**
@@ -159,30 +230,51 @@ contract IPPYNFT is ERC721, ERC721Enumerable, Ownable {
     }
 
     /**
-     * @dev Update base URI for standard NFTs (only owner)
+     * @dev Update base URI for a specific NFT type (only owner)
      */
-    function setBaseURIStandard(string calldata _baseURI) external onlyOwner {
-        baseURIStandard = _baseURI;
-        emit BaseURIUpdated(_baseURI, baseURIHidden);
+    function setNFTTypeBaseURI(
+        uint256 nftType,
+        string calldata _baseURI
+    ) external onlyOwner {
+        require(nftType <= STANDARD_NFT_6, "Invalid NFT type");
+        nftTypeBaseURIs[nftType] = _baseURI;
+        emit BaseURIUpdated(nftType, _baseURI);
     }
 
     /**
-     * @dev Update base URI for hidden NFTs (only owner)
+     * @dev Update default base URI (only owner)
      */
-    function setBaseURIHidden(string calldata _baseURI) external onlyOwner {
-        baseURIHidden = _baseURI;
-        emit BaseURIUpdated(baseURIStandard, _baseURI);
+    function setDefaultBaseURI(string calldata _baseURI) external onlyOwner {
+        defaultBaseURI = _baseURI;
+        emit DefaultBaseURIUpdated(_baseURI);
     }
 
     /**
-     * @dev Get base URIs (view function)
+     * @dev Get NFTs by type for a user
      */
-    function getBaseURIs()
-        external
-        view
-        returns (string memory standard, string memory hidden)
-    {
-        return (baseURIStandard, baseURIHidden);
+    function getUserNFTsByType(
+        address user,
+        uint256 nftType
+    ) external view returns (uint256[] memory tokenIds) {
+        uint256 balance = balanceOf(user);
+        uint256[] memory tempTokenIds = new uint256[](balance);
+        uint256 count = 0;
+
+        for (uint256 i = 0; i < balance; i++) {
+            uint256 tokenId = tokenOfOwnerByIndex(user, i);
+            if (tokenIdToNFTType[tokenId] == nftType) {
+                tempTokenIds[count] = tokenId;
+                count++;
+            }
+        }
+
+        // Create properly sized array
+        tokenIds = new uint256[](count);
+        for (uint256 i = 0; i < count; i++) {
+            tokenIds[i] = tempTokenIds[i];
+        }
+
+        return tokenIds;
     }
 
     /**

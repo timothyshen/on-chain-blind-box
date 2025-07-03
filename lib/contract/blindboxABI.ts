@@ -540,11 +540,6 @@ export const blindBoxABI = [
       },
       {
         internalType: "uint256",
-        name: "maxPerTx",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
         name: "totalSupply",
         type: "uint256",
       },
@@ -564,46 +559,12 @@ export const blindBoxABI = [
   },
   {
     inputs: [],
-    name: "getProbabilityInfo",
+    name: "getIPPYNFT",
     outputs: [
       {
-        internalType: "uint256",
-        name: "totalRange",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "hiddenThreshold",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "standardRange",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "hiddenProbabilityBasisPoints",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "getTokenURI",
-    outputs: [
-      {
-        internalType: "string",
+        internalType: "address",
         name: "",
-        type: "string",
+        type: "address",
       },
     ],
     stateMutability: "view",
@@ -667,19 +628,6 @@ export const blindBoxABI = [
   },
   {
     inputs: [],
-    name: "maxBoxesPerTx",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "maxTotalSupply",
     outputs: [
       {
@@ -689,24 +637,6 @@ export const blindBoxABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "mint",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -855,32 +785,6 @@ export const blindBoxABI = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_maxBoxes",
-        type: "uint256",
-      },
-    ],
-    name: "setMaxBoxesPerTx",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_maxSupply",
-        type: "uint256",
-      },
-    ],
-    name: "setMaxTotalSupply",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "bytes4",
         name: "interfaceId",
         type: "bytes4",
@@ -914,7 +818,7 @@ export const blindBoxABI = [
     inputs: [
       {
         internalType: "uint256",
-        name: "",
+        name: "tokenId",
         type: "uint256",
       },
     ],
@@ -926,7 +830,7 @@ export const blindBoxABI = [
         type: "string",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "pure",
     type: "function",
   },
   {
