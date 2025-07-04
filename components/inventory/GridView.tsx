@@ -55,15 +55,7 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
                         <div className="flex justify-between items-center">
                             <Badge
                                 variant="secondary"
-                                className={cn(
-                                    "text-xs font-bold",
-                                    item.collection === "toys" && "bg-pink-100 text-pink-800 border-pink-300",
-                                    item.collection === "magic" && "bg-purple-100 text-purple-800 border-purple-300",
-                                    item.collection === "fantasy" && "bg-amber-100 text-amber-800 border-amber-300",
-                                    item.collection === "tech" && "bg-cyan-100 text-cyan-800 border-cyan-300",
-                                    item.collection === "nature" && "bg-green-100 text-green-800 border-green-300",
-                                    item.collection === "space" && "bg-indigo-100 text-indigo-800 border-indigo-300",
-                                )}
+                                className="text-xs font-bold bg-pink-100 text-pink-800 border-pink-300"
                             >
                                 {item.collection.toUpperCase()}
                             </Badge>

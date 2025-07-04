@@ -9,17 +9,25 @@ import {
 import { useBlindBox } from "./useBlindBox";
 
 export const useInventoryLogic = () => {
-  const { inventory, unrevealedItems, refreshInventory, isLoading, error } =
-    useInventory();
+  const {
+    inventory,
+    unrevealedItems,
+    refreshInventory,
+    isLoading,
+    error,
+    stats,
+    contractInfo,
+  } = useInventory();
 
-  const { openBoxes } = useBlindBox();
+  const { openBoxes, purchaseBoxes } = useBlindBox();
+
   // Create a proper grouping that treats each version as a separate item
   const getUniqueItems = useMemo((): GachaItemWithCount[] => {
     const itemMap = new Map<string, GachaItemWithCount>();
 
     inventory.forEach((item) => {
-      // Create a unique key that includes both id and version
-      const key = `${item.id}-${item.version}`;
+      // Create a unique key using name and version for proper grouping
+      const key = `${item.name}-${item.version}`;
 
       if (itemMap.has(key)) {
         itemMap.get(key)!.count += 1;
@@ -31,12 +39,13 @@ export const useInventoryLogic = () => {
     return Array.from(itemMap.values());
   }, [inventory]);
 
-  // Statistics calculations
-  const totalItems = inventory.length;
+  // Use stats from the updated useInventory hook when available
+  const totalItems = stats?.totalNFTs || inventory.length;
   const uniqueItems = getUniqueItems.length;
-  const hiddenCount = getUniqueItems.filter(
-    (item) => item.version === "hidden"
-  ).length;
+  const hiddenCount =
+    stats?.hiddenNFTs ||
+    getUniqueItems.filter((item) => item.version === "hidden").length;
+  const unrevealedBoxes = stats?.unrevealedBoxes || unrevealedItems.length;
 
   const collectionStats: CollectionStats = useMemo(
     () => ({
@@ -57,34 +66,36 @@ export const useInventoryLogic = () => {
     return getUniqueItems.filter((item) => item.collection === collection);
   };
 
-  // Reveal functions using the hook's removeFromUnrevealed
+  // Get NFT type breakdown from contract stats
+  const getNFTTypeBreakdown = () => {
+    if (stats?.nftTypeCounts) {
+      return Object.entries(stats.nftTypeCounts).map(([typeName, count]) => ({
+        typeName,
+        count,
+      }));
+    }
+    return [];
+  };
+
+  // Reveal function using useBlindBox hook
   const revealItemFromInventory = async (index: number) => {
     if (index >= 0 && index < unrevealedItems.length) {
       try {
+        
         const tx = await openBoxes(1);
         console.log("Box opened:", tx);
         // Refresh inventory to get latest data from contract after successful transaction
         await refreshInventory();
+        return tx;
       } catch (error) {
         console.error("Error opening box:", error);
-        // Error notification is already handled in openBoxes function
+        throw error; // Re-throw so the UI can handle it
       }
+    } else {
+      throw new Error("Invalid box index");
     }
   };
 
-  const revealAllFromInventory = async () => {
-    if (unrevealedItems.length === 0) return;
-
-    try {
-      const tx = await openBoxes(unrevealedItems.length);
-      console.log("All boxes opened:", tx);
-      // Refresh inventory to get latest data from contract after successful transaction
-      await refreshInventory();
-    } catch (error) {
-      console.error("Error opening all boxes:", error);
-      // Error notification is already handled in openBoxes function
-    }
-  };
 
   // Filter and sort function
   const getFilteredItems = (
@@ -128,18 +139,23 @@ export const useInventoryLogic = () => {
     error,
     refreshInventory,
 
-    // Statistics
+    // Enhanced statistics using contract data
     totalItems,
     uniqueItems,
     hiddenCount,
+    unrevealedBoxes,
     collectionStats,
     collectionCompletionPercentage,
+    contractInfo, // Pass through contract info
+    stats, // Pass through detailed stats from contract
 
     // Helper functions
     getUniqueItems,
     getCollectionItems,
     getFilteredItems,
+    getNFTTypeBreakdown,
+
+    // Actions
     revealItemFromInventory,
-    revealAllFromInventory,
   };
 };

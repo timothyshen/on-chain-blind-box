@@ -1,10 +1,8 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Package, Sparkles } from "lucide-react"
-import { soundManager } from "@/utils/sounds"
-import { GachaItem } from "./types"
+import { GachaItem } from "@/types/gacha"
 
 interface BlindBoxTabProps {
     unrevealedItems: GachaItem[]
@@ -13,7 +11,6 @@ interface BlindBoxTabProps {
 
 export function BlindBoxTab({ unrevealedItems, onRevealItem }: BlindBoxTabProps) {
     const handleRevealItem = (index: number) => {
-        soundManager.play("boxOpen")
         onRevealItem(index)
     }
 
@@ -38,7 +35,7 @@ export function BlindBoxTab({ unrevealedItems, onRevealItem }: BlindBoxTabProps)
                     <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-white" />
                     </div>
-                    Designer Blind Boxes ({unrevealedItems.length})
+                    IPPY Blind Boxes ({unrevealedItems.length})
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
