@@ -131,6 +131,9 @@ dependencies:
   permissionless:
     specifier: ^0.2.47
     version: 0.2.47(viem@2.31.0)
+  pinata:
+    specifier: ^2.4.9
+    version: 2.4.9(react-dom@18.3.1)(react@18.3.1)
   react:
     specifier: ^18.3.1
     version: 18.3.1
@@ -154,7 +157,7 @@ dependencies:
     version: 1.7.4(react-dom@18.3.1)(react@18.3.1)
   stripe:
     specifier: latest
-    version: 18.2.1(@types/node@22.15.31)
+    version: 18.3.0(@types/node@22.15.31)
   tailwind-merge:
     specifier: ^2.5.5
     version: 2.6.0
@@ -8569,6 +8572,22 @@ packages:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
 
+  /pinata@2.4.9(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-94fMvBJXnFgDyZkYRd7SCaXsHZERtDAjIcPIpYlUXAorv77xav3UMU0fipX/EKZwl3Uv8P7Mbul12KdbqpLRdA==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
   /pino-abstract-transport@0.5.0:
     resolution: {integrity: sha512-+KAgmVeqXYbTtU2FScx1XS3kNyfZ5TrXY07V96QnUSFqo2gAqlvmaxH67Lj7SWazqsMabf+58ctdTcBgnOLUOQ==}
     dependencies:
@@ -9571,8 +9590,8 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  /stripe@18.2.1(@types/node@22.15.31):
-    resolution: {integrity: sha512-GwB1B7WSwEBzW4dilgyJruUYhbGMscrwuyHsPUmSRKrGHZ5poSh2oU9XKdii5BFVJzXHn35geRvGJ6R8bYcp8w==}
+  /stripe@18.3.0(@types/node@22.15.31):
+    resolution: {integrity: sha512-FkxrTUUcWB4CVN2yzgsfF/YHD6WgYHduaa7VmokCy5TLCgl5UNJkwortxcedrxSavQ8Qfa4Ir4JxcbIYiBsyLg==}
     engines: {node: '>=12.*'}
     peerDependencies:
       '@types/node': '>=12.x.x'

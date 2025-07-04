@@ -7,26 +7,88 @@ import { cn } from "@/lib/utils"
 import { soundManager } from "@/utils/sounds"
 import { GachaItemWithCount, COLLECTION_COLORS, VERSION_STYLES, COLLECTION_GLOW } from "./types"
 import {
-    getItemDisplayImage,
     getItemDisplayName,
     getItemDisplayDescription,
     getRarityInfo,
     getItemDisplayStyle,
     hasRichMetadata,
-    isBlindBoxItem,
     getItemTheme
 } from "@/types/gacha"
-import { getImageDisplayUrl } from "@/lib/metadata"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
+
 
 interface GridViewProps {
     items: GachaItemWithCount[]
     inventoryLength: number
 }
 
+interface ImageCache {
+    [itemId: string]: {
+        imageUrl: string | null;
+        loading: boolean;
+        error: boolean;
+    }
+}
+
 export function GridView({ items, inventoryLength }: GridViewProps) {
     const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+    const [imageCache, setImageCache] = useState<ImageCache>({});
+
+    const fetchIPFSJson = async (tokenURI: string) => {
+        try {
+            const response = await fetch(tokenURI);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const metadata = await response.json();
+            console.log('Metadata:', metadata);
+
+            return metadata.image;
+        } catch (error) {
+            console.error('Error fetching IPFS JSON:', error);
+            return null;
+        }
+    };
+
+    // Fetch images for all items when they change
+    useEffect(() => {
+        const fetchAllImages = async () => {
+            const promises = items.map(async (item) => {
+                // Skip if already cached or no tokenURI
+                if (!item.tokenURI || imageCache[item.id]) {
+                    return;
+                }
+
+                // Set loading state
+                setImageCache(prev => ({
+                    ...prev,
+                    [item.id]: { imageUrl: null, loading: true, error: false }
+                }));
+
+                try {
+                    const imageUrl = await fetchIPFSJson(item.tokenURI);
+
+                    setImageCache(prev => ({
+                        ...prev,
+                        [item.id]: { imageUrl, loading: false, error: !imageUrl }
+                    }));
+                } catch (error) {
+                    console.error(`Error fetching image for ${item.name}:`, error);
+                    setImageCache(prev => ({
+                        ...prev,
+                        [item.id]: { imageUrl: null, loading: false, error: true }
+                    }));
+                }
+            });
+
+            await Promise.all(promises);
+        };
+
+        fetchAllImages();
+    }, [items]);
 
     const handleImageError = (itemId: string) => {
         setImageErrors(prev => new Set([...prev, itemId]));
@@ -48,22 +110,14 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
         )
     }
 
-    const fetchImage = async (item: GachaItemWithCount) => {
-        if (item.tokenURI) {
-            const imageURL: string = await fetch(item.tokenURI).then(res => res.json()).then(data => data.image);
-            console.log("imageURL", imageURL)
-            return imageURL;
-        }
-        return null;
-    }
-
     return (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {items.map((item, index) => {
                 const rarityInfo = getRarityInfo(item);
                 const theme = getItemTheme(item);
-                const imageURL = fetchImage(item);
-                console.log("imageURL", imageURL)
+                const imageData = imageCache[item.id];
+                const hasValidImage = imageData?.imageUrl && !imageErrors.has(item.id);
+
                 return (
                     <Card
                         key={index}
@@ -76,30 +130,48 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
                             // Enhanced styling for hidden/rare items
                             item.version === "hidden" && "ring-2 ring-purple-400/50 shadow-purple-200/50",
                             // Loading state styling
-                            item.metadataLoading && "opacity-75"
+                            (item.metadataLoading || imageData?.loading) && "opacity-75"
                         )}
                         onClick={() => soundManager.play("buttonClick")}
                     >
                         {/* Loading overlay for metadata */}
-                        {item.metadataLoading && (
+                        {(item.metadataLoading || imageData?.loading) && (
                             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10">
                                 <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
                             </div>
                         )}
 
                         <CardHeader className="pb-2">
-                            {/* Image or SVG display */}
+                            {/* Image display */}
                             <div className="relative w-full h-32 mb-2 rounded-lg overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                                <Image
-                                    src={imageURL as unknown as string}
-                                    alt={getItemDisplayName(item)}
-                                    className="w-full h-full object-cover"
-                                    onError={() => handleImageError(item.id)}
-                                    width={100}
-                                    height={100}
-                                    loading="lazy"
-                                />
-
+                                {hasValidImage ? (
+                                    <Image
+                                        src={imageData.imageUrl!}
+                                        alt={getItemDisplayName(item)}
+                                        className="w-full h-full object-cover"
+                                        onError={() => handleImageError(item.id)}
+                                        width={128}
+                                        height={128}
+                                        loading="lazy"
+                                    />
+                                ) : imageData?.error ? (
+                                    // Error state
+                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                                        <AlertCircle className="w-8 h-8 mb-2" />
+                                        <span className="text-xs text-center">Failed to load</span>
+                                    </div>
+                                ) : imageData?.loading ? (
+                                    // Loading state
+                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                                        <Loader2 className="w-8 h-8 mb-2 animate-spin" />
+                                        <span className="text-xs">Loading...</span>
+                                    </div>
+                                ) : (
+                                    // Fallback to emoji
+                                    <div className="w-full h-full flex items-center justify-center text-4xl">
+                                        {item.emoji || "🎁"}
+                                    </div>
+                                )}
 
                                 {/* Rarity gradient overlay for special items */}
                                 {item.version === "hidden" && (

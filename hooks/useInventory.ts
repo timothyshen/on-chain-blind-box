@@ -276,7 +276,6 @@ export const useInventory = () => {
           getUserNFTTypeCounts(address),
           getContractInfo(),
         ]);
-      console.log(nftsResult);
 
       // Process NFT data
       const [tokenIds, nftTypes, tokenURIs, typeNames] = nftsResult as [
