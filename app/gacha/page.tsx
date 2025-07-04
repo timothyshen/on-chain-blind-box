@@ -5,7 +5,7 @@ import { NotificationProvider } from "@/contexts/notification-context"
 export default function Home() {
   return (
     <NotificationProvider>
-      
+
       <GachaMachine />
       <NotificationContainer />
     </NotificationProvider>

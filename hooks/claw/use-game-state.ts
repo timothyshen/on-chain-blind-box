@@ -1,9 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import type { Prize, GrabPhase, GameResult as GameResultType, DroppedPrize as DroppedPrizeType } from "../types/game"
+import { useState } from "react";
+import type {
+  Prize,
+  GrabPhase,
+  GameResult as GameResultType,
+  DroppedPrize as DroppedPrizeType,
+} from "../../types/game";
 
-const INITIAL_PRIZES_CONFIG: Omit<Prize, "grabbed" | "vx" | "vy" | "isResting">[] = [
+const INITIAL_PRIZES_CONFIG: Omit<
+  Prize,
+  "grabbed" | "vx" | "vy" | "isResting"
+>[] = [
   // Bottom layer - deepest balls (harder to reach)
   {
     id: 1,
@@ -189,88 +197,103 @@ const INITIAL_PRIZES_CONFIG: Omit<Prize, "grabbed" | "vx" | "vy" | "isResting">[
     weight: 0.9,
     rarity: "normal",
   },
-]
+];
 
 const getInitialPrizes = (): Prize[] =>
-  INITIAL_PRIZES_CONFIG.map((p) => ({ ...p, grabbed: false, vx: 0, vy: 0, isResting: true }))
+  INITIAL_PRIZES_CONFIG.map((p) => ({
+    ...p,
+    grabbed: false,
+    vx: 0,
+    vy: 0,
+    isResting: true,
+  }));
 
 export function useGameState() {
-  const [clawX, setClawX] = useState(200)
-  const [clawY, setClawY] = useState(50)
-  const [isGrabbing, setIsGrabbing] = useState(false)
-  const [coins, setCoins] = useState(10)
-  const [score, setScore] = useState(0)
-  const [gameActive, setGameActive] = useState(false)
-  const [prizesInMachine, setPrizesInMachine] = useState<Prize[]>(getInitialPrizes()) // Prizes currently in the machine
-  const [collectedPrizes, setCollectedPrizes] = useState<Prize[]>([]) // Prizes won by player
+  const [clawX, setClawX] = useState(200);
+  const [clawY, setClawY] = useState(50);
+  const [isGrabbing, setIsGrabbing] = useState(false);
+  const [coins, setCoins] = useState(10);
+  const [score, setScore] = useState(0);
+  const [gameActive, setGameActive] = useState(false);
+  const [prizesInMachine, setPrizesInMachine] = useState<Prize[]>(
+    getInitialPrizes()
+  ); // Prizes currently in the machine
+  const [collectedPrizes, setCollectedPrizes] = useState<Prize[]>([]); // Prizes won by player
 
-  const [clawClosed, setClawClosed] = useState(false)
-  const [grabPhase, setGrabPhase] = useState<GrabPhase>("idle")
-  const [grabbedPrizeId, setGrabbedPrizeId] = useState<number | null>(null)
-  const [clawShaking, setClawShaking] = useState(false)
-  const [prizeWillFall, setPrizeWillFall] = useState(false)
-  const [clawOpenness, setClawOpenness] = useState(1)
-  const [touchingPrize, setTouchingPrize] = useState<number | null>(null)
-  const [gameResult, setGameResult] = useState<GameResultType | null>(null)
-  const [showResult, setShowResult] = useState(false)
-  const [droppedPrize, setDroppedPrize] = useState<DroppedPrizeType | null>(null)
+  const [clawClosed, setClawClosed] = useState(false);
+  const [grabPhase, setGrabPhase] = useState<GrabPhase>("idle");
+  const [grabbedPrizeId, setGrabbedPrizeId] = useState<number | null>(null);
+  const [clawShaking, setClawShaking] = useState(false);
+  const [prizeWillFall, setPrizeWillFall] = useState(false);
+  const [clawOpenness, setClawOpenness] = useState(1);
+  const [touchingPrize, setTouchingPrize] = useState<number | null>(null);
+  const [gameResult, setGameResult] = useState<GameResultType | null>(null);
+  const [showResult, setShowResult] = useState(false);
+  const [droppedPrize, setDroppedPrize] = useState<DroppedPrizeType | null>(
+    null
+  );
 
-  const totalInitialPrizeCount = INITIAL_PRIZES_CONFIG.length
+  const totalInitialPrizeCount = INITIAL_PRIZES_CONFIG.length;
 
   const startGame = () => {
     if (coins > 0) {
-      setCoins((prev) => prev - 1)
-      setGameActive(true)
-      setClawX(200)
-      setClawY(50)
-      setGrabPhase("idle")
-      setClawOpenness(1)
-      setGameResult(null)
-      setShowResult(false)
-      setDroppedPrize(null)
-      setGrabbedPrizeId(null)
-      setPrizeWillFall(false)
+      setCoins((prev) => prev - 1);
+      setGameActive(true);
+      setClawX(200);
+      setClawY(50);
+      setGrabPhase("idle");
+      setClawOpenness(1);
+      setGameResult(null);
+      setShowResult(false);
+      setDroppedPrize(null);
+      setGrabbedPrizeId(null);
+      setPrizeWillFall(false);
     }
-  }
+  };
 
   const addCoins = () => {
-    setCoins((prev) => prev + 5)
-  }
+    setCoins((prev) => prev + 5);
+  };
 
   const resetGame = () => {
-    setPrizesInMachine(getInitialPrizes())
-    setCollectedPrizes([])
-    setScore(0)
-    setCoins(10)
-    setGameActive(false)
-    setClawX(200)
-    setClawY(50)
-    setGrabPhase("idle")
-    setClawOpenness(1)
-    setTouchingPrize(null)
-    setGameResult(null)
-    setShowResult(false)
-    setDroppedPrize(null)
-    setGrabbedPrizeId(null)
-  }
+    setPrizesInMachine(getInitialPrizes());
+    setCollectedPrizes([]);
+    setScore(0);
+    setCoins(10);
+    setGameActive(false);
+    setClawX(200);
+    setClawY(50);
+    setGrabPhase("idle");
+    setClawOpenness(1);
+    setTouchingPrize(null);
+    setGameResult(null);
+    setShowResult(false);
+    setDroppedPrize(null);
+    setGrabbedPrizeId(null);
+  };
 
   const endGame = (result: GameResultType) => {
     if (!gameResult) {
-      setGameResult(result)
-      setShowResult(true)
+      setGameResult(result);
+      setShowResult(true);
       if (result.won && result.prize) {
         // Remove from machine, add to collected
-        setPrizesInMachine((prevInMachine) => prevInMachine.filter((p) => p.id !== result.prize!.id))
-        setCollectedPrizes((prevCollected) => [...prevCollected, { ...result.prize!, grabbed: true }])
+        setPrizesInMachine((prevInMachine) =>
+          prevInMachine.filter((p) => p.id !== result.prize!.id)
+        );
+        setCollectedPrizes((prevCollected) => [
+          ...prevCollected,
+          { ...result.prize!, grabbed: true },
+        ]);
       }
     }
-    setGameActive(false)
-  }
+    setGameActive(false);
+  };
 
   const dismissResult = () => {
-    setShowResult(false)
-    setDroppedPrize(null)
-  }
+    setShowResult(false);
+    setDroppedPrize(null);
+  };
 
   return {
     clawX,
@@ -312,7 +335,7 @@ export function useGameState() {
     resetGame,
     endGame,
     dismissResult,
-  }
+  };
 }
 
-export type GameResult = GameResultType
+export type GameResult = GameResultType;

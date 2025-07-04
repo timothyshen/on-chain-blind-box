@@ -17,7 +17,6 @@ export const useGachaMachine = () => {
   } = useSound();
   const {
     inventory,
-    addToInventory,
     unrevealedItems,
     addToUnrevealed,
     removeFromUnrevealed,
@@ -213,7 +212,6 @@ export const useGachaMachine = () => {
       setIsNewItem(!existingItem);
 
       // Since we're using contract data, these functions now trigger refreshes
-      addToInventory(result);
       addToUnrevealed(result);
       setCurrentBlindBox(result);
 
