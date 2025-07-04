@@ -48,15 +48,22 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
         )
     }
 
+    const fetchImage = async (item: GachaItemWithCount) => {
+        if (item.tokenURI) {
+            const imageURL: string = await fetch(item.tokenURI).then(res => res.json()).then(data => data.image);
+            console.log("imageURL", imageURL)
+            return imageURL;
+        }
+        return null;
+    }
+
     return (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {items.map((item, index) => {
-                const displayImage = getItemDisplayImage(item);
                 const rarityInfo = getRarityInfo(item);
                 const theme = getItemTheme(item);
-                const hasImage = displayImage && !imageErrors.has(item.id);
-                const isBlindBox = isBlindBoxItem(item);
-
+                const imageURL = fetchImage(item);
+                console.log("imageURL", imageURL)
                 return (
                     <Card
                         key={index}
@@ -83,36 +90,16 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
                         <CardHeader className="pb-2">
                             {/* Image or SVG display */}
                             <div className="relative w-full h-32 mb-2 rounded-lg overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                                {hasImage ? (
-                                    <Image
-                                        src={getImageDisplayUrl(displayImage)}
-                                        alt={getItemDisplayName(item)}
-                                        className="w-full h-full object-cover"
-                                        onError={() => handleImageError(item.id)}
-                                        loading="lazy"
-                                    />
-                                ) : isBlindBox && (item as any).svg ? (
-                                    // Display SVG for blind boxes
-                                    <div
-                                        className="w-full h-full flex items-center justify-center"
-                                        dangerouslySetInnerHTML={{ __html: (item as any).svg }}
-                                    />
-                                ) : item.metadataError ? (
-                                    // Error state
-                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                                        <AlertCircle className="w-8 h-8 mb-1" />
-                                        <span className="text-xs">Failed to load</span>
-                                    </div>
-                                ) : (
-                                    // Fallback to emoji or icon
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        {displayImage ? (
-                                            <ImageIcon className="w-12 h-12 text-slate-400" />
-                                        ) : (
-                                            <span className="text-4xl">{item.emoji}</span>
-                                        )}
-                                    </div>
-                                )}
+                                <Image
+                                    src={imageURL as unknown as string}
+                                    alt={getItemDisplayName(item)}
+                                    className="w-full h-full object-cover"
+                                    onError={() => handleImageError(item.id)}
+                                    width={100}
+                                    height={100}
+                                    loading="lazy"
+                                />
+
 
                                 {/* Rarity gradient overlay for special items */}
                                 {item.version === "hidden" && (
@@ -191,15 +178,6 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
                                             +{item.metadata.attributes.length - 2} more
                                         </div>
                                     )}
-                                </div>
-                            )}
-
-                            {/* Blind box indicator */}
-                            {isBlindBox && (
-                                <div className="text-center pt-1">
-                                    <Badge variant="outline" className="text-xs bg-amber-50 text-amber-700 border-amber-300">
-                                        Mystery Box
-                                    </Badge>
                                 </div>
                             )}
                         </CardContent>

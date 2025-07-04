@@ -42,7 +42,6 @@ export interface BlindBoxItem extends GachaItem {
   svg?: string; // Embedded SVG for display
 }
 
-
 export const COLLECTION_CHANCES = {
   ippy: 1,
 };
