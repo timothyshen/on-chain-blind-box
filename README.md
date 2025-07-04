@@ -1,4 +1,134 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IPPY Blind Box Game 🎮
+
+A blockchain-based blind box/gacha game built with Next.js, featuring NFT collection mechanics and interactive gameplay.
+
+## ✨ Features
+
+- **🎰 Gacha Machine**: Pull blind boxes to collect NFTs
+- **🎮 Claw Machine**: Interactive claw game experience
+- **📦 Inventory System**: Manage your NFT collection
+- **🛒 Marketplace**: Trade and purchase items
+- **🔊 Sound System**: Immersive audio experience
+- **📱 Responsive Design**: Works on desktop and mobile
+
+## 🚀 Setup Instructions
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```bash
+# Pinata Configuration (for IPFS)
+PINATA_JWT=your_pinata_jwt_here
+NEXT_PUBLIC_GATEWAY_URL=your-gateway.mypinata.cloud
+
+# Blockchain Configuration
+NEXT_PUBLIC_RPC_URL=your_rpc_url_here
+NEXT_PUBLIC_CHAIN_ID=1315
+
+# Privy Configuration (for wallet auth)
+NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
+```
+
+### Getting Pinata Credentials
+
+1. Visit [Pinata Cloud](https://pinata.cloud/) and create an account
+2. Go to the [Keys Page](https://app.pinata.cloud/keys) and click "New Key"
+3. For development, select "Admin" privileges
+4. Copy your **JWT** (not the API Key/Secret)
+5. Go to [Gateways Page](https://app.pinata.cloud/gateways) to get your gateway URL
+
+### Installation
+
+```bash
+# Install dependencies
+pnpm install
+
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Run linter
+pnpm lint
+```
+
+## 🔧 CORS Fix for Pinata
+
+This project implements server-side API routes to handle Pinata requests and avoid CORS issues:
+
+- `/api/pinata/metadata` - Fetches NFT metadata via server-side
+- `/api/pinata/gateway` - Creates signed URLs for IPFS content
+
+**Important**: Use `PINATA_JWT` (server-side) not `NEXT_PUBLIC_PINATA_JWT` to keep credentials secure.
+
+## 🏗️ Architecture
+
+### Frontend Components
+
+- `app/gacha/` - Gacha machine interface
+- `app/claw/` - Claw machine game
+- `app/inventory/` - NFT collection management
+- `app/market/` - Trading marketplace
+
+### Smart Contracts
+
+- `contract/contracts/BlindBox.sol` - Main blind box contract
+- `contract/contracts/IPPYNFT.sol` - NFT minting contract
+
+### Key Features
+
+- **Blockchain Integration**: Story Protocol network
+- **NFT Standards**: ERC1155 for blind boxes, custom for IPPYs
+- **Metadata Storage**: IPFS via Pinata
+- **Wallet Connection**: Privy authentication
+- **State Management**: React hooks and context
+
+## 🎯 Recent Improvements
+
+- ✅ Fixed CORS issues with Pinata integration
+- ✅ Cleaned up console statements and debug code
+- ✅ Improved TypeScript type safety
+- ✅ Enhanced error handling and user notifications
+- ✅ Optimized component structure and performance
+
+## 🛠️ Development
+
+### Code Quality
+
+- ESLint configuration with Next.js rules
+- TypeScript for type safety
+- Tailwind CSS for styling
+- Responsive design patterns
+
+### Project Structure
+
+```
+├── app/                 # Next.js app directory
+├── components/          # Reusable UI components
+├── hooks/              # Custom React hooks
+├── lib/                # Utility libraries
+├── contract/           # Smart contract code
+├── public/             # Static assets
+└── utils/              # Helper functions
+```
+
+## 📱 Deployment
+
+The app is optimized for deployment on Vercel with proper environment variable configuration and build optimizations.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+---
+
+Built with ❤️ using Next.js, TypeScript, and blockchain technology.
 
 ## Getting Started
 
@@ -34,7 +164,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
 
 📦 Single Module Deployment
 BlindBoxSystem#IPPYNFT - 0x702097673370e14F5b8a77dB55d2799D136767Bd

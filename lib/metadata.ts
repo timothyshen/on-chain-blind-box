@@ -196,7 +196,6 @@ class MetadataService {
           tokenId,
           nftType,
           rarity: nftType === 0 ? "hidden" : "standard",
-          theme: this.getThemeFromNFTType(nftType),
         };
 
         // Cache the result

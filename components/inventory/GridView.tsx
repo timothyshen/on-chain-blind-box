@@ -15,7 +15,7 @@ import {
 } from "@/types/gacha"
 import { useState, useEffect } from "react"
 import Image from "next/image"
-
+import { metadataMapping } from "@/lib/metadataMapping"
 
 interface GridViewProps {
     items: GachaItemWithCount[]
@@ -36,7 +36,15 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
 
     const fetchIPFSJson = async (tokenURI: string) => {
         try {
-            const response = await fetch(tokenURI);
+            const response = await fetch(tokenURI, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Origin': 'https://ippygacha.vercel.app/',
+                    'Cache-Control': 'no-cache',
+                },
+            });
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -112,7 +120,7 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {items.map((item, index) => {
                 const rarityInfo = getRarityInfo(item);
-                const theme = getItemTheme(item);
+                const imageUrl = metadataMapping[item.name.toLowerCase() as keyof typeof metadataMapping]
                 const imageData = imageCache[item.id];
                 const hasValidImage = imageData?.imageUrl && !imageErrors.has(item.id);
 
@@ -141,9 +149,9 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
                         <CardHeader className="pb-2">
                             {/* Image display */}
                             <div className="relative w-full h-32 mb-2 rounded-lg overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                                {hasValidImage ? (
+                                {imageUrl ? (
                                     <Image
-                                        src={imageData.imageUrl!}
+                                        src={imageUrl}
                                         alt={getItemDisplayName(item)}
                                         className="w-full h-full object-cover"
                                         onError={() => handleImageError(item.id)}
@@ -185,15 +193,6 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
                             <p className="text-xs text-center opacity-80 leading-relaxed line-clamp-2">
                                 {getItemDisplayDescription(item)}
                             </p>
-
-                            {/* Theme display */}
-                            {theme !== 'Unknown' && (
-                                <div className="text-center">
-                                    <Badge variant="outline" className="text-xs px-2 py-0.5 bg-slate-50 text-slate-600 border-slate-300">
-                                        {theme}
-                                    </Badge>
-                                </div>
-                            )}
 
                             {/* Collection and Rarity badges */}
                             <div className="flex justify-between items-center gap-1">

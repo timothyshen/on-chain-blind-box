@@ -41,16 +41,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
     setNotifications((prev) => [...prev, newNotification])
 
-    // Play notification sound
-    if (newNotification.sound) {
-      const soundMap = {
-        success: "buttonClick",
-        warning: "buttonClick",
-        info: "buttonClick",
-        error: "buttonClick",
-        collection: "sparkle",
-      } as const
-    }
 
     // Auto-remove non-persistent notifications
     if (!newNotification.persistent && newNotification.duration) {
