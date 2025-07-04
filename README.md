@@ -37,8 +37,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 📦 Single Module Deployment
-BlindBoxSystem#IPPYNFT - 0xa705b6bD5bfdcF145a4C0A4D785Ce9411dd03076
-BlindBoxSystem#BlindBox - 0x5e0B21926c7EF962Ce6C0eeB62C5B2733eEb3DE6
-
-BlindBoxSystem#IPPYNFT - 0x354F47762A36eD1a4e5D3d5701b3198881add486
-BlindBoxSystem#BlindBox - 0x3C259F9805847D85Bc720D5615128832C2987ef3
+BlindBoxSystem#IPPYNFT - 0x702097673370e14F5b8a77dB55d2799D136767Bd
+BlindBoxSystem#BlindBox - 0x87d3FEE94B8306702Dfdba539c0BACAC0985594B

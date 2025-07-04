@@ -19,8 +19,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <NotificationProvider>
-            {children}
-            
+            {children}          
           </NotificationProvider>
         </Providers>
       </body>

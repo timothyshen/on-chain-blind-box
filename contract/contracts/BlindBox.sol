@@ -59,6 +59,14 @@ contract BlindBox is ERC1155, Ownable, ReentrancyGuard {
         ippyNFT = IIPPYNFT(_ippyNFT);
     }
 
+    function name() public pure returns (string memory) {
+        return "IPPY Mystery Box";
+    }
+
+    function symbol() public pure returns (string memory) {
+        return "IPPY_BOX";
+    }
+
     // Purchase blind boxes
     function purchaseBoxes(uint256 amount) external payable nonReentrant {
         require(currentSupply + amount <= maxTotalSupply, "Exceeds max supply");

@@ -1,7 +1,7 @@
 "use client"
 import { cn } from "@/lib/utils"
 import { GachaItem } from "@/types/gacha"
-import { COLLECTION_COLORS, VERSION_STYLES } from "@/types/gacha"
+import { COLLECTION_COLORS } from "@/types/gacha"
 import {
     Dialog,
     DialogContent,
@@ -9,7 +9,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Share } from "lucide-react"
-import { soundManager } from "@/utils/sounds"
 import { shareToTwitter } from "@/utils/twitter-share"
 import { useNotifications } from "@/contexts/notification-context"
 
@@ -32,8 +31,7 @@ export const BlindBoxModal = ({
     const handleShare = () => {
         if (item) {
             // Play button click sound
-            soundManager.play("buttonClick")
-            shareToTwitter(item, false)
+            shareToTwitter()
 
             addNotification({
                 type: "info",
@@ -119,54 +117,28 @@ export const BlindBoxModal = ({
                                     {item.version.toUpperCase()}
                                 </Badge>
                             </div>
-                            {/* {isNewItem ? (
-                                        <Badge
-                                            className="text-sm md:text-base px-4 py-2 font-bold bg-green-500/20 text-green-300 border-green-500/50"
-                                        >
-                                            ✨ NEW DISCOVERY!
-                                        </Badge>
-                                    ) : (
-                                        <Badge
-                                            className="text-sm md:text-base px-4 py-2 font-bold bg-blue-500/20 text-blue-300 border-blue-500/50"
-                                        >
-                                            📚 Already in Collection
-                                        </Badge>
-                                    )} */}
                         </div>
                     </div>
                 )}
 
                 <div className="space-y-4">
-                    {!isRevealed ? (
-                        <Button
-                            onClick={onReveal}
-                            size="lg"
-                            className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                        >
-                            🎁 Open Box
-                        </Button>
-                    ) : (
-                        <>
-                            {/* Enhanced Share Button */}
-                            <Button
-                                onClick={handleShare}
-                                size="lg"
-                                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-lg flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transition-all duration-300"
-                            >
-                                <Share className="w-5 h-5" />
-                                Share Your Prize
-                            </Button>
+                    <Button
+                        onClick={onReveal}
+                        size="lg"
+                        className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                        🎁 Open Box
+                    </Button>
 
-                            {/* Enhanced Continue Button */}
-                            <Button
-                                onClick={onClose}
-                                size="lg"
-                                className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                            >
-                                ✨ Continue Playing
-                            </Button>
-                        </>
-                    )}
+                    {/* Enhanced Share Button */}
+                    <Button
+                        onClick={handleShare}
+                        size="lg"
+                        className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-lg flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                        <Share className="w-5 h-5" />
+                        Share Your Prize
+                    </Button>
 
                     {/* Enhanced Skip Button */}
                     <Button

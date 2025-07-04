@@ -10,11 +10,11 @@ import { PrizeBall } from "./prize-ball"
 import { CableSystem } from "./cable-system"
 import { ClawMechanism } from "./claw-mechanism"
 import { GameResultModal } from "./game-result-modal"
-import { useMobileDetection } from "@/hooks/use-mobile-detection"
-import { useButtonInteractions } from "@/hooks/use-button-interactions"
-import { useKeyboardControls } from "@/hooks/use-keyboard-controls"
-import { useGameState } from "@/hooks/use-game-state"
-import { useCablePhysics } from "@/hooks/use-cable-physics"
+import { useMobileDetection } from "@/hooks/claw/use-mobile-detection"
+import { useButtonInteractions } from "@/hooks/claw/use-button-interactions"
+import { useKeyboardControls } from "@/hooks/claw/use-keyboard-controls"
+import { useGameState } from "@/hooks/claw/use-game-state"
+import { useCablePhysics } from "@/hooks/claw/use-cable-physics"
 import type { Prize, DroppedPrize as DroppedPrizeType } from "@/types/game"
 import { MachineHeader } from "@/components/gacha/MachineHeader"
 import { ControlPanel } from "@/components/gacha/ControlPanel"
@@ -868,7 +868,7 @@ export default function ClawMachine() {
                             <p className="text-xl font-bold mb-2">
                               {coins === 0 ? "No Coins Left!" : "Insert Coin to Play"}
                             </p>
-                            <p className="text-sm opacity-75">Click "Start Game" to begin</p>
+                            <p className="text-sm opacity-75">Click &quot;Start Game&quot; to begin</p>
                           </div>
                         </div>
                       )}

@@ -74,9 +74,9 @@ export const useBlindBox = () => {
       // Step 1: Show preparing notification
       addNotification({
         title: "Purchasing boxes...",
-        message: `Purchasing ${amount} boxes...`,
+        message: `Purchasing ${amount} box${amount > 1 ? "es" : ""}...`,
         type: "info",
-        persistent: true, // Keep until we update it
+        duration: 3000,
       });
 
       const walletClient = await getWalletClient();
@@ -86,7 +86,6 @@ export const useBlindBox = () => {
 
       // Get the account address
       const [account] = await walletClient.getAddresses();
-      console.log("account", account);
 
       // Calculate total cost
       const totalCost = parseEther("0.01") * BigInt(amount);
@@ -105,9 +104,11 @@ export const useBlindBox = () => {
       setIsPurchaseLoading(true);
       addNotification({
         title: "Submitting transaction...",
-        message: `Sending purchase transaction for ${amount} boxes...`,
+        message: `Sending purchase transaction for ${amount} box${
+          amount > 1 ? "es" : ""
+        }...`,
         type: "info",
-        persistent: true,
+        duration: 5000,
       });
 
       // Execute the actual transaction
@@ -118,7 +119,7 @@ export const useBlindBox = () => {
         title: "Transaction submitted!",
         message: `Waiting for confirmation... Hash: ${txHash.slice(0, 10)}...`,
         type: "info",
-        persistent: true,
+        duration: 8000,
       });
 
       // Step 4: Wait for transaction receipt
@@ -131,7 +132,7 @@ export const useBlindBox = () => {
       // Step 5: Show success notification
       addNotification({
         title: "Boxes purchased successfully!",
-        message: `You have purchased ${amount} boxes!`,
+        message: `You have purchased ${amount} box${amount > 1 ? "es" : ""}!`,
         type: "success",
         action: {
           label: "View on StoryScan",
@@ -169,7 +170,7 @@ export const useBlindBox = () => {
         title: "Preparing to open boxes...",
         message: `Setting up to open ${amount} boxes...`,
         type: "info",
-        duration: 5000,
+        duration: 3000,
       });
 
       const walletClient = await getWalletClient();
@@ -184,14 +185,16 @@ export const useBlindBox = () => {
       const boxBalance = await getUserBoxBalance(account);
       if (boxBalance < amount) {
         throw new Error(
-          `You only have ${boxBalance} boxes but trying to open ${amount}`
+          `You only have ${boxBalance} box${
+            boxBalance !== 1 ? "es" : ""
+          } but trying to open ${amount}`
         );
       }
 
       // Step 2: Show submitting notification
       addNotification({
         title: "Submitting transaction...",
-        message: `Opening ${amount} boxes...`,
+        message: `Opening ${amount} box${amount > 1 ? "es" : ""}...`,
         type: "info",
         duration: 5000,
       });
@@ -208,9 +211,11 @@ export const useBlindBox = () => {
       // Step 3: Show waiting for confirmation notification
       addNotification({
         title: "Transaction submitted!",
-        message: `Waiting for boxes to open... Hash: ${txHash.slice(0, 10)}...`,
+        message: `Waiting for box${
+          amount > 1 ? "es" : ""
+        } to open... Hash: ${txHash.slice(0, 10)}...`,
         type: "info",
-        persistent: true,
+        duration: 8000,
       });
 
       // Step 4: Wait for transaction receipt
@@ -223,7 +228,9 @@ export const useBlindBox = () => {
       // Step 5: Show success notification
       addNotification({
         title: "Boxes opened successfully!",
-        message: `${amount} boxes have been opened! Check your inventory for new items.`,
+        message: `${amount} box${
+          amount > 1 ? "es have" : " has"
+        } been opened! Check your inventory for new items.`,
         type: "success",
         action: {
           label: "View on StoryScan",
