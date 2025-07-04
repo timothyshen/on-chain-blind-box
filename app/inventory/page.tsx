@@ -146,7 +146,7 @@ export default function Inventory() {
             </TabsContent>
           </Tabs>
 
-          {/* Collection Detail Modal */}
+          {/* Collection Detail Modal
           <CollectionModal
             selectedCollectionDetail={selectedCollectionDetail}
             showModal={showCollectionModal}
@@ -154,7 +154,7 @@ export default function Inventory() {
             collectionStats={collectionStats}
             collectionCompletionPercentage={collectionCompletionPercentage}
             getCollectionItems={getCollectionItems}
-          />
+          /> */}
         </div>
 
       </div>

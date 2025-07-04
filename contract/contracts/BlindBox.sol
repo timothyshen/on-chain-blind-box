@@ -16,6 +16,9 @@ contract BlindBox is ERC1155, Ownable, ReentrancyGuard {
 
     IIPPYNFT public ippyNFT;
 
+    string public constant NAME = "IPPY Mystery Box";
+    string public constant SYMBOL = "IPPY_BOX";
+
     // NFT IDs for the 7 different NFTs
     uint256 public constant HIDDEN_NFT_ID = 0; // Ultra rare hidden NFT
     uint256 public constant STANDARD_NFT_1 = 1;

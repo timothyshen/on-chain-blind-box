@@ -379,6 +379,19 @@ export const blindBoxABI = [
   },
   {
     inputs: [],
+    name: "NAME",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "STANDARD_NFT_1",
     outputs: [
       {
@@ -450,6 +463,19 @@ export const blindBoxABI = [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "SYMBOL",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
