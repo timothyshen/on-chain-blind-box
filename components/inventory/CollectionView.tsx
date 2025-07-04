@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { Award } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { soundManager } from "@/utils/sounds"
 import {
     GachaItemWithCount,
     CollectionStats,
@@ -30,7 +29,6 @@ export function CollectionView({
 }: CollectionViewProps) {
     const openCollectionDetail = (collection: string) => {
         onOpenCollectionDetail(collection)
-        soundManager.play("buttonClick")
     }
 
     return (

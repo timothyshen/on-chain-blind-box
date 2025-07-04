@@ -31,14 +31,6 @@ export const getUserBlindBoxBalance = (address: `0x${string}`) => {
   return userBlindBoxBalance;
 };
 
-// fetch(
-//   "https://story-aeneid.g.alchemy.com/v2/RZJ-p0JGsmg8yN4Kk5ysF/getNFTsForOwner?owner=0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045&withMetadata=true&pageSize=100",
-//   options
-// )
-//   .then((response) => response.json())
-//   .then((response) => console.log(response))
-//   .catch((err) => console.error(err));
-
 // IPPYNFT Read Functions
 
 export const getUserNFTs = (address: `0x${string}`) => {

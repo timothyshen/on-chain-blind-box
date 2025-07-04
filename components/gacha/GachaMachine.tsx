@@ -1,6 +1,6 @@
 "use client"
-import { useGachaMachine } from "@/hooks/useGachaMachine"
-import { useInventory } from "@/hooks/useInventory"
+import { useGachaMachine } from "@/hooks/gacha/useGachaMachine"
+import { useInventory } from "@/hooks/gacha/useInventory"
 import { MachineHeader } from "./MachineHeader"
 import { MachineBody } from "./MachineBody"
 import { ControlPanel } from "./ControlPanel"
@@ -26,7 +26,7 @@ export const GachaMachine = () => {
         closeModalAndReset,
     } = useGachaMachine()
 
-    const { addToInventory } = useInventory()
+    const { refreshInventory } = useInventory()
 
     const router = useRouter()
 
@@ -37,9 +37,7 @@ export const GachaMachine = () => {
 
     const handleRevealBlindBox = () => {
         revealBlindBox()
-        if (currentBlindBox) {
-            addToInventory(currentBlindBox)
-        }
+        refreshInventory()
     }
 
     return (

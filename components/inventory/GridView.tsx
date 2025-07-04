@@ -2,9 +2,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Package, Image as ImageIcon, Loader2, AlertCircle } from "lucide-react"
+import { Package, Loader2, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { soundManager } from "@/utils/sounds"
 import { GachaItemWithCount, COLLECTION_COLORS, VERSION_STYLES, COLLECTION_GLOW } from "./types"
 import {
     getItemDisplayName,
@@ -44,7 +43,6 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
             }
 
             const metadata = await response.json();
-            console.log('Metadata:', metadata);
 
             return metadata.image;
         } catch (error) {
@@ -88,7 +86,7 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
         };
 
         fetchAllImages();
-    }, [items]);
+    }, [items, imageCache]);
 
     const handleImageError = (itemId: string) => {
         setImageErrors(prev => new Set([...prev, itemId]));
@@ -132,7 +130,6 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
                             // Loading state styling
                             (item.metadataLoading || imageData?.loading) && "opacity-75"
                         )}
-                        onClick={() => soundManager.play("buttonClick")}
                     >
                         {/* Loading overlay for metadata */}
                         {(item.metadataLoading || imageData?.loading) && (

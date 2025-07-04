@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Volume2, VolumeX } from "lucide-react"
 import { soundManager } from "@/utils/sounds"
@@ -13,22 +13,9 @@ interface SoundToggleProps {
 export function SoundToggle({ className }: SoundToggleProps) {
   const [isMuted, setIsMuted] = useState(true)
 
-  // Initialize on mount
-  useEffect(() => {
-    // Initialize sound manager
-    soundManager.initialize()
-    // Get initial mute state
-    setIsMuted(soundManager.getMuted())
-  }, [])
-
   const toggleMute = () => {
     const newMutedState = soundManager.toggleMute()
     setIsMuted(newMutedState)
-
-    // Play a sound when unmuting to give feedback
-    if (!newMutedState) {
-      soundManager.play("buttonClick")
-    }
   }
 
   return (

@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Search, Filter, Bookmark, Grid3X3, List } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { soundManager } from "@/utils/sounds"
 import { ViewMode, SortBy } from "./types"
 
 interface CollectionFiltersProps {
@@ -33,9 +32,6 @@ export function CollectionFilters({
     viewMode,
     onViewModeChange,
 }: CollectionFiltersProps) {
-    const handleButtonClick = () => {
-        soundManager.play("buttonClick")
-    }
 
     return (
         <div className="space-y-6">
@@ -59,7 +55,6 @@ export function CollectionFilters({
                         size="sm"
                         onClick={() => {
                             onViewModeChange("grid")
-                            handleButtonClick()
                         }}
                         className="rounded-none"
                         title="Grid View"
@@ -105,7 +100,6 @@ export function CollectionFilters({
                                         size="sm"
                                         onClick={() => {
                                             onSortChange(sort.value)
-                                            handleButtonClick()
                                         }}
                                         className={cn(
                                             "transition-all duration-300",
@@ -132,7 +126,6 @@ export function CollectionFilters({
                                 size="sm"
                                 onClick={() => {
                                     onCollectionChange("all")
-                                    handleButtonClick()
                                 }}
                                 className={cn(
                                     "transition-all duration-300",
@@ -148,7 +141,6 @@ export function CollectionFilters({
                                 size="sm"
                                 onClick={() => {
                                     onCollectionChange("ippy")
-                                    handleButtonClick()
                                 }}
                                 className={cn(
                                     "transition-all duration-300",
@@ -170,7 +162,6 @@ export function CollectionFilters({
                                 size="sm"
                                 onClick={() => {
                                     onVersionChange("all")
-                                    handleButtonClick()
                                 }}
                                 className={cn(
                                     "transition-all duration-300",
@@ -186,7 +177,6 @@ export function CollectionFilters({
                                 size="sm"
                                 onClick={() => {
                                     onVersionChange("standard")
-                                    handleButtonClick()
                                 }}
                                 className={cn(
                                     "transition-all duration-300",
@@ -202,7 +192,6 @@ export function CollectionFilters({
                                 size="sm"
                                 onClick={() => {
                                     onVersionChange("hidden")
-                                    handleButtonClick()
                                 }}
                                 className={cn(
                                     "transition-all duration-300",

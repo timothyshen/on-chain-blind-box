@@ -1,44 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { GachaItem } from "@/types/gacha";
-import { useSound } from "./useSound";
 import { useInventory } from "./useInventory";
-import { useBlindBox } from "./useBlindBox";
+import { useBlindBox } from "../useBlindBox";
 import { useNotifications } from "@/contexts/notification-context";
-import { usePrivy } from "@privy-io/react-auth";
-import { getUserBlindBoxBalance } from "./contractRead";
 
 export const useGachaMachine = () => {
-  const {
-    playLeverPull,
-    playBoxOpen,
-    playItemReveal,
-    playCoinInsert,
-    playButtonClick,
-  } = useSound();
-  const {
-    inventory,
-    unrevealedItems,
-    addToUnrevealed,
-    removeFromUnrevealed,
-    refreshInventory,
-  } = useInventory();
+  const { inventory, unrevealedItems, refreshInventory } = useInventory();
   const { purchaseBoxes, openBoxes } = useBlindBox();
   const { addNotification } = useNotifications();
-  const { user } = usePrivy();
   const [coins, setCoins] = useState(10);
-
-  // Add fetchContractBalance function
-  const fetchContractBalance = async () => {
-    if (!user?.wallet?.address) return;
-    try {
-      const balance = await getUserBlindBoxBalance(
-        user.wallet.address as `0x${string}`
-      );
-      console.log("Contract balance:", Number(balance));
-    } catch (error) {
-      console.error("Error fetching contract balance:", error);
-    }
-  };
 
   const [isSpinning, setIsSpinning] = useState(false);
   const [leverPulled, setLeverPulled] = useState(false);
@@ -82,7 +52,6 @@ export const useGachaMachine = () => {
   const pullGacha = async () => {
     if (coins < 1 || isSpinning || showBlindBoxModal) return;
 
-    playLeverPull();
     setShowCoinAnimation(true);
     setCoins((prev) => prev - 1);
     setIsSpinning(true);
@@ -192,10 +161,8 @@ export const useGachaMachine = () => {
     setBlinkingCell(null);
     try {
       const tx = await purchaseBoxes(1);
-      console.log("Purchased box:", tx);
 
       // Refresh balances after purchase
-      fetchContractBalance();
       refreshInventory();
     } catch (error) {
       console.error("Error purchasing boxes:", error);
@@ -204,7 +171,6 @@ export const useGachaMachine = () => {
 
       // Use placeholder item for UI - actual item comes from contract
       const result = getPlaceholderItem();
-      console.log("Using placeholder for UI:", result);
 
       const existingItem = inventory.find(
         (item) => item.id === result.id && item.version === result.version
@@ -212,7 +178,6 @@ export const useGachaMachine = () => {
       setIsNewItem(!existingItem);
 
       // Since we're using contract data, these functions now trigger refreshes
-      addToUnrevealed(result);
       setCurrentBlindBox(result);
 
       setCollectionParticleType(result.collection);
@@ -233,27 +198,17 @@ export const useGachaMachine = () => {
   };
 
   const revealBlindBox = async () => {
-    playBoxOpen();
     try {
-      const tx = await openBoxes(1);
-      console.log("Opened box:", tx);
+      await openBoxes(1);
 
-      // Refresh balances after opening
-      fetchContractBalance();
       refreshInventory();
-
       setIsItemRevealed(true);
-
-      if (currentBlindBox) {
-        playItemReveal("ippy");
-      }
     } catch (error) {
       console.error("Error opening box:", error);
     }
   };
 
   const closeModalAndReset = () => {
-    playButtonClick();
     setShowResults(false);
     setCurrentResults([]);
     setShowBlindBoxModal(false);
@@ -262,21 +217,7 @@ export const useGachaMachine = () => {
     setIsSpinning(false);
   };
 
-  const revealAllItems = () => {
-    if (unrevealedItems.length === 0) return;
-
-    playButtonClick();
-    setCurrentResults((prev) =>
-      [...unrevealedItems.reverse(), ...prev].slice(0, 9)
-    );
-    unrevealedItems.forEach((item) => {
-      removeFromUnrevealed(item);
-    });
-    setShowResults(true);
-  };
-
   const addCoin = () => {
-    playCoinInsert();
     setShowCoinAnimation(true);
     setCoins((prev) => prev + 5);
 
@@ -316,7 +257,6 @@ export const useGachaMachine = () => {
     pullGacha,
     revealBlindBox,
     closeModalAndReset,
-    revealAllItems,
     addCoin,
   };
 };

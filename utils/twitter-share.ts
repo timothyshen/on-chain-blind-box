@@ -1,40 +1,15 @@
 import type { GachaItem } from "@/types/gacha";
 
-export function shareToTwitter(item: GachaItem, isNewItem: boolean) {
-  const collectionEmojis = {
-    toys: "🎀",
-    magic: "🔮",
-    fantasy: "👑",
-    tech: "⚡",
-    nature: "🌿",
-    space: "🌟",
-  };
-
-  const versionEmojis = {
-    standard: "✨",
-    hidden: "🌟",
-  };
-
+export function shareToTwitter() {
   // Create the tweet text
   const tweetText = [
-    `Just pulled a ${
-      collectionEmojis[item.collection]
-    } ${item.collection.toUpperCase()} collection ${item.name} ${item.emoji}`,
-    `${versionEmojis[item.version]} ${item.version.toUpperCase()} version!`,
-    isNewItem ? "🎉 NEW ITEM!" : "📚 Already in my collection",
+    `Just pulled a ippy blind box`,
+    `Come and join the IPPY verse to reveal your ippy!`,
     "",
-    "#GachaZone #GachaPull #CollectibleGaming",
+    "#IPPY",
   ].join("\n");
 
-  // Add extra hashtags for special items
-  const extraHashtags =
-    item.collection === "space"
-      ? " #SpaceCollection #RareFind"
-      : item.collection === "fantasy"
-      ? " #FantasyPull"
-      : "";
-
-  const finalTweet = tweetText + extraHashtags;
+  const finalTweet = tweetText;
 
   // Create Twitter URL
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(

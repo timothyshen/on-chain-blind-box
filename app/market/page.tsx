@@ -8,7 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft, Store, TrendingUp, Users, Coins, Star, Filter, Search } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { soundManager } from "@/utils/sounds"
 import { SoundToggle } from "@/components/sound-toggle"
 import { Input } from "@/components/ui/input"
 
@@ -293,8 +292,6 @@ export default function Market() {
 
   useEffect(() => {
     // Initialize sound manager
-    soundManager.initialize()
-
     const savedCoins = localStorage.getItem("gacha-coins")
     if (savedCoins) {
       setCoins(Number.parseInt(savedCoins))
@@ -308,7 +305,6 @@ export default function Market() {
 
   const buyItem = (listing: MarketListing) => {
     if (coins >= listing.price) {
-      soundManager.play("coinAdd")
 
       setCoins((prev) => {
         const newCoins = prev - listing.price
@@ -339,19 +335,16 @@ export default function Market() {
         alert(`Successfully purchased ${listing.item.name} for ${listing.price} coins!`)
       }
     } else {
-      soundManager.play("buttonClick")
       alert(`Not enough coins! You need ${listing.price - coins} more coins.`)
     }
   }
 
   const acceptTrade = (trade: TradeOffer) => {
-    soundManager.play("celebration")
     // In a real app, this would handle the trade logic
     alert(`Trade accepted! You received ${trade.offering.map((item) => item.name).join(", ")}`)
   }
 
   const rejectTrade = (trade: TradeOffer) => {
-    soundManager.play("buttonClick")
     alert("Trade rejected!")
   }
 
@@ -405,7 +398,6 @@ export default function Market() {
               <Button
                 variant="outline"
                 className="bg-white/80 border-slate-200 text-slate-700 hover:bg-white backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300"
-                onClick={() => soundManager.play("buttonClick")}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Gacha
@@ -564,7 +556,6 @@ export default function Market() {
             <TabsTrigger
               value="marketplace"
               className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-              onClick={() => soundManager.play("buttonClick")}
             >
               <Store className="w-4 h-4 mr-2" />
               Marketplace
@@ -572,7 +563,6 @@ export default function Market() {
             <TabsTrigger
               value="trades"
               className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-              onClick={() => soundManager.play("buttonClick")}
             >
               <Users className="w-4 h-4 mr-2" />
               Trade Offers ({trades.length})
@@ -615,7 +605,6 @@ export default function Market() {
                           size="sm"
                           onClick={() => {
                             setSortBy(sort.value as any)
-                            soundManager.play("buttonClick")
                           }}
                           className={cn(
                             "transition-all duration-300",
@@ -642,7 +631,6 @@ export default function Market() {
                       size="sm"
                       onClick={() => {
                         setSelectedCollection("all")
-                        soundManager.play("buttonClick")
                       }}
                       className={cn(
                         "transition-all duration-300",
@@ -660,23 +648,10 @@ export default function Market() {
                         size="sm"
                         onClick={() => {
                           setSelectedCollection(collection)
-                          soundManager.play("buttonClick")
                         }}
                         className={cn(
                           "transition-all duration-300",
-                          selectedCollection === collection
-                            ? collection === "toys"
-                              ? "bg-pink-600 hover:bg-pink-700 text-white"
-                              : collection === "magic"
-                                ? "bg-purple-600 hover:bg-purple-700 text-white"
-                                : collection === "fantasy"
-                                  ? "bg-amber-600 hover:bg-amber-700 text-white"
-                                  : collection === "tech"
-                                    ? "bg-cyan-600 hover:bg-cyan-700 text-white"
-                                    : collection === "nature"
-                                      ? "bg-green-600 hover:bg-green-700 text-white"
-                                      : "bg-indigo-600 hover:bg-indigo-700 text-white"
-                            : "bg-white/80 border-slate-200 text-slate-700 hover:bg-slate-100",
+                          "bg-white/80 border-slate-200 text-slate-700 hover:bg-slate-100",
                         )}
                       >
                         {collection.charAt(0).toUpperCase() + collection.slice(1)}
@@ -693,7 +668,6 @@ export default function Market() {
                       size="sm"
                       onClick={() => {
                         setSelectedVersion("all")
-                        soundManager.play("buttonClick")
                       }}
                       className={cn(
                         "transition-all duration-300",
@@ -709,7 +683,6 @@ export default function Market() {
                       size="sm"
                       onClick={() => {
                         setSelectedVersion("standard")
-                        soundManager.play("buttonClick")
                       }}
                       className={cn(
                         "transition-all duration-300",
@@ -725,7 +698,6 @@ export default function Market() {
                       size="sm"
                       onClick={() => {
                         setSelectedVersion("hidden")
-                        soundManager.play("buttonClick")
                       }}
                       className={cn(
                         "transition-all duration-300",
@@ -750,7 +722,6 @@ export default function Market() {
                       size="sm"
                       onClick={() => {
                         setShowFeaturedOnly(!showFeaturedOnly)
-                        soundManager.play("buttonClick")
                       }}
                       className={cn(
                         "transition-all duration-300",
@@ -766,7 +737,6 @@ export default function Market() {
                       size="sm"
                       onClick={() => {
                         setShowLimitedOnly(!showLimitedOnly)
-                        soundManager.play("buttonClick")
                       }}
                       className={cn(
                         "transition-all duration-300",
@@ -782,7 +752,6 @@ export default function Market() {
                       size="sm"
                       onClick={() => {
                         setShowDiscountOnly(!showDiscountOnly)
-                        soundManager.play("buttonClick")
                       }}
                       className={cn(
                         "transition-all duration-300",
@@ -947,7 +916,7 @@ export default function Market() {
                 <CardContent className="p-16 text-center">
                   <Users className="w-20 h-20 text-slate-300 mx-auto mb-6" />
                   <h3 className="text-2xl font-bold text-slate-700 mb-3">No Trade Offers</h3>
-                  <p className="text-slate-500 text-lg">You don't have any pending trade offers.</p>
+                  <p className="text-slate-500 text-lg">You don&apos;t have any pending trade offers.</p>
                 </CardContent>
               </Card>
             ) : (
@@ -973,7 +942,7 @@ export default function Market() {
                         <div>
                           <h4 className="text-slate-700 font-semibold mb-3 flex items-center gap-2">
                             <TrendingUp className="w-4 h-4 text-green-500" />
-                            They're Offering:
+                            They&apos;re Offering:
                           </h4>
                           <div className="grid grid-cols-2 gap-2">
                             {trade.offering.map((item, index) => (

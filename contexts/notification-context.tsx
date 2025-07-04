@@ -2,7 +2,6 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useCallback } from "react"
-import { soundManager } from "@/utils/sounds"
 
 export interface Notification {
   id: string
@@ -50,9 +49,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         info: "buttonClick",
         error: "buttonClick",
         collection: "sparkle",
-      }
-
-      soundManager.play(soundMap[newNotification.type] as any, { volume: 0.6 })
+      } as const
     }
 
     // Auto-remove non-persistent notifications

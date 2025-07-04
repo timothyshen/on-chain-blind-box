@@ -1,9 +1,7 @@
 "use client"
 
-import { useEffect } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Package, Bookmark } from "lucide-react"
-import { soundManager } from "@/utils/sounds"
 
 // Import all the new components
 import { InventoryHeader } from "@/components/inventory/InventoryHeader"
@@ -16,8 +14,8 @@ import { NotificationProvider } from "@/contexts/notification-context"
 import { NotificationContainer } from "@/components/notification-system"
 
 // Import custom hooks
-import { useInventoryLogic } from "@/hooks/useInventoryLogic"
-import { useInventoryFilters } from "@/hooks/useInventoryFilters"
+import { useInventoryLogic } from "@/hooks/gacha/useInventoryLogic"
+import { useInventoryFilters } from "@/hooks/gacha/useInventoryFilters"
 
 export default function Inventory() {
   // Use the enhanced inventory logic hook
@@ -50,10 +48,6 @@ export default function Inventory() {
     setActiveTab,
   } = useInventoryFilters()
 
-  useEffect(() => {
-    // Initialize sound manager
-    soundManager.initialize()
-  }, [])
 
   // Get filtered items based on current filters
   const filteredItems = getFilteredItems(searchTerm, selectedCollection, selectedVersion, sortBy)
@@ -143,7 +137,6 @@ export default function Inventory() {
               <TabsTrigger
                 value="blindbox"
                 className="data-[state=active]:bg-amber-600 data-[state=active]:text-white"
-                onClick={() => soundManager.play("buttonClick")}
               >
                 <Package className="w-4 h-4 mr-2" />
                 Blind Boxes ({unrevealedBoxes})
@@ -151,7 +144,6 @@ export default function Inventory() {
               <TabsTrigger
                 value="collection"
                 className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-                onClick={() => soundManager.play("buttonClick")}
               >
                 <Bookmark className="w-4 h-4 mr-2" />
                 Collection ({uniqueItems})

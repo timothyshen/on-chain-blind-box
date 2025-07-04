@@ -6,81 +6,14 @@ import {
   getUserNFTTypeCounts,
   getUserBlindBoxBalance,
   getContractInfo,
-} from "./contractRead";
-import { useWalletClient } from "@/lib/contract";
+} from "../contractRead";
 import { blindBoxABI, blindBoxAddress } from "@/lib/contract";
 import { metadataService, NFTMetadata, BlindBoxMetadata } from "@/lib/metadata";
 import { readClient } from "@/lib/contract";
-
-// NFT Type mapping from contracts
-export const NFT_TYPE_MAPPING = {
-  0: {
-    name: "BLIPPY",
-    emoji: "✨",
-    rarity: "hidden",
-    description: "Ultra rare hidden IPPY NFT",
-  },
-  1: {
-    name: "IPPY",
-    emoji: "🐣",
-    rarity: "standard",
-    description: "Classic IPPY NFT",
-  },
-  2: {
-    name: "BIPPY",
-    emoji: "🌟",
-    rarity: "standard",
-    description: "Tech-themed IPPY NFT",
-  },
-  3: {
-    name: "THIPPY",
-    emoji: "🎨",
-    rarity: "standard",
-    description: "Art-themed IPPY NFT",
-  },
-  4: {
-    name: "STIPPY",
-    emoji: "🎵",
-    rarity: "standard",
-    description: "Music-themed IPPY NFT",
-  },
-  5: {
-    name: "RAIPPY",
-    emoji: "⚽",
-    rarity: "standard",
-    description: "Sports-themed IPPY NFT",
-  },
-  6: {
-    name: "MIPPY",
-    emoji: "🎮",
-    rarity: "standard",
-    description: "Gaming-themed IPPY NFT",
-  },
-} as const;
-
-export interface InventoryData {
-  inventory: GachaItem[];
-  unrevealedItems: GachaItem[];
-  isLoading: boolean;
-  error: string | null;
-  stats: {
-    totalNFTs: number;
-    unrevealedBoxes: number;
-    hiddenNFTs: number;
-    nftTypeCounts: Record<string, number>;
-  };
-}
-
-export interface ContractInfo {
-  boxPrice: bigint;
-  totalSupply: bigint;
-  currentSupply: bigint;
-  remainingBoxes: bigint;
-}
+import { NFT_TYPE_MAPPING, ContractInfo } from "@/types/inventory";
 
 export const useInventory = () => {
   const { user } = usePrivy();
-  const { getWalletClient } = useWalletClient();
   const address = user?.wallet?.address as `0x${string}` | undefined;
 
   // State management
@@ -370,22 +303,6 @@ export const useInventory = () => {
     fetchInventory();
   }, [fetchInventory]);
 
-  const addToUnrevealed = useCallback(
-    (item: GachaItem) => {
-      // This should now happen through contract transactions
-      fetchInventory();
-    },
-    [fetchInventory]
-  );
-
-  const removeFromUnrevealed = useCallback(
-    (item: GachaItem) => {
-      // This should now happen through contract transactions
-      fetchInventory();
-    },
-    [fetchInventory]
-  );
-
   // Function to manually refresh metadata
   const refreshMetadata = useCallback(async () => {
     if (inventory.length > 0) {
@@ -428,10 +345,6 @@ export const useInventory = () => {
     refreshInventory: fetchInventory,
     refreshMetadata,
     getBlindBoxMetadata,
-
-    // Legacy compatibility
-    addToUnrevealed,
-    removeFromUnrevealed,
 
     // Utility functions
     mapContractNFTToGachaItem,

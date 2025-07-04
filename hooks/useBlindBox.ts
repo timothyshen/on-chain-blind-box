@@ -86,7 +86,6 @@ export const useBlindBox = () => {
 
       // Get the account address
       const [account] = await walletClient.getAddresses();
-      console.log("account", account);
 
       // Calculate total cost
       const totalCost = parseEther("0.01") * BigInt(amount);

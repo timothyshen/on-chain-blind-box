@@ -1,14 +1,10 @@
 "use client"
-
-import type React from "react"
-
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Gamepad2, Sparkles, Crown, Zap, Star, Trophy, Users, Play, ArrowRight, Coins, LogIn } from "lucide-react"
+import { Gamepad2, Sparkles, Zap, Star, Trophy, Users, Play, ArrowRight, Coins } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { soundManager } from "@/utils/sounds"
 import { SoundToggle } from "@/components/sound-toggle"
 import LoginButton from "@/components/LoginButton"
 
@@ -89,14 +85,7 @@ const StatusBadge = ({ status }: { status: Game["status"] }) => {
 export default function HomePage() {
   const [hoveredGame, setHoveredGame] = useState<string | null>(null)
 
-  useEffect(() => {
-    // Initialize sound manager
-    soundManager.initialize()
-  }, [])
-
   const handleGameClick = (game: Game) => {
-    soundManager.play("buttonClick")
-
     if (game.status === "available" && game.href) {
       // Navigate to available game
       window.location.href = game.href
@@ -104,12 +93,6 @@ export default function HomePage() {
       // Show coming soon message
       alert(`${game.title} is ${game.status === "beta" ? "in beta testing" : "coming soon"}! Stay tuned for updates.`)
     }
-  }
-
-  const handleLogin = () => {
-    soundManager.play("buttonClick")
-    // TODO: Implement login functionality
-    alert("Login functionality coming soon! 🚀")
   }
 
   return (

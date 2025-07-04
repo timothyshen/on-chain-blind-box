@@ -868,7 +868,7 @@ export default function ClawMachine() {
                             <p className="text-xl font-bold mb-2">
                               {coins === 0 ? "No Coins Left!" : "Insert Coin to Play"}
                             </p>
-                            <p className="text-sm opacity-75">Click "Start Game" to begin</p>
+                            <p className="text-sm opacity-75">Click &quot;Start Game&quot; to begin</p>
                           </div>
                         </div>
                       )}

@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { ContractInfo } from "@/hooks/useInventory"
+import { ContractInfo } from "@/types/inventory"
 import { Star } from "lucide-react"
 
 

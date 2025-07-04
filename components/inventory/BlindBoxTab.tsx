@@ -62,7 +62,7 @@ export function BlindBoxTab({ unrevealedItems, onRevealItem }: BlindBoxTabProps)
                 <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-3">
                     {unrevealedItems.map((item, index) => {
                         const itemDisplayImage = getItemDisplayImage(item);
-                        const itemSvg = isBlindBoxItem(item) ? (item as any).svg : null;
+                        const itemSvg = isBlindBoxItem(item) ? (item as { svg?: string }).svg : null;
                         const hasImage = itemDisplayImage && !imageErrors.has(item.id);
 
                         return (

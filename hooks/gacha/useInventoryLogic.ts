@@ -5,7 +5,7 @@ import {
   CollectionStats,
   COLLECTION_TOTALS,
 } from "@/components/inventory/types";
-import { useBlindBox } from "./useBlindBox";
+import { useBlindBox } from "../useBlindBox";
 
 export const useInventoryLogic = () => {
   const {
@@ -18,7 +18,7 @@ export const useInventoryLogic = () => {
     contractInfo,
   } = useInventory();
 
-  const { openBoxes, purchaseBoxes } = useBlindBox();
+  const { openBoxes } = useBlindBox();
 
   // Create a proper grouping that treats each version as a separate item
   const getUniqueItems = useMemo((): GachaItemWithCount[] => {
@@ -80,9 +80,7 @@ export const useInventoryLogic = () => {
   const revealItemFromInventory = async (index: number) => {
     if (index >= 0 && index < unrevealedItems.length) {
       try {
-        
         const tx = await openBoxes(1);
-        console.log("Box opened:", tx);
         // Refresh inventory to get latest data from contract after successful transaction
         await refreshInventory();
         return tx;
@@ -94,7 +92,6 @@ export const useInventoryLogic = () => {
       throw new Error("Invalid box index");
     }
   };
-
 
   // Filter and sort function
   const getFilteredItems = (
