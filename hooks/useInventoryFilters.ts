@@ -6,7 +6,7 @@ export const useInventoryFilters = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [selectedVersion, setSelectedVersion] = useState<string>("all");
-  const [viewMode, setViewMode] = useState<ViewMode>("collection");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [sortBy, setSortBy] = useState<SortBy>("recent");
 
   // Modal state

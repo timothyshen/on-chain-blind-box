@@ -42,7 +42,7 @@ export function CollectionFilters({
             {/* View Mode Toggle */}
             <div className="flex items-center justify-between">
                 <div className="flex bg-white/80 backdrop-blur-sm rounded-lg border border-slate-200 shadow-lg">
-                    <Button
+                    {/* <Button
                         variant={viewMode === "collection" ? "default" : "ghost"}
                         size="sm"
                         onClick={() => {
@@ -53,7 +53,7 @@ export function CollectionFilters({
                         title="Collection View"
                     >
                         <Bookmark className="w-4 h-4" />
-                    </Button>
+                    </Button> */}
                     <Button
                         variant={viewMode === "grid" ? "default" : "ghost"}
                         size="sm"

@@ -16,9 +16,6 @@ contract BlindBox is ERC1155, Ownable, ReentrancyGuard {
 
     IIPPYNFT public ippyNFT;
 
-    string public constant NAME = "IPPY Mystery Box";
-    string public constant SYMBOL = "IPPY_BOX";
-
     // NFT IDs for the 7 different NFTs
     uint256 public constant HIDDEN_NFT_ID = 0; // Ultra rare hidden NFT
     uint256 public constant STANDARD_NFT_1 = 1;
@@ -60,6 +57,14 @@ contract BlindBox is ERC1155, Ownable, ReentrancyGuard {
 
     constructor(address _ippyNFT) ERC1155("") Ownable(msg.sender) {
         ippyNFT = IIPPYNFT(_ippyNFT);
+    }
+
+    function name() public pure returns (string memory) {
+        return "IPPY Mystery Box";
+    }
+
+    function symbol() public pure returns (string memory) {
+        return "IPPY_BOX";
     }
 
     // Purchase blind boxes

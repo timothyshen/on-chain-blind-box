@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useInventory } from "./useInventory";
 import {
-  GachaItem,
   GachaItemWithCount,
   CollectionStats,
   COLLECTION_TOTALS,

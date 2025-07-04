@@ -10,7 +10,6 @@ import { InventoryHeader } from "@/components/inventory/InventoryHeader"
 import { InventoryStats } from "@/components/inventory/InventoryStats"
 import { BlindBoxTab } from "@/components/inventory/BlindBoxTab"
 import { CollectionFilters } from "@/components/inventory/CollectionFilters"
-import { CollectionView } from "@/components/inventory/CollectionView"
 import { GridView } from "@/components/inventory/GridView"
 import Footer from "@/components/Footer"
 import { NotificationProvider } from "@/contexts/notification-context"
@@ -25,16 +24,11 @@ export default function Inventory() {
   const {
     inventory,
     unrevealedItems,
-    totalItems,
     uniqueItems,
-    hiddenCount,
     unrevealedBoxes,
-    collectionStats,
-    collectionCompletionPercentage,
     contractInfo,
     isLoading,
     error,
-    getCollectionItems,
     getFilteredItems,
     getNFTTypeBreakdown,
     revealItemFromInventory,
@@ -54,7 +48,6 @@ export default function Inventory() {
     setSortBy,
     activeTab,
     setActiveTab,
-    openCollectionDetail,
   } = useInventoryFilters()
 
   useEffect(() => {
@@ -69,17 +62,6 @@ export default function Inventory() {
   const nftTypeBreakdown = getNFTTypeBreakdown()
 
   const renderCollectionContent = () => {
-    if (viewMode === "collection") {
-      return (
-        <CollectionView
-          collectionStats={collectionStats}
-          collectionCompletionPercentage={collectionCompletionPercentage}
-          getCollectionItems={getCollectionItems}
-          onOpenCollectionDetail={openCollectionDetail}
-        />
-      )
-    }
-
     if (viewMode === "grid") {
       return <GridView items={filteredItems} inventoryLength={inventory.length} />
     }
@@ -131,39 +113,10 @@ export default function Inventory() {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-4">
         <div className="max-w-7xl mx-auto">
           <InventoryHeader />
-
-          <InventoryStats
-            totalItems={totalItems}
-            uniqueItems={uniqueItems}
-            hiddenCount={hiddenCount}
-          />
-
           {/* Contract Info Display - Show box price and supply info if available */}
-          {contractInfo && (
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 mb-6 border border-slate-200 shadow-lg">
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">📦 Blind Box Market</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div>
-                  <span className="text-slate-600">Box Price:</span>
-                  <div className="font-semibold text-amber-600">
-                    {(Number(contractInfo.boxPrice) / 1e18).toFixed(4)} ETH
-                  </div>
-                </div>
-                <div>
-                  <span className="text-slate-600">Total Supply:</span>
-                  <div className="font-semibold">{contractInfo.totalSupply.toString()}</div>
-                </div>
-                <div>
-                  <span className="text-slate-600">Minted:</span>
-                  <div className="font-semibold">{contractInfo.currentSupply.toString()}</div>
-                </div>
-                <div>
-                  <span className="text-slate-600">Remaining:</span>
-                  <div className="font-semibold text-green-600">{contractInfo.remainingBoxes.toString()}</div>
-                </div>
-              </div>
-            </div>
-          )}
+          {contractInfo && <InventoryStats
+            {...contractInfo}
+          />}
 
           {/* NFT Type Breakdown - Show distribution of NFT types if available */}
           {nftTypeBreakdown.length > 0 && (
