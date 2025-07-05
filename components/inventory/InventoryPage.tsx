@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Package, Bookmark } from "lucide-react"
 
 // Import all the new components
-import { InventoryHeader } from "@/components/inventory/InventoryHeader"
 import { InventoryStats } from "@/components/inventory/InventoryStats"
 import { BlindBoxTab } from "@/components/inventory/BlindBoxTab"
 import { CollectionFilters } from "@/components/inventory/CollectionFilters"
@@ -15,6 +14,7 @@ import Footer from "@/components/Footer"
 // Import custom hooks
 import { useInventoryLogic } from "@/hooks/gacha/useInventoryLogic"
 import { useInventoryFilters } from "@/hooks/gacha/useInventoryFilters"
+import { Header } from "@/components/Header"
 
 export default function Inventory() {
     // Use the enhanced inventory logic hook
@@ -102,82 +102,82 @@ export default function Inventory() {
     }
 
     return (
-        <>
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-4">
-                <div className="max-w-7xl mx-auto">
-                    <InventoryHeader />
+        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
 
-                    {/* Contract Info Display - Show box price and supply info if available */}
-                    {contractInfo && <InventoryStats
-                        {...contractInfo}
-                    />}
+            <Header name="Inventory" subtitle="Premium Collection Experience" isDark={true} />
 
-                    {/* NFT Type Breakdown - Show distribution of NFT types if available */}
-                    {nftTypeBreakdown.length > 0 && (
-                        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 mb-6 border border-slate-200 shadow-lg">
-                            <h3 className="text-lg font-semibold text-slate-800 mb-2">🎭 Your Collection Breakdown</h3>
-                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 text-sm">
-                                {nftTypeBreakdown.map(({ typeName, count }) => (
-                                    <div key={typeName} className="text-center">
-                                        <div className="font-semibold text-blue-600">{count}</div>
-                                        <div className="text-slate-600 text-xs">{typeName}</div>
-                                    </div>
-                                ))}
-                            </div>
+            <div className="w-full max-w-7xl mx-auto flex-1 pt-20 sm:pt-24 md:pt-28">
+                {/* Contract Info Display - Show box price and supply info if available */}
+                {contractInfo && <InventoryStats
+                    {...contractInfo}
+                />}
+
+                {/* NFT Type Breakdown - Show distribution of NFT types if available */}
+                {nftTypeBreakdown.length > 0 && (
+                    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 mb-6 border border-slate-200 shadow-lg">
+                        <h3 className="text-lg font-semibold text-slate-800 mb-2">🎭 Your Collection Breakdown</h3>
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 text-sm">
+                            {nftTypeBreakdown.map(({ typeName, count }) => (
+                                <div key={typeName} className="text-center">
+                                    <div className="font-semibold text-blue-600">{count}</div>
+                                    <div className="text-slate-600 text-xs">{typeName}</div>
+                                </div>
+                            ))}
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Main Tabs */}
-                    <Tabs
-                        value={activeTab}
-                        onValueChange={(value) => setActiveTab(value as "blindbox" | "collection")}
-                        className="space-y-6"
-                    >
-                        <TabsList className="bg-white/80 border-slate-200 shadow-lg backdrop-blur-sm">
-                            <TabsTrigger
-                                value="blindbox"
-                                className="data-[state=active]:bg-amber-600 data-[state=active]:text-white"
-                            >
-                                <Package className="w-4 h-4 mr-2" />
-                                Blind Boxes ({unrevealedBoxes})
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="collection"
-                                className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-                            >
-                                <Bookmark className="w-4 h-4 mr-2" />
-                                Collection ({uniqueItems})
-                            </TabsTrigger>
-                        </TabsList>
+                {/* Main Tabs */}
+                <Tabs
+                    value={activeTab}
+                    onValueChange={(value) => setActiveTab(value as "blindbox" | "collection")}
+                    className="space-y-6"
+                >
+                    <TabsList className="bg-white/80 border-slate-200 shadow-lg backdrop-blur-sm">
+                        <TabsTrigger
+                            value="blindbox"
+                            className="data-[state=active]:bg-amber-600 data-[state=active]:text-white"
+                        >
+                            <Package className="w-4 h-4 mr-2" />
+                            Blind Boxes ({unrevealedBoxes})
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="collection"
+                            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                        >
+                            <Bookmark className="w-4 h-4 mr-2" />
+                            Collection ({uniqueItems})
+                        </TabsTrigger>
+                    </TabsList>
 
-                        {/* Blind Box Tab */}
-                        <TabsContent value="blindbox" className="space-y-6">
-                            <BlindBoxTab
-                                unrevealedItems={unrevealedItems}
-                                onRevealItem={revealItemFromInventory}
-                            />
-                        </TabsContent>
+                    {/* Blind Box Tab */}
+                    <TabsContent value="blindbox" className="space-y-6">
+                        <BlindBoxTab
+                            unrevealedItems={unrevealedItems}
+                            onRevealItem={revealItemFromInventory}
+                        />
+                    </TabsContent>
 
-                        {/* Collection Tab */}
-                        <TabsContent value="collection" className="space-y-6">
-                            <CollectionFilters
-                                searchTerm={searchTerm}
-                                onSearchChange={setSearchTerm}
-                                selectedCollection={selectedCollection}
-                                onCollectionChange={setSelectedCollection}
-                                selectedVersion={selectedVersion}
-                                onVersionChange={setSelectedVersion}
-                                sortBy={sortBy}
-                                onSortChange={setSortBy}
-                                viewMode={viewMode}
-                                onViewModeChange={setViewMode}
-                            />
+                    {/* Collection Tab */}
+                    <TabsContent value="collection" className="space-y-6">
+                        <CollectionFilters
+                            searchTerm={searchTerm}
+                            onSearchChange={setSearchTerm}
+                            selectedCollection={selectedCollection}
+                            onCollectionChange={setSelectedCollection}
+                            selectedVersion={selectedVersion}
+                            onVersionChange={setSelectedVersion}
+                            sortBy={sortBy}
+                            onSortChange={setSortBy}
+                            viewMode={viewMode}
+                            onViewModeChange={setViewMode}
+                        />
 
-                            {renderCollectionContent()}
-                        </TabsContent>
-                    </Tabs>
+                        {renderCollectionContent()}
+                    </TabsContent>
+                </Tabs>
 
-                    {/* Collection Detail Modal
+                {/* Collection Detail Modal
           <CollectionModal
             selectedCollectionDetail={selectedCollectionDetail}
             showModal={showCollectionModal}
@@ -186,11 +186,11 @@ export default function Inventory() {
             collectionCompletionPercentage={collectionCompletionPercentage}
             getCollectionItems={getCollectionItems}
           /> */}
-                </div>
-
             </div>
+
             <Footer />
 
-        </>
+        </div>
+
     )
 }

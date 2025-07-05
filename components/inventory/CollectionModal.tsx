@@ -108,7 +108,6 @@ export function CollectionModal({
                                 <CardContent className="p-4 text-center">
                                     <div className="text-4xl mb-3">{item.emoji}</div>
                                     <h4 className="font-bold mb-1">{item.name}</h4>
-                                    <p className="text-xs mb-3 opacity-80">{item.description}</p>
 
                                     <div className="flex justify-between items-center">
                                         <Badge

@@ -7,11 +7,9 @@ import { cn } from "@/lib/utils"
 import { GachaItemWithCount, COLLECTION_COLORS, VERSION_STYLES, COLLECTION_GLOW } from "./types"
 import {
     getItemDisplayName,
-    getItemDisplayDescription,
     getRarityInfo,
     getItemDisplayStyle,
-    hasRichMetadata,
-    getItemTheme
+    hasRichMetadata, dd
 } from "@/types/gacha"
 import { useState, useEffect } from "react"
 import Image from "next/image"
@@ -190,9 +188,6 @@ export function GridView({ items, inventoryLength }: GridViewProps) {
                         </CardHeader>
 
                         <CardContent className="pt-0 space-y-2">
-                            <p className="text-xs text-center opacity-80 leading-relaxed line-clamp-2">
-                                {getItemDisplayDescription(item)}
-                            </p>
 
                             {/* Collection and Rarity badges */}
                             <div className="flex justify-between items-center gap-1">

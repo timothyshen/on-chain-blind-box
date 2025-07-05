@@ -16,7 +16,7 @@ import { useKeyboardControls } from "@/hooks/claw/use-keyboard-controls"
 import { useGameState } from "@/hooks/claw/use-game-state"
 import { useCablePhysics } from "@/hooks/claw/use-cable-physics"
 import type { Prize, DroppedPrize as DroppedPrizeType } from "@/types/game"
-import { MachineHeader } from "@/components/gacha/MachineHeader"
+import { Header } from "@/components/Header"
 import { ControlPanel } from "@/components/gacha/ControlPanel"
 import { useRouter } from "next/navigation"
 
@@ -545,7 +545,7 @@ export default function ClawMachine() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-900 via-blue-900 to-indigo-900 p-2 sm:p-4">
-      <MachineHeader name="Claw Machine" subtitle="Premium Collection Experience" isDark={false} />
+      <Header name="Claw Machine" subtitle="Premium Collection Experience" isDark={false} />
       <div className="w-full max-w-7xl mx-auto mt-[120px]">
         <div className="text-center mb-4 sm:mb-8">
           <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">🎪 Claw Machine 🎪</h1>

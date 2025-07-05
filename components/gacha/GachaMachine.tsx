@@ -1,7 +1,7 @@
 "use client"
 import { useGachaMachine } from "@/hooks/gacha/useGachaMachine"
 import { useInventory } from "@/hooks/gacha/useInventory"
-import { MachineHeader } from "./MachineHeader"
+import { Header } from "@/components/Header"
 import { MachineBody } from "./MachineBody"
 import { ControlPanel } from "./ControlPanel"
 import { BlindBoxModal } from "./BlindBoxModal"
@@ -42,7 +42,7 @@ export const GachaMachine = () => {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
-            <MachineHeader name="Gacha Zone" subtitle="Premium Collection Experience" isDark={true} />
+            <Header name="Gacha Zone" subtitle="Premium Collection Experience" isDark={true} />
             <MachineBody
                 isSpinning={isSpinning}
                 showBlindBoxModal={showBlindBoxModal}

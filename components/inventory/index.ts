@@ -1,4 +1,3 @@
-export { InventoryHeader } from "./InventoryHeader";
 export { InventoryStats } from "./InventoryStats";
 export { BlindBoxTab } from "./BlindBoxTab";
 export { CollectionFilters } from "./CollectionFilters";

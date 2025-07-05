@@ -8,7 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft, Store, TrendingUp, Users, Coins, Star, Filter, Search } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { SoundToggle } from "@/components/sound-toggle"
 import { Input } from "@/components/ui/input"
 
 // Update the GachaItem interface to include version
@@ -413,7 +412,6 @@ export default function Market() {
           </div>
 
           <div className="flex items-center gap-3 md:ml-auto">
-            <SoundToggle />
 
             <Card className="bg-white/80 border-slate-200 shadow-lg backdrop-blur-sm">
               <CardContent className="p-4 flex items-center gap-2">
